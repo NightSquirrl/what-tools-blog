@@ -1,13 +1,10 @@
 ---
-sticky: 3
 title: 🎃 组件 | SDK 封装
 #description: 包含各种 css js 技巧
 tag:
   - 前端
   - rollup
   - SDK
-top: 100
-sidebar: true
 ---
 
 ## 项目初始化

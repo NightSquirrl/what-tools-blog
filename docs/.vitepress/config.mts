@@ -19,6 +19,10 @@ export default defineConfig({
     lastUpdated: true,
     themeConfig: {
         lastUpdatedText: '上次更新于',
+        outline:{
+            level: "deep",
+            label:"目录"
+        },
         // footer: {
         //   message: '自定义底部内容',
         //   copyright:

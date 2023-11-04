@@ -1,12 +1,9 @@
 ---
-sticky: 3
 title: 🎃 rollup 快速上手
 #description: 包含各种 css js 技巧
 tag:
   - 前端
   - rollup
-top: 100
-sidebar: true
 ---
 
 # rollup 使用案例

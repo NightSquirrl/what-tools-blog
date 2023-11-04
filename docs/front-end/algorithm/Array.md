@@ -1,11 +1,8 @@
 ---
-sticky: 3
 title: 数组的相关算法
 tag:
   - Array
   - 算法
-top: 1
-sidebar: true
 ---
 
 ## Reduce

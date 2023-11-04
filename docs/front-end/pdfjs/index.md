@@ -1,11 +1,8 @@
 ---
-sticky: 2
 title: 😤 pdfjs 源码基本说明
 tag:
   - pdfjs
   - 前端
-top: 100
-sidebar: true
 ---
 
 

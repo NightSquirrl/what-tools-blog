@@ -1,12 +1,9 @@
 ---
-sticky: 3
 title: 🧐 Webpack + React
 description: 手动搭建 react 脚手架
 tag:
   - Webpack
   - 前端
-top: 100
-sidebar: true
 ---
 <div align="center">
     <img width="200px" height="200px" src="https://www.z4a.net/images/2023/09/12/logo.png" />

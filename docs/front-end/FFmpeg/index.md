@@ -1,5 +1,4 @@
 ---
-sticky: 2
 description: ffmpeg 相关命令的使用 -> wasm
 title: 😤 ffmpeg 基本入门教程
 tag:
@@ -7,8 +6,6 @@ tag:
   - ffmpeg
   - video
   - 前端
-top: 100
-sidebar: true
 ---
 
 基于React项目使用

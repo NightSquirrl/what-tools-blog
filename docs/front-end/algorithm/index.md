@@ -1,10 +1,7 @@
 ---
-sticky: 1
 title: 🤔 算法目录
 tag:
   - 算法
-top: 1
-sidebar: true
 recommend: 1
 ---
 

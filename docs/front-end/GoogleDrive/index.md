@@ -1,11 +1,8 @@
 ---
-sticky: 2
 title: 😤 Google Drive 使用快速入门
 tag:
   - Google Drive
   - 前端
-top: 100
-sidebar: true
 ---
 
 # Google Drive

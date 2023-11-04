@@ -1,12 +1,9 @@
 ---
-sticky: 3
 description: 综合的讲解 Echarts 的使用
 title: 🔨 Echarts 基本教程
 tag:
   - 前端
   - Echarts
-top: 3
-sidebar: true
 ---
 ![echart.png](https://echarts.apache.org/zh/images/logo.png?_v_=20200710_1)
 

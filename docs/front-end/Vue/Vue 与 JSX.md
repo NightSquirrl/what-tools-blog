@@ -1,11 +1,8 @@
 ---
-sticky: 2
 title: 🤕 Vue 与 JSX 笔记
 tag:
   - Vue
   - 前端
-top: 100
-sidebar: true
 ---
 
 # 介绍 JSX

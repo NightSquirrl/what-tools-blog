@@ -1,13 +1,10 @@
 ---
-sticky: 2
 description: XHR 相关的 API
 title: 😤 XHR使用教程
 tag:
   - AJAX
   - XHR
   - 前端
-top: 100
-sidebar: true
 ---
 
 ### 1.XMLHttpRequest的意义和概念

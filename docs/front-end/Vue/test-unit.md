@@ -1,10 +1,7 @@
 ---
-sticky: 2
 title:  🪤 Vue 单元测试
 tag:
   - Vue
-top: 8
-sidebar: true
 ---
 
 ## 环境

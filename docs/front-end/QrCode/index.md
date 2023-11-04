@@ -1,12 +1,9 @@
 ---
-sticky: 2
 title: 🍔 二维码美化项目
 tag:
   - QrCode
   - React
   - 前端
-top: 100
-sidebar: true
 ---
 
 # README-frontend

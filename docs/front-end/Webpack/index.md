@@ -1,10 +1,7 @@
 ---
-sticky: 2
 title: 🪤 Webpack 
 tag:
   - Webpack
-top: 1
-sidebar: true
 ---
 
 > 高级篇 7.9

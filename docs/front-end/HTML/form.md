@@ -1,10 +1,7 @@
 ---
-sticky: 2
 title: 🫠 Form 表单的使用
 tag:
   - HTML
-top: 1
-sidebar: true
 ---
 
 ![download.png](https://www.z4a.net/images/2023/10/24/download.png)

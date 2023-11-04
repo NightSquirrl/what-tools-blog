@@ -1,12 +1,9 @@
 ---
-sticky: 2
 title: 🪤 Vue 状态管理
 tag:
   - Vue
   - vuex
   - pinia
-top: 2
-sidebar: true
 ---
 ![pinia.svg](https://pinia.vuejs.org/logo.svg)
 # Vue 状态管理 vuex pinia

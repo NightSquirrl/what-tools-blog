@@ -1,11 +1,8 @@
 ---
-sticky: 2
 title: 🤕 WebSocket 快速使用教程
 tag:
   - WebSocket
   - 前端
-top: 100
-sidebar: true
 ---
 
 # WebSocket

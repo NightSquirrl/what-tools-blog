@@ -26,6 +26,8 @@ const blogTheme = getThemeConfig({
   // ],
   // 开启离线的全文搜索支持（如构建报错可注释下面的配置再次尝试）
   search: 'pagefind',
+
+
   // popover: {
   //   title: '公告',
   //   body: [

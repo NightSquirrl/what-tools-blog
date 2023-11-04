@@ -1,10 +1,7 @@
 ---
-sticky: 2
 title: 🤔 瀑布流
 tag:
-  - 
-top: 1
-sidebar: true
+  - 算法
 ---
 
 >HTML 代码

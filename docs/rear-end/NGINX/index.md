@@ -1,11 +1,8 @@
 ---
-sticky: 2
 title: 🪤 NGINX 使用教程
 tag:
   - NGINX
   - 封装
-top: 6
-sidebar: true
 ---
 ![NGINX](https://www.nginx.com/wp-content/uploads/2021/08/NGINX-Part-of-F5-horiz-black-type-1.svg)
 

@@ -1,11 +1,8 @@
 ---
-sticky: 2
 title: 🪤 axios 快捷封装
 tag:
   - axios
   - 封装
-top: 1
-sidebar: true
 ---
 ![axios.png](https://www.z4a.net/images/2023/10/07/axios.png)
 ## 依赖安装

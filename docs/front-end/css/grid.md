@@ -1,10 +1,7 @@
 ---
-sticky: 2
 title: 🥴 Grid 布局 
 tag:
   - CSS
-top: 1
-sidebar: true
 ---
 
 

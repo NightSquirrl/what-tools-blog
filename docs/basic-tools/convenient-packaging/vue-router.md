@@ -1,11 +1,8 @@
 ---
-sticky: 2
 title: 🪤 vue-router
 tag:
   - Vue
   - vue-router
-top: 7
-sidebar: true
 ---
 
 # 🪤 vue-router

@@ -1,10 +1,7 @@
 ---
-sticky: 2
 title: HTML 知识点 
 tag:
   - 面试
-top: 1
-sidebar: true
 ---
 
 ## 1. defer 和 async

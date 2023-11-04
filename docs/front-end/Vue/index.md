@@ -1,12 +1,9 @@
 ---
-sticky: 2
 description: 适用于对 vue 有着简单理解的人
 title: 🤯 Vue 快速入门
 tag:
   - Vue
   - 前端
-top: 100
-sidebar: true
 ---
 
 # 创建项目

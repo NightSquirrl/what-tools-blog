@@ -1,10 +1,7 @@
 ---
-sticky: 2
 title: 🍞 常用轮子
 tag:
   - 组件库
-top: 4
-sidebar: true
 ---
 ![48daa38da2d35ca476f3823e5b12721d.png](https://www.z4a.net/images/2023/10/07/48daa38da2d35ca476f3823e5b12721d.png)
 ### React UI组件库

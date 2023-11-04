@@ -1,5 +1,4 @@
 ---
-sticky: 2
 description: vite axios unocss eslint antd ts react-router react-toastify
 title: 😤 react 脚手架封装
 tag:
@@ -8,8 +7,6 @@ tag:
   - antd
   - axios
   - 前端
-top: 100
-sidebar: true
 ---
 <div align="center">
     <img width="200px" height="200px" src="https://www.z4a.net/images/2023/09/12/logo.png" />
