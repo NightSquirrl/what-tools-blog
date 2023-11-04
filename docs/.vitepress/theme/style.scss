@@ -1,0 +1,18 @@
+.VPHome {
+  // 自定义首页背景图
+  &::before {
+    // 图片来源：https://zhuanlan.zhihu.com/p/54060187
+    background-image: none;
+    //background-size: cover;
+  }
+  // 定义遮罩样式
+  //background: radial-gradient(
+  //  ellipse,
+  //  rgba(var(--bg-gradient-home), 1) 0%,
+  //  rgba(var(--bg-gradient-home), 0) 150%
+  //);
+}
+//修改搜索框的文字颜色
+.algolia [command-item][aria-selected=true], .algolia [command-item]:hover {
+  color: #000;
+}

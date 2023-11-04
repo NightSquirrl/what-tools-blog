@@ -1,0 +1,8 @@
+node_modules
+.history
+.vitepress/dist
+docs/.DS_Store
+docs/.vitepress/dist/.DS_Store
+docs/.vitepress/dist
+.DS_Store
+.vercel
