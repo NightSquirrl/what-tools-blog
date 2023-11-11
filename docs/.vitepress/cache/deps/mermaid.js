@@ -1,6 +1,6 @@
 import {
   mermaid
-} from "./chunk-VU54JCGW.js";
+} from "./chunk-UDOVEL2J.js";
 import "./chunk-UXIASGQL.js";
 export {
   mermaid as default

@@ -5,9 +5,210 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c110212e-f6f5-4185-8459-b10c8180012d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/Java/index.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/REAMDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/REAMDE.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/blog-theme.ts" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/blog-theme.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/_metadata.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/_metadata.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/c4Diagram-60acd026-F67KTC6Z.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/c4Diagram-60acd026-F67KTC6Z.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/c4Diagram-60acd026-F67KTC6Z.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/c4Diagram-60acd026-F67KTC6Z.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-2EWGCEYS.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-2EWGCEYS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-2EWGCEYS.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-2EWGCEYS.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-3CE5JNGP.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-3CE5JNGP.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-3CE5JNGP.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-3CE5JNGP.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-3WXBB7VA.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-3WXBB7VA.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-3WXBB7VA.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-3WXBB7VA.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-5ITJE5Q4.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-5ITJE5Q4.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-5ITJE5Q4.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-5ITJE5Q4.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-D5F7YJJH.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-D5F7YJJH.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-D5F7YJJH.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-D5F7YJJH.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-D7BCQLWF.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-D7BCQLWF.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-D7BCQLWF.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-D7BCQLWF.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-DRUS6LNS.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-DRUS6LNS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-DRUS6LNS.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-DRUS6LNS.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-DWGZQHTT.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-DWGZQHTT.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-DWGZQHTT.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-DWGZQHTT.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-EO2PBJ4F.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-EO2PBJ4F.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-EO2PBJ4F.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-EO2PBJ4F.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-G727EQAR.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-G727EQAR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-G727EQAR.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-G727EQAR.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-HQLARCJ6.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-HQLARCJ6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-HQLARCJ6.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-HQLARCJ6.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-LVERSVJB.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-LVERSVJB.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-LVERSVJB.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-LVERSVJB.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-PWJBDL5H.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-PWJBDL5H.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-PWJBDL5H.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-PWJBDL5H.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-RONSDA7U.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-RONSDA7U.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-RONSDA7U.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-RONSDA7U.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-RU3PLSIQ.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-RU3PLSIQ.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-RU3PLSIQ.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-RU3PLSIQ.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-STLNV6MT.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-STLNV6MT.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-STLNV6MT.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-STLNV6MT.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-U7X76WVX.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-U7X76WVX.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-U7X76WVX.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-U7X76WVX.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-UXIASGQL.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-UXIASGQL.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-UXIASGQL.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-UXIASGQL.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-VU54JCGW.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-VU54JCGW.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-VU54JCGW.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/chunk-VU54JCGW.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/classDiagram-0e94aa92-VIZET6EY.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/classDiagram-0e94aa92-VIZET6EY.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/classDiagram-0e94aa92-VIZET6EY.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/classDiagram-0e94aa92-VIZET6EY.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/classDiagram-v2-5699522c-HNKXAIEH.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/classDiagram-v2-5699522c-HNKXAIEH.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/classDiagram-v2-5699522c-HNKXAIEH.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/classDiagram-v2-5699522c-HNKXAIEH.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/element-plus.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/element-plus.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/element-plus.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/element-plus.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/erDiagram-9c70e2d1-2A5C77IU.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/erDiagram-9c70e2d1-2A5C77IU.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/erDiagram-9c70e2d1-2A5C77IU.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/erDiagram-9c70e2d1-2A5C77IU.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowDiagram-92806404-PTZST3CW.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowDiagram-92806404-PTZST3CW.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowDiagram-92806404-PTZST3CW.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowDiagram-92806404-PTZST3CW.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowDiagram-v2-6d4618e9-3JNC73SB.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowDiagram-v2-6d4618e9-3JNC73SB.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowDiagram-v2-6d4618e9-3JNC73SB.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowDiagram-v2-6d4618e9-3JNC73SB.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowchart-elk-definition-3970a277-3SNFHWP6.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowchart-elk-definition-3970a277-3SNFHWP6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowchart-elk-definition-3970a277-3SNFHWP6.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/flowchart-elk-definition-3970a277-3SNFHWP6.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/ganttDiagram-adf6d212-6QBK6FJB.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/ganttDiagram-adf6d212-6QBK6FJB.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/ganttDiagram-adf6d212-6QBK6FJB.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/ganttDiagram-adf6d212-6QBK6FJB.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/gitGraphDiagram-40ad929d-MHP2NBGL.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/gitGraphDiagram-40ad929d-MHP2NBGL.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/gitGraphDiagram-40ad929d-MHP2NBGL.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/gitGraphDiagram-40ad929d-MHP2NBGL.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/infoDiagram-cf09b946-POSLW2YY.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/infoDiagram-cf09b946-POSLW2YY.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/infoDiagram-cf09b946-POSLW2YY.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/infoDiagram-cf09b946-POSLW2YY.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/journeyDiagram-dda15a26-IFWGTNWI.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/journeyDiagram-dda15a26-IFWGTNWI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/journeyDiagram-dda15a26-IFWGTNWI.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/journeyDiagram-dda15a26-IFWGTNWI.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/mermaid.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/mermaid.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/mermaid.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/mermaid.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/mindmap-definition-35625031-JODCWORO.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/mindmap-definition-35625031-JODCWORO.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/mindmap-definition-35625031-JODCWORO.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/mindmap-definition-35625031-JODCWORO.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/pieDiagram-cce2db57-B7MOA5XW.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/pieDiagram-cce2db57-B7MOA5XW.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/pieDiagram-cce2db57-B7MOA5XW.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/pieDiagram-cce2db57-B7MOA5XW.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/quadrantDiagram-eaf6be26-LBD6AXWE.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/quadrantDiagram-eaf6be26-LBD6AXWE.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/quadrantDiagram-eaf6be26-LBD6AXWE.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/quadrantDiagram-eaf6be26-LBD6AXWE.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/requirementDiagram-bdf860d6-VNYCZNYB.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/requirementDiagram-bdf860d6-VNYCZNYB.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/requirementDiagram-bdf860d6-VNYCZNYB.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/requirementDiagram-bdf860d6-VNYCZNYB.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/sankeyDiagram-9588997f-QEFIGZQI.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/sankeyDiagram-9588997f-QEFIGZQI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/sankeyDiagram-9588997f-QEFIGZQI.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/sankeyDiagram-9588997f-QEFIGZQI.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/sequenceDiagram-90be091c-W2TJM33N.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/sequenceDiagram-90be091c-W2TJM33N.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/sequenceDiagram-90be091c-W2TJM33N.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/sequenceDiagram-90be091c-W2TJM33N.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/stateDiagram-ab304aae-TNOHAIHL.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/stateDiagram-ab304aae-TNOHAIHL.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/stateDiagram-ab304aae-TNOHAIHL.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/stateDiagram-ab304aae-TNOHAIHL.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/stateDiagram-v2-b8780ab9-MIJGMZ2O.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/stateDiagram-v2-b8780ab9-MIJGMZ2O.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/stateDiagram-v2-b8780ab9-MIJGMZ2O.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/stateDiagram-v2-b8780ab9-MIJGMZ2O.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/timeline-definition-82529010-NQSNQ55D.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/timeline-definition-82529010-NQSNQ55D.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/timeline-definition-82529010-NQSNQ55D.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/timeline-definition-82529010-NQSNQ55D.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/vitepress___@vue_devtools-api.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/vitepress___@vue_devtools-api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/vitepress___@vue_devtools-api.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/vitepress___@vue_devtools-api.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/vue.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/vue.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/xychartDiagram-85b81823-UOYCOGKG.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/xychartDiagram-85b81823-UOYCOGKG.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/cache/deps/xychartDiagram-85b81823-UOYCOGKG.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/cache/deps/xychartDiagram-85b81823-UOYCOGKG.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/config.mts" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/config.mts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/theme/assets/bg.webp" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/theme/assets/bg.webp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/theme/green-theme.var.css" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/theme/green-theme.var.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/theme/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/theme/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/.vitepress/theme/style.scss" beforeDir="false" afterPath="$PROJECT_DIR$/docs/.vitepress/theme/style.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/1.基础入门.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/1.基础入门.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/10.字符串.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/10.字符串.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/11.集合ArrayList.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/11.集合ArrayList.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/12.面向对象进阶(static 继承).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/12.面向对象进阶(static 继承).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/13.面向对象进阶(多态).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/13.面向对象进阶(多态).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/14.面向对象进阶(接口).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/14.面向对象进阶(接口).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/15.面向对象(综合练习 1).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/15.面向对象(综合练习 1).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/16.面向对象(综合练习 2).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/16.面向对象(综合练习 2).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/17.常用 API.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/17.常用 API.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/18.正则表达式.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/18.正则表达式.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/19.常用 API(时间 包装类).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/19.常用 API(时间 包装类).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/2.Java基础语法.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/2.Java基础语法.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/20.算法.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/20.算法.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/21.集合 01.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/21.集合 01.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/22.集合 02.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/22.集合 02.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/23.集合 03.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/23.集合 03.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/24.第三阶段综合(斗地主游戏).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/24.第三阶段综合(斗地主游戏).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/25.stream流和方法引用.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/25.stream流和方法引用.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/26.IO流（字节流&amp;字符流）.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/26.IO流（字节流&amp;字符流）.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/27.IO流(其他流).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/27.IO流(其他流).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/28.多线程01.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/28.多线程01.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/29.多线程02.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/29.多线程02.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/3.运算符.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/3.运算符.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/30.网络编程.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/30.网络编程.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/31.反射动态代理.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/31.反射动态代理.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/32.IO(异常&amp;File&amp;综合案例).md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/32.IO(异常&amp;File&amp;综合案例).md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/4.流程控制语句.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/4.流程控制语句.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/5.数组.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/5.数组.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/6.方法.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/6.方法.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/7.第一阶段综合练习.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/7.第一阶段综合练习.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/8.面向对象.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/8.面向对象.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/9.第二阶段面向对象练习.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/9.第二阶段面向对象练习.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/Java/Java目录.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/Java/Java目录.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/basic-tools/convenient-packaging/axios-shortcut.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/basic-tools/convenient-packaging/axios-shortcut.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/basic-tools/convenient-packaging/vue-router.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/basic-tools/convenient-packaging/vue-router.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/basic-tools/convenient-packaging/vue-vuex-pinia.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/basic-tools/convenient-packaging/vue-vuex-pinia.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/basic-tools/regular-expression.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/basic-tools/regular-expression.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/basic-tools/summary-of-commonly-used-wheels.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/basic-tools/summary-of-commonly-used-wheels.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/catalog.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/catalog.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/components/FlightPath.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/components/FlightPath.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/components/Histogram.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/components/Histogram.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/components/LineChart.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/components/LineChart.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/components/LineChartShadow.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/components/LineChartShadow.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/components/Pie.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/components/Pie.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/components/PointDistributionStatistics.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/components/PointDistributionStatistics.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/components/ProgressBarChart.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/components/ProgressBarChart.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/components/china.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/components/china.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Echarts/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Echarts/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/FFmpeg/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/FFmpeg/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/GoogleDrive/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/GoogleDrive/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/HTML/components/FormDemo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/HTML/components/FormDemo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/HTML/form.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/HTML/form.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/QrCode/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/QrCode/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/React/初始代码库/ant-unocss-ts-vite-react.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/React/初始代码库/ant-unocss-ts-vite-react.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Vue/Vue 与 JSX.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Vue/Vue 与 JSX.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Vue/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Vue/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Vue/test-unit.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Vue/test-unit.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Vue/消息传递.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Vue/消息传递.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Webpack/Webpack+React.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Webpack/Webpack+React.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/Webpack/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/Webpack/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/ajax/XMLHttpRequest.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/ajax/XMLHttpRequest.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/Array.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/Array.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/WaterfallFlow.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/WaterfallFlow.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/WaterfallFlow.vue" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/WaterfallFlow.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/1.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/1.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/10.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/10.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/11.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/11.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/12.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/12.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/13.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/13.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/2.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/2.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/3.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/3.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/4.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/4.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/5.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/5.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/6.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/6.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/7.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/7.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/8.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/8.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/9.jpg" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/images/9.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/utils/waterfall.js" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/components/WaterfallFlow/utils/waterfall.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/algorithm/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/algorithm/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/css/grid.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/css/grid.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/css/sass.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/css/sass.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/interview/HTML.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/interview/HTML.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/optimize/Gulp.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/optimize/Gulp.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/optimize/SEO 通用优化方案.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/optimize/SEO 通用优化方案.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/optimize/UniversalJs.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/optimize/UniversalJs.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/optimize/frontend-performance-optimization.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/optimize/frontend-performance-optimization.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/pdfjs/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/pdfjs/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/threeJs.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/threeJs.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/技巧收集.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/技巧收集.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/组件封装/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/组件封装/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/组件封装/npm-packages.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/组件封装/npm-packages.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/组件封装/rollup.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/组件封装/rollup.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/网络请求/websocket.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/网络请求/websocket.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/设计模式.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/设计模式.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/pro-use-tutorial.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/pro-use-tutorial.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/public/favicon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/docs/public/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/public/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/docs/public/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/public/robots.txt" beforeDir="false" afterPath="$PROJECT_DIR$/docs/public/robots.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/rear-end/NGINX/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/rear-end/NGINX/index.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/docs/top-config.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/top-config.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pnpm-lock.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/pnpm-lock.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -166,6 +367,10 @@
       <workItem from="1699102143058" duration="1061000" />
       <workItem from="1699104788767" duration="4641000" />
       <workItem from="1699198875687" duration="1552000" />
+      <workItem from="1699272284286" duration="6921000" />
+      <workItem from="1699684341429" duration="87000" />
+      <workItem from="1699684433543" duration="94000" />
+      <workItem from="1699684532194" duration="7000" />
     </task>
     <servers />
   </component>
