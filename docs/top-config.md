@@ -27,3 +27,7 @@ docs/catalog.md 100
 /docs/图床/1.图床的基本使用.md 97
 
 /docs/服务器/1. 服务器的初始化使用.md 96
+
+/docs/JavaWeb/1.Maven.md 95
+
+/docs/JavaWeb/2.SpringBoot 基础.md 94
