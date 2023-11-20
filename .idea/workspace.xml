@@ -6,7 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="c110212e-f6f5-4185-8459-b10c8180012d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/top-config.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/top-config.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/JavaWeb/7.AOP.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/JavaWeb/7.AOP.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/JavaWeb/收集.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/JavaWeb/收集.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -172,7 +173,9 @@
       <workItem from="1699800960722" duration="10000" />
       <workItem from="1699800995913" duration="4000" />
       <workItem from="1700154090008" duration="1672000" />
-      <workItem from="1700314647523" duration="1361000" />
+      <workItem from="1700314647523" duration="2555000" />
+      <workItem from="1700476376303" duration="30000" />
+      <workItem from="1700477906193" duration="23000" />
     </task>
     <servers />
   </component>
