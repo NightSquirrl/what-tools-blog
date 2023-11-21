@@ -16,6 +16,8 @@ docs/Java/1.基础入门.md:top-3
 
 /docs/服务器/1. 服务器的初始化使用.md 96
 
+/docs/front-end/threeJs.md 95
+
 ## sticky
 
 docs/catalog.md 100

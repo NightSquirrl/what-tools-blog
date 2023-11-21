@@ -46,11 +46,6 @@ export default defineConfig({
             {
                 text: '前端', items: [
                     {
-                        text: 'css', items: [
-                            {text: 'sass', link: '/front-end/css/'},
-                        ]
-                    },
-                    {
                         text: 'Vue', items: [
                             {text: 'vuex | Pinia', link: '/basic-tools/convenient-packaging/vue-vuex-pinia.html'},
                             {text: 'vue-router', link: '/basic-tools/convenient-packaging/vue-router.html'},
@@ -59,6 +54,32 @@ export default defineConfig({
                     {
                         text: '算法', link:"/front-end/algorithm/"
                     },
+                    {
+                        text: 'FFmpeg', link:"/front-end/FFmpeg/index.html"
+                    },
+                    {
+                        text: 'Rollup组件封装', link:"/front-end/组件封装/rollup.html"
+                    },
+                ]
+            },
+            {
+                text: '后端', items: [
+
+                    {
+                        text: 'Java', link: '/Java/Java目录.html'
+                    },
+                    {
+                        text: 'Maven', link:"/JavaWeb/1.Maven.html"
+                    },
+                    {
+                        text: 'SpringBoot', link:"/JavaWeb/2.SpringBoot 基础.html"
+                    },
+                    {
+                        text: 'Mybatis', link:"/JavaWeb/4.Mybatis 入门.html"
+                    },
+                    {
+                        text: "Mybatis-Plus", link:"/JavaWeb/10.mybatis-plus.md"
+                    }
                 ]
             },
             {
