@@ -14,9 +14,11 @@ docs/Java/1.基础入门.md:top-3
 
 /docs/图床/1.图床的基本使用.md 5
 
-/docs/服务器/1. 服务器的初始化使用.md 96
+/docs/服务器/1. 服务器的初始化使用.md 6
 
-/docs/front-end/threeJs.md 95
+/docs/front-end/threeJs.md 7
+
+/docs/front-end/uni-app/快速入门.md 8
 
 ## sticky
 
@@ -33,3 +35,5 @@ docs/catalog.md 100
 /docs/JavaWeb/1.Maven.md 95
 
 /docs/JavaWeb/2.SpringBoot 基础.md 94
+
+/docs/front-end/uni-app/快速入门.md 93
