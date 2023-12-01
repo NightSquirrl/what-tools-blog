@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c110212e-f6f5-4185-8459-b10c8180012d" name="Changes" comment="" />
+    <list default="true" id="c110212e-f6f5-4185-8459-b10c8180012d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/interview/HTML.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/interview/HTML.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/front-end/设计模式.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/front-end/设计模式.md" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -175,6 +179,14 @@
       <workItem from="1700480116823" duration="259000" />
       <workItem from="1700560726879" duration="1337000" />
       <workItem from="1700804457661" duration="1053000" />
+      <workItem from="1700833938548" duration="702000" />
+      <workItem from="1700896363579" duration="3563000" />
+      <workItem from="1700911418252" duration="102000" />
+      <workItem from="1700911527115" duration="41000" />
+      <workItem from="1700911583169" duration="607000" />
+      <workItem from="1701027856196" duration="5000" />
+      <workItem from="1701154501864" duration="969000" />
+      <workItem from="1701266335414" duration="745000" />
     </task>
     <servers />
   </component>
