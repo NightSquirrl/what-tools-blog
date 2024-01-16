@@ -17,7 +17,7 @@ recommend: 1
 8. [面向对象](/Java/8.面向对象.html)
 9. [第二阶段综合练习](/Java/9.%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%BB%83%E4%B9%A0.html)
 10. [字符串](/Java/10.字符串.html)
-11. [ArrayList](/Java/11.ArrayList.html)
+11. [ArrayList](/Java/11.集合ArrayList.html)
 12. [面向对象进阶(static 继承)](/Java/12.%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6(static%20%E7%BB%A7%E6%89%BF).html)
 13. [面向对象进阶(多态)](/Java/13.%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6(%E5%A4%9A%E6%80%81).html)
 14. [面向对象进阶(接口)](/Java/14.%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E8%BF%9B%E9%98%B6(%E6%8E%A5%E5%8F%A3).html)
