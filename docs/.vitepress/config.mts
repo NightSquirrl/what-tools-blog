@@ -117,6 +117,9 @@ export default defineConfig({
                     },
                     {
                         text: "Mybatis-Plus", link:"/rear-end/JavaWeb/10-mybatis-plus.html"
+                    },
+                    {
+                        text: "Redis", link:"/rear-end/JavaWeb/11-redis.html"
                     }
                 ]
             },

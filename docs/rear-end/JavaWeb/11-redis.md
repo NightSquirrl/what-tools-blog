@@ -4,7 +4,7 @@ tag:
   - SpringBoot
   - JavaWeb
   - Redis
-recommend: 11
+recommend: 10
 ---
 
 ## Redis 的安装
@@ -201,8 +201,8 @@ Redis的key允许有多个单词形成层级结构，多个单词之间用':'隔
 
 | **KEY**         | **VALUE**                                  |
 | --------------- | ------------------------------------------ |
-| heima:user:1    | {"id":1,  "name": "Jack", "age": 21}       |
-| heima:product:1 | {"id":1,  "name": "小米11", "price": 4999} |
+| `heima:user:1`    | `{"id":1,  "name": "Jack", "age": 21} `      |
+| `heima:product:1 `| `{"id":1,  "name": "小米11", "price": 4999}` |
 
 并且，在Redis的桌面客户端中，还会以相同前缀作为层级结构，让数据看起来层次分明，关系清晰：
 
