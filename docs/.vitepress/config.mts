@@ -132,15 +132,18 @@ export default defineConfig({
                             {text: '安装', link: '/server/mysql/1-install.html'},
                         ],
                     },
+                    {
+                        text: 'Window 终端与Linux', link: '/server/window/terminal'
+                    },
                 ]
             },
-            {
-                text:"面试",items:[
-                    {
-                        text: "HTML", link: "/front-end/interview/HTML.html"
-                    }
-                ]
-            }
+            // {
+            //     text:"面试",items:[
+            //         {
+            //             text: "HTML", link: "/front-end/interview/HTML.html"
+            //         }
+            //     ]
+            // }
 
         ],
         socialLinks: [
