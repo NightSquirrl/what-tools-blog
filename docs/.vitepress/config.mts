@@ -38,8 +38,8 @@ export default defineConfig({
             {text: '首页', link: '/'},
             {
                 text: '便捷封装', items: [
-                    {text: 'axios', link: '/web/package/axios-shortcut.html'},
-                    {text: '正则表达式手册', link: '/web/package/regular-expression.html'},
+                    {text: 'axios', link: '/web/package/axios-shortcut'},
+                    {text: '正则表达式手册', link: '/web/package/regular-expression'},
              
                 ]
             },
@@ -47,56 +47,56 @@ export default defineConfig({
                 text: '前端', items: [
                     {
                         text: 'Vue', items: [
-                            {text: 'vuex | Pinia', link: '/web/Vue/vue-vuex-pinia.html'},
-                            {text: 'vue-router', link: '/web/Vue/vue-router.html'},
+                            {text: 'vuex | Pinia', link: '/web/Vue/vue-vuex-pinia'},
+                            {text: 'vue-router', link: '/web/Vue/vue-router'},
                         ],
                     },
                     {
                         text: 'React', items: [
-                            {text: '项目初始化', link: '/web/React/code-init/ant-unocss-ts-vite-react.html'},
+                            {text: '项目初始化', link: '/web/React/code-init/ant-unocss-ts-vite-react'},
                         ],
                     },
                  
                     {
                         text: 'PDF', items: [
-                            {text: 'PDFJS', link: '/web/PDF/pdfjs/index.html'},
+                            {text: 'PDFJS', link: '/web/PDF/pdfjs/index'},
                         ],
                     },
                     {
                         text: '二维码', items: [
-                            {text: '项目手册', link: '/web/QrCode/index.html'},
+                            {text: '项目手册', link: '/web/QrCode/index'},
                         ],
                     },
                     {
                         text: 'ThreeJS', items: [
-                            {text: '快速入门', link: '/web/threeJs/1-quick-get-start.html'},
-                            {text: '光影', link: '/web/threeJs/2-shadow.html'},
+                            {text: '快速入门', link: '/web/threeJs/1-quick-get-start'},
+                            {text: '光影', link: '/web/threeJs/2-shadow'},
                         ],
                     },
                     {
                         text: 'uni-app', items: [
-                            {text: '快速入门', link: '/web/uni-app/1-quick-get-start.html'},
+                            {text: '快速入门', link: '/web/uni-app/1-quick-get-start'},
                         ],
                     },
                     {
                         text: 'webpack', items: [
-                            {text: '快速入门', link: '/web/webpack/index.html'},
-                            {text:'手动搭建 React 脚手架',link:'/web/webpack/Webpack+React.html'}
+                            {text: '快速入门', link: '/web/webpack/index'},
+                            {text:'手动搭建 React 脚手架',link:'/web/webpack/Webpack+React'}
                         ],
                     },
                     {
-                        text: '常用方法', link:"/web/common-method/Array.html"
+                        text: '常用方法', link:"/web/common-method/Array"
                     },
                     {
-                        text: 'FFmpeg', link:"/web/FFmpeg/index.html"
+                        text: 'FFmpeg', link:"/web/FFmpeg/index"
                     },
                     {
-                        text: 'Rollup组件封装', link:"/web/component-packaging/rollup.html"
+                        text: 'Rollup组件封装', link:"/web/component-packaging/rollup"
                     },
-                    {text: 'Echart', link: '/web/Echarts/index.html'},
-                    {text: '网络请求', link: '/web/network-request/XMLHttpRequest.html'},
-                    {text: 'CSS', link: '/web/css/grid.html'},
-                    {text: 'Google Drive', link: '/web/GoogleDrive/index.html'},
+                    {text: 'Echart', link: '/web/Echarts/index'},
+                    {text: '网络请求', link: '/web/network-request/XMLHttpRequest'},
+                    {text: 'CSS', link: '/web/css/grid'},
+                    {text: 'Google Drive', link: '/web/GoogleDrive/index'},
 
                 ]
             },
@@ -104,32 +104,32 @@ export default defineConfig({
                 text: '后端', items: [
 
                     {
-                        text: 'Java', link: '/rear-end/Java/1-IntroductionToFundamentals.html'
+                        text: 'Java', link: '/rear-end/Java/1-IntroductionToFundamentals'
                     },
                     {
-                        text: 'Maven', link:"/rear-end/JavaWeb/1-Maven.html"
+                        text: 'Maven', link:"/rear-end/JavaWeb/1-Maven"
                     },
                     {
-                        text: 'SpringBoot', link:"/rear-end/JavaWeb/2-SpringBootBasis.html"
+                        text: 'SpringBoot', link:"/rear-end/JavaWeb/2-SpringBootBasis"
                     },
                     {
-                        text: 'Mybatis', link:"/rear-end/JavaWeb/4-MybatisIntroduction.html"
+                        text: 'Mybatis', link:"/rear-end/JavaWeb/4-MybatisIntroduction"
                     },
                     {
-                        text: "Mybatis-Plus", link:"/rear-end/JavaWeb/10-mybatis-plus.html"
+                        text: "Mybatis-Plus", link:"/rear-end/JavaWeb/10-mybatis-plus"
                     },
                     {
-                        text: "Redis", link:"/rear-end/JavaWeb/11-redis.html"
+                        text: "Redis", link:"/rear-end/JavaWeb/11-redis"
                     }
                 ]
             },
             {
                 text:"运维",items:[
-                    {text: 'NGINX', link: '/server/NGINX/index.html'},
-                    {text: 'Docker', link: '/server/Docker/index.html'},
+                    {text: 'NGINX', link: '/server/NGINX/index'},
+                    {text: 'Docker', link: '/server/Docker/index'},
                     {
                         text: 'MySQL', items: [
-                            {text: '安装', link: '/server/mysql/1-install.html'},
+                            {text: '安装', link: '/server/mysql/1-install'},
                         ],
                     },
                     {
@@ -140,7 +140,7 @@ export default defineConfig({
             // {
             //     text:"面试",items:[
             //         {
-            //             text: "HTML", link: "/front-end/interview/HTML.html"
+            //             text: "HTML", link: "/front-end/interview/HTML"
             //         }
             //     ]
             // }
