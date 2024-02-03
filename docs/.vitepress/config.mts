@@ -53,7 +53,7 @@ export default defineConfig({
                     },
                     {
                         text: 'React', items: [
-                            {text: '项目初始化', link: '/web/React/code-init/ant-unocss-ts-vite-react'},
+                            {text: '项目初始化', link: '/web/react/code-init/ant-unocss-ts-vite-react'},
                         ],
                     },
                  
