@@ -1,0 +1,14 @@
+export const categoriesMap = {"category":{"/":{"path":"/category/","map":{}}},"tag":{"/":{"path":"/tag/","map":{"服务器":{"path":"/tag/服务器/","indexes":[0]},"图床":{"path":"/tag/图床/","indexes":[1,2]},"Java":{"path":"/tag/java/","indexes":[3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36]},"Maven":{"path":"/tag/maven/","indexes":[37]},"JavaWeb":{"path":"/tag/javaweb/","indexes":[38,37,39,40,41,42,43,44,45,46,47,48,49]},"SpringBoot":{"path":"/tag/springboot/","indexes":[38,39,40,41,42,43,44,45,46,47,48,49]},"Mybatis-plus":{"path":"/tag/mybatis-plus/","indexes":[39]},"Redis":{"path":"/tag/redis/","indexes":[40]},"Spring":{"path":"/tag/spring/","indexes":[41]},"Mybatis":{"path":"/tag/mybatis/","indexes":[44,45]},"JWT":{"path":"/tag/jwt/","indexes":[46]},"Swagger":{"path":"/tag/swagger/","indexes":[48]},"前端":{"path":"/tag/前端/","indexes":[50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65]},"Echarts":{"path":"/tag/echarts/","indexes":[50]},"Google Drive":{"path":"/tag/google-drive/","indexes":[51]},"React":{"path":"/tag/react/","indexes":[52,53,65]},"ffmpeg":{"path":"/tag/ffmpeg/","indexes":[52]},"video":{"path":"/tag/video/","indexes":[52]},"QrCode":{"path":"/tag/qrcode/","indexes":[53]},"Vue":{"path":"/tag/vue/","indexes":[66,67]},"vue-router":{"path":"/tag/vue-router/","indexes":[66]},"vuex":{"path":"/tag/vuex/","indexes":[67]},"pinia":{"path":"/tag/pinia/","indexes":[67]},"CSS":{"path":"/tag/css/","indexes":[68]},"优化":{"path":"/tag/优化/","indexes":[54,55,56,57]},"Gulp":{"path":"/tag/gulp/","indexes":[54]},"babel":{"path":"/tag/babel/","indexes":[55]},"Webpack":{"path":"/tag/webpack/","indexes":[55,60,69]},"SEO":{"path":"/tag/seo/","indexes":[57]},"axios":{"path":"/tag/axios/","indexes":[70,65]},"封装":{"path":"/tag/封装/","indexes":[70,71]},"正则表达式":{"path":"/tag/正则表达式/","indexes":[72]},"工具":{"path":"/tag/工具/","indexes":[72]},"AJAX":{"path":"/tag/ajax/","indexes":[58]},"XHR":{"path":"/tag/xhr/","indexes":[58]},"WebSocket":{"path":"/tag/websocket/","indexes":[59]},"three.js":{"path":"/tag/three.js/","indexes":[73,74]},"uni-app":{"path":"/tag/uni-app/","indexes":[75]},"Array":{"path":"/tag/array/","indexes":[76]},"算法":{"path":"/tag/算法/","indexes":[76,77]},"rollup":{"path":"/tag/rollup/","indexes":[61,62,63]},"SDK":{"path":"/tag/sdk/","indexes":[61,62]},"NGINX":{"path":"/tag/nginx/","indexes":[71]},"MySql":{"path":"/tag/mysql/","indexes":[78,79,80]},"pdfjs":{"path":"/tag/pdfjs/","indexes":[64]},"初始代码库":{"path":"/tag/初始代码库/","indexes":[65]},"antd":{"path":"/tag/antd/","indexes":[65]}}}}};
+
+if (import.meta.webpackHot) {
+  import.meta.webpackHot.accept();
+  if (__VUE_HMR_RUNTIME__.updateBlogCategory)
+    __VUE_HMR_RUNTIME__.updateBlogCategory(categoryMap);
+}
+
+if (import.meta.hot)
+  import.meta.hot.accept(({ categoryMap }) => {
+    __VUE_HMR_RUNTIME__.updateBlogCategory(categoryMap);
+  });
+
+
