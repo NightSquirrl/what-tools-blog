@@ -17,5 +17,8 @@
     "vuepress": "2.0.0-rc.5",
     "vuepress-plugin-search-pro": "2.0.0-rc.21",
     "vuepress-theme-hope": "2.0.0-rc.21"
+  },
+  "dependencies": {
+    "vuepress-plugin-comment2": "2.0.0-rc.22"
   }
 }

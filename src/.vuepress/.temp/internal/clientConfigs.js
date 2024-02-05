@@ -11,6 +11,7 @@ import clientConfig9 from '/Users/zeroeldath/Desktop/ignore-space/zero-eldath/wh
 import clientConfig10 from '/Users/zeroeldath/Desktop/ignore-space/zero-eldath/whatToolsBlog/node_modules/.pnpm/vuepress-plugin-photo-swipe@2.0.0-rc.21_vuepress@2.0.0-rc.5/node_modules/vuepress-plugin-photo-swipe/lib/client/config.js'
 import clientConfig11 from '/Users/zeroeldath/Desktop/ignore-space/zero-eldath/whatToolsBlog/node_modules/.pnpm/vuepress-plugin-search-pro@2.0.0-rc.21_vuepress@2.0.0-rc.5/node_modules/vuepress-plugin-search-pro/lib/client/config.js'
 import clientConfig12 from '/Users/zeroeldath/Desktop/ignore-space/zero-eldath/whatToolsBlog/src/.vuepress/.temp/theme-hope/config.js'
+import clientConfig13 from '/Users/zeroeldath/Desktop/ignore-space/zero-eldath/whatToolsBlog/node_modules/.pnpm/vuepress-plugin-comment2@2.0.0-rc.22_vuepress@2.0.0-rc.5/node_modules/vuepress-plugin-comment2/lib/client/config.js'
 
 export const clientConfigs = [
   clientConfig0,
@@ -26,4 +27,5 @@ export const clientConfigs = [
   clientConfig10,
   clientConfig11,
   clientConfig12,
+  clientConfig13,
 ]
