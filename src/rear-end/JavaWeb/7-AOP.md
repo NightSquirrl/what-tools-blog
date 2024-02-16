@@ -74,7 +74,7 @@ public class DeptServiceImpl implements DeptService {
 >
 > 只有有出现RuntimeException(运行时异常)才会回滚事务。
 >
-> 通过配置 @Transactional(rollbackFor=Exception.class) 实现所有异常的回滚
+> 通过配置 `@Transactional(rollbackFor=Exception.class)` 实现所有异常的回滚
 
 ##### propagation
 
@@ -86,11 +86,11 @@ required:
 
 将两个事物合并为一个事物,当其中的一个发生了事物的回滚行为,会同时进行回滚
 
-Propagation.REQUIRES_NEW ：不论是否有事务，都创建新事务 ，运行在一个独立的事
+`Propagation.REQUIRES_NEW ：`不论是否有事务，都创建新事务 ，运行在一个独立的事
 
 务中。
 
-> @Transactional(propagation = Propagation.REQUIRES_NEW)//事务传播行为：不论是否有事务，都新建事务
+>` @Transactional(propagation = Propagation.REQUIRES_NEW)//事务传播行为：不论是否有事务，都新建事务`
 
 ## 2. AOP
 

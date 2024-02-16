@@ -73,7 +73,7 @@
 <blockquote>
 <p>需要注意的是</p>
 <p>只有有出现RuntimeException(运行时异常)才会回滚事务。</p>
-<p>通过配置 @Transactional(rollbackFor=Exception.class) 实现所有异常的回滚</p>
+<p>通过配置 <code v-pre>@Transactional(rollbackFor=Exception.class)</code> 实现所有异常的回滚</p>
 </blockquote>
 <h5 id="propagation" tabindex="-1"><a class="header-anchor" href="#propagation"><span>propagation</span></a></h5>
 <blockquote>
@@ -82,10 +82,10 @@
 <figure><img src="https://img.picgo.net/2023/11/18/image-202311182027219288e094ed7b6dbaf97.png" alt="image-20231118202721928" tabindex="0" loading="lazy"><figcaption>image-20231118202721928</figcaption></figure>
 <p>required:</p>
 <p>将两个事物合并为一个事物,当其中的一个发生了事物的回滚行为,会同时进行回滚</p>
-<p>Propagation.REQUIRES_NEW ：不论是否有事务，都创建新事务 ，运行在一个独立的事</p>
+<p><code v-pre>Propagation.REQUIRES_NEW ：</code>不论是否有事务，都创建新事务 ，运行在一个独立的事</p>
 <p>务中。</p>
 <blockquote>
-<p>@Transactional(propagation = Propagation.REQUIRES_NEW)//事务传播行为：不论是否有事务，都新建事务</p>
+<p><code v-pre> @Transactional(propagation = Propagation.REQUIRES_NEW)//事务传播行为：不论是否有事务，都新建事务</code></p>
 </blockquote>
 <h2 id="_2-aop" tabindex="-1"><a class="header-anchor" href="#_2-aop"><span>2. AOP</span></a></h2>
 <h3 id="_2-1-aop概述" tabindex="-1"><a class="header-anchor" href="#_2-1-aop概述"><span><strong>2.1 AOP</strong>概述</span></a></h3>
