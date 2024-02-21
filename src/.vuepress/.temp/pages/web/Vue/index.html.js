@@ -1,16 +1,3 @@
-import comp from "D:/code/whatToolsBlog/src/.vuepress/.temp/pages/web/Vue/index.html.vue"
-const data = JSON.parse("{\"path\":\"/web/Vue/\",\"title\":\"Vue\",\"lang\":\"zh-CN\",\"frontmatter\":{\"title\":\"Vue\",\"article\":false,\"feed\":false,\"sitemap\":false,\"description\":\"\",\"head\":[[\"meta\",{\"property\":\"og:url\",\"content\":\"https://soft-vault.com/web/Vue/\"}],[\"meta\",{\"property\":\"og:site_name\",\"content\":\"Night.Soul\"}],[\"meta\",{\"property\":\"og:title\",\"content\":\"Vue\"}],[\"meta\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"meta\",{\"property\":\"og:locale\",\"content\":\"zh-CN\"}],[\"meta\",{\"property\":\"article:author\",\"content\":\"Night.Soul\"}],[\"script\",{\"type\":\"application/ld+json\"},\"{\\\"@context\\\":\\\"https://schema.org\\\",\\\"@type\\\":\\\"WebPage\\\",\\\"name\\\":\\\"Vue\\\"}\"]]},\"headers\":[],\"readingTime\":{\"minutes\":0,\"words\":1},\"filePathRelative\":null,\"excerpt\":\"\",\"autoDesc\":true}")
+import comp from "D:/code/whatToolsBlog/src/.vuepress/.temp/pages/web/vue/index.html.vue"
+const data = JSON.parse("{\"path\":\"/web/vue/\",\"title\":\"Vue\",\"lang\":\"zh-CN\",\"frontmatter\":{\"title\":\"Vue\",\"article\":false,\"feed\":false,\"sitemap\":false,\"description\":\"\",\"head\":[[\"meta\",{\"property\":\"og:url\",\"content\":\"https://soft-vault.com/web/vue/\"}],[\"meta\",{\"property\":\"og:site_name\",\"content\":\"Night.Soul\"}],[\"meta\",{\"property\":\"og:title\",\"content\":\"Vue\"}],[\"meta\",{\"property\":\"og:type\",\"content\":\"website\"}],[\"meta\",{\"property\":\"og:locale\",\"content\":\"zh-CN\"}],[\"meta\",{\"property\":\"article:author\",\"content\":\"Night.Soul\"}],[\"script\",{\"type\":\"application/ld+json\"},\"{\\\"@context\\\":\\\"https://schema.org\\\",\\\"@type\\\":\\\"WebPage\\\",\\\"name\\\":\\\"Vue\\\"}\"]]},\"headers\":[],\"git\":{},\"readingTime\":{\"minutes\":0,\"words\":1},\"filePathRelative\":null,\"excerpt\":\"\",\"autoDesc\":true}")
 export { comp, data }
-
-if (import.meta.webpackHot) {
-  import.meta.webpackHot.accept()
-  if (__VUE_HMR_RUNTIME__.updatePageData) {
-    __VUE_HMR_RUNTIME__.updatePageData(data)
-  }
-}
-
-if (import.meta.hot) {
-  import.meta.hot.accept(({ data }) => {
-    __VUE_HMR_RUNTIME__.updatePageData(data)
-  })
-}
