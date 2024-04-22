@@ -7,7 +7,6 @@ export default defineUserConfig({
   lang: "zh-CN",
   title: "Night.Soul",
   description: " NS 自用 Blog",
-
   theme,
   plugins: [
     commentPlugin({
