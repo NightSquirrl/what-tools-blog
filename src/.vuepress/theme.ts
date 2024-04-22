@@ -87,14 +87,14 @@ export default hopeTheme({
   // 在这里配置主题提供的插件
   plugins: {
     blog: true,
-    // search: true,
-    docsearch: {
-      // 你的选项
-      // appId, apiKey 和 indexName 是必填的
-      appId: "QSP6GW5ZZN",
-      apiKey: "d2aea68a220117695c32bb2df57cfd27",
-      indexName: "soft-vault",
-    },
+    search: true,
+    // docsearch: {
+    //   // 你的选项
+    //   // appId, apiKey 和 indexName 是必填的
+    //   appId: "QSP6GW5ZZN",
+    //   apiKey: "d2aea68a220117695c32bb2df57cfd27",
+    //   indexName: "soft-vault",
+    // },
     // 在启用之前需要安装 @waline/client
     // 警告: 这是一个仅供演示的测试服务器，在生产环境中请自行部署并使用自己的服务器！
     // comment: {
