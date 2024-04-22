@@ -9,7 +9,7 @@ import clientConfig7 from 'D:/code/whatToolsBlog/node_modules/.pnpm/@vuepress+pl
 import clientConfig8 from 'D:/code/whatToolsBlog/node_modules/.pnpm/@vuepress+plugin-copy-code@2.0.0-rc.26_vuepress@2.0.0-rc.9/node_modules/@vuepress/plugin-copy-code/lib/client/config.js'
 import clientConfig9 from 'D:/code/whatToolsBlog/src/.vuepress/.temp/md-enhance/config.js'
 import clientConfig10 from 'D:/code/whatToolsBlog/node_modules/.pnpm/@vuepress+plugin-photo-swipe@2.0.0-rc.26_vuepress@2.0.0-rc.9/node_modules/@vuepress/plugin-photo-swipe/lib/client/config.js'
-import clientConfig11 from 'D:/code/whatToolsBlog/node_modules/.pnpm/@vuepress+plugin-search@2.0.0-rc.26_vuepress@2.0.0-rc.9/node_modules/@vuepress/plugin-search/lib/client/config.js'
+import clientConfig11 from 'D:/code/whatToolsBlog/node_modules/.pnpm/@vuepress+plugin-docsearch@2.0.0-rc.26_@algolia+client-search@4.23.3_search-insights@2.13.0_vuepress@2.0.0-rc.9/node_modules/@vuepress/plugin-docsearch/lib/client/config.js'
 import clientConfig12 from 'D:/code/whatToolsBlog/src/.vuepress/.temp/theme-hope/config.js'
 import clientConfig13 from 'D:/code/whatToolsBlog/node_modules/.pnpm/vuepress-plugin-comment2@2.0.0-rc.30_vuepress@2.0.0-rc.9/node_modules/vuepress-plugin-comment2/lib/client/config.js'
 
