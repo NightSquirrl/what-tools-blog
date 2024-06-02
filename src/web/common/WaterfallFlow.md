@@ -120,5 +120,5 @@ new Waterfall({
 </div>
 
 <script setup>
-import WaterfallFlow from "@source/web/常用方法/components/WaterfallFlow/WaterfallFlow.vue"
+import WaterfallFlow from "@source/web/common/components/WaterfallFlow/WaterfallFlow.vue"
 </script>
