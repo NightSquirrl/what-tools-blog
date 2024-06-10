@@ -1,3 +1,10 @@
+---
+title: 3. 扩展 
+tag:
+  -  TypeScript
+top: 1
+recommend: 1
+---
 ## TypeScript 泛型中的 K、T 和 V 是什么？
 
 当你第一次看到 TypeScript 泛型中的 `T` 时，是不是觉得很奇怪？

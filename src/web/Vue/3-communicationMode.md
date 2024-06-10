@@ -1,5 +1,5 @@
 ---
-title: Vue中组件的通信方式
+title: 3. Vue中组件的通信方式
 tag:
   - Vue
 ---

@@ -1,5 +1,5 @@
 ---
-title: 🪤 vue-router
+title: 🪤 1. vue-router
 tag:
   - Vue
   - vue-router
