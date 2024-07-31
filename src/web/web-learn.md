@@ -74,6 +74,10 @@ recommend: 0
 
 // TODO: 对象的原型链
 
+## 正则
+
+[参考链接](/web/package/regular-expression.html)
+
 
 
 # Vue
@@ -162,6 +166,10 @@ function fn() {
 > 注意事项:
 >
 > 子组件的onMounted执行顺序比父组件要早,但是比父组件的onBeforeMount
+>
+> vue3 的生命周期
+>
+> 在`<script setup></script>`标签内部直接写代码都属于 setup 生命周期 负责数据的初始化,DOM 都还没有挂在,也就是说这个时候是无法获取到 DOM 的,只有在onMounted中才可以获取到 DOM
 
 ![生命周期](https://cn.vuejs.org/assets/lifecycle_zh-CN.W0MNXI0C.png)
 
@@ -407,24 +415,137 @@ const a = publishedBooksMessage.value('sss')
 
 #### props
 
+```javascript
+// Father.vue
+<Son/>
+const a = ref(0)
+
+// Son.vue
+<Grandson/>
+// 子组件获取父组件的数据
+ 
+
+// Grandson.vue
+// 开始获取 Father 的数据
+```
+
 ##### 子组件修改父组件值的方式
 
+> 无论祖孙组件的嵌套了多少层,都可以一直传递,但是最好不要超过 3 层,超过 3 层可以选择使用以来注入的方式
 
+`Son.vue`
+
+```javascript
+<script setup lang='ts'>
+
+interface IProps {
+    name: string
+}
+
+defineProps<IProps>()
+</script>
+
+// 只有defineProps<IProps>()的时候 <template> 中可以直接使用 name
+// 但是在 script 中需要变量来接收
+// const props = defineProps<IProps>()
+// props.name => 这样 JS 或者 TS 才可以获取到值
+// 需要注意的是不能使用结构赋值,否则失去响应式可以使用 const { name } = toRefs(props) // 此时可以结构赋值
+
+
+// 关于值的修改
+父组件 const a = ref(0) // 基本数据类型
+子组件 是无法修改 传递过来的这个 a 的值 readonly
+
+父组件 const a = ref({a:1}) or const a = ref([])
+// 如果父组件生命的数据是数组或者对象是可以修改的,但是不能`全量替换`
+子组件 a.a = 2 // 可以修改  a.push(2) // 可以修改 a[0] 都可以
+// 但是 a = {}  是不允许的这个属于全量替换 类似于 const a = 1
+// 我们都知道 const 声明的是常量,是不允许修改的,但是 const a = {a:1} a.a = 2 是可以修改的.但是 a = 22 是不允许的 ,原理类似
+
+
+
+```
+
+###### 如果子组件非要修改父组件的数据,那么父组件需要提供修改数据的方法
+
+`Father.vue`
+
+```javascript
+<template>
+   // 传递数据以及方法
+    <Son :a="a" @set-a="setA"></Son>
+</template>
+
+<script setup lang='ts'>
+const a = ref(0)
+
+function setA(value:string) {
+    a.value = value
+}
+</script>
+```
+
+`Son.vue`
+
+```javascript
+<script setup lang='ts'>
+interface IEmit {
+    (e: 'setA', value: string): void
+}
+
+const emit = defineEmits<IEmit>()
+// 触发父组件的方法, 第一个参数是方法名,第二个参数是 被触发的方法的参数
+emit('setA', 2)
+</script>
+```
 
 #### 依赖注入
 
+依赖注入,只要他们存在父子嵌套的关系都可以直接的传递和使用
 
+`provide()` 提供一个值，可以被后代组件注入。
 
-
-
-
-1. Vue
-2. Typescript
-3. JS 常见方法归纳
-4. 前端处理逻辑
-<Test/>
-
+```javascript
 <script setup>
-import Test from '@source/web/Test.vue'
+import { ref, provide } from 'vue'
 
+// 提供静态值
+provide('path', '/project/')
+
+// 提供响应式的值
+const count = ref(0)
+provide('count', count)
 </script>
+```
+
+> 🤯 `provide()` 必须在组件的 `setup()` 阶段同步调用。
+
+`inject()` 注入一个由祖先组件或整个应用 (通过 `app.provide()`) 提供的值。
+
+```javascript
+<script setup>
+import { inject } from 'vue'
+
+// 注入不含默认值的静态值
+const path = inject('path')
+
+// 注入响应式的值
+const count = inject('count')
+</script>
+```
+
+## Router
+
+[参考链接](/web/learn-vue/1-vue-router.html)
+
+## Vuex Pinia
+
+[参考链接1](/web/learn-vue/2-vue-vuex-pinia.html)
+
+
+
+# Typescript
+
+[参考链接1🔗](/web/typescript/1-basic-concepts.html)
+
+[参考链接2🔗](web/typescript/3-advanced-expand.html)
