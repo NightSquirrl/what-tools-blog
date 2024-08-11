@@ -82,7 +82,11 @@ recommend: 0
 
 ## work
 
-## indexDB
+[参考链接](/web/web-learn/web-worker.md)
+
+## 前端存储
+
+### indexDB
 
 ## 缓存机制
 
