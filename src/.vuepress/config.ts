@@ -3,7 +3,6 @@ import theme from "./theme.js";
 import { commentPlugin } from "vuepress-plugin-comment2";
 export default defineUserConfig({
   base: "",
-  dest:'./dist',
 
   lang: "zh-CN",
   title: "Night.Soul",
