@@ -49,6 +49,6 @@ jobs:
           build_dir: src/.vuepress/dist
         env:
           # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
-          GH_PAT: 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
+          GH_PAT: ${{ secrets.ACCESS_TOKEN  }}
 
 
