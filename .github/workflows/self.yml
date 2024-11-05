@@ -48,6 +48,6 @@ jobs:
           # 部署目录为 VuePress 的默认输出目录
           build_dir: src/.vuepress/dist
         env:
-          GITHUB_TOKEN : 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
+          GITHUB_TOKEN :  ${{ secrets.GITHUB_TOKEN }} 
           # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
-          GH_PAT: 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
+
