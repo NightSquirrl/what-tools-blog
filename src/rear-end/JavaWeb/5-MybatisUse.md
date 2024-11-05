@@ -369,9 +369,9 @@ import java.util.UUID;
 @Component
 public class AliOSSUtils {
   private String endpoint = "https://oss-cnshanghai.aliyuncs.com";
-  private String accessKeyId = "LTAI5t9MZK8iq5T2Av5GLDxX";
+  private String accessKeyId = "";
   private String accessKeySecret =
-    "C0IrHzKZGKqU8S7YQcevcotD3Zd5Tc";
+    "";
   private String bucketName = "web-framework01";
   /**
 * 实现上传图片到OSS
