@@ -1,0 +1,25 @@
+[github每日一题](https://github.com/haizlin/fe-interview/issues?q=is%3Aissue+is%3Aopen+vue)
+
+## 重要
+
+- SPA首屏为什么加载慢
+- vue3移除了哪些特性？
+- 请说说jQeury与Vue有哪些区别？
+- 在vue3中为什么推荐使用ref而不是reactive？
+- Pinia有什么特点? 知道之后可以移动到相对重要之中
+
+
+## 相对重要
+
+- 基于vue3实现一个高性能的虚拟滚动列表
+- vue2项目升级为vue3，有哪些需要修改的?
+- 怎么把项目里的webpack换成vite？
+- vite有哪些常见的hook？
+-  在vue3中setup是如何获得组件实例的?
+- 
+## 了解
+
+- 服务端渲染有哪些方法？
+- 服务端渲染有什么作用？
+- npm如何清除项目中没有被使用的依赖？
+- vite为什么比webpack快？
