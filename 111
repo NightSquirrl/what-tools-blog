@@ -23,3 +23,14 @@
 - 服务端渲染有什么作用？
 - npm如何清除项目中没有被使用的依赖？
 - vite为什么比webpack快？
+
+.scroll-style::-webkit-scrollbar {
+  background-color: #ff0000;
+  width: 8px;
+  height: 8px;
+  border-radius: 10px;
+}
+.scroll-style::-webkit-scrollbar-thumb {
+  background: green;
+  border-radius: 10px;
+}
