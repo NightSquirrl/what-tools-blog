@@ -1,21 +1,26 @@
-name: docs
+name: GitHub Pages
 
 on:
-  # 每当 push 到 main 分支时触发部署
   push:
-    branches: [vuepress-hope]
-  # 手动触发部署
-  workflow_dispatch:
+    branches:
+      # The branch where the project source code resides
+      # 项目源代码所在的分支
+      - main
+      - master
+      - valaxy
 
 jobs:
-  docs:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        node-version: [lts/*]
+        os: [ubuntu-latest]
+      fail-fast: false
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          # “最近更新时间” 等 git 日志相关信息，需要拉取全部提交记录
-          fetch-depth: 0
+      - uses: actions/checkout@v2
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -37,18 +42,9 @@ jobs:
       - name: Build VuePress site
         run: pnpm build
 
-      # 查看 workflow 的文档来获取更多信息
-      # @see https://github.com/crazy-max/ghaction-github-pages
       - name: Deploy to GitHub Pages
-        uses: crazy-max/ghaction-github-pages@v4
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          repo: NightSquirrl/what-tools-blog
-          # 部署到 gh-pages 分支
-          target_branch: gh-pages
-          # 部署目录为 VuePress 的默认输出目录
-          build_dir: src/.vuepress/dist
-        env:
-          # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
-          GH_PAT: ${{ secrets.GITHUB_TOKEN }}
-
-
+          personal_token: ${{ secrets.ACCESS_TOKE   }}
+          publish_dir: src/.vuepress/dist
+          force_orphan: true
