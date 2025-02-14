@@ -3,7 +3,7 @@ import theme from "./theme.js";
 import { commentPlugin } from "vuepress-plugin-comment2";
 export default defineUserConfig({
   base: "/what-tools-blog/",
-
+  dest:"src/.vuepress/dist/what-tools-blog",
   lang: "zh-CN",
   title: "Night.Soul",
   description: " NS 自用 Blog",
