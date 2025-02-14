@@ -44,5 +44,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           personal_token: ${{ secrets.ACCESS_TOKEN   }}
-          publish_dir: src/.vuepress/dist
+          publish_dir: src/.vuepress/dist/what-tools-blog
           force_orphan: true
