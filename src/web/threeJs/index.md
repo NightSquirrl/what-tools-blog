@@ -1,5 +1,6 @@
 ---
-title: 1. ThreeJS入门教程 
+title: 06. ThreeJS入门教程 
+icon: skill-icons:threejs-dark
 tag:
   - three.js
 top: 7

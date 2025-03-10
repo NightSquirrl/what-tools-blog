@@ -1,6 +1,7 @@
 ---
 sticky: true
-title: 😢 uni-app 快速入门
+title: 19. uni-app 快速入门
+icon: logos:apple-app-store
 tag:
   - uni-app
 top: 8

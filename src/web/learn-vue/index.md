@@ -1,5 +1,6 @@
 ---
-title: 🪤 1. vue-router
+title: 11. vue-router
+icon: material-icon-theme:folder-vue
 tag:
   - Vue
   - vue-router

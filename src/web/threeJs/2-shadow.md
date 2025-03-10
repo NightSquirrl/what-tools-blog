@@ -1,5 +1,5 @@
 ---
-title: 2. 光
+title: 光
 tag:
   - three.js
 recommend: 2

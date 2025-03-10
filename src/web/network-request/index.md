@@ -1,6 +1,7 @@
 ---
+title: 12. XHR使用教程
+icon: tabler:network
 description: XHR 相关的 API
-title: 😤 XHR使用教程
 tag:
   - AJAX
   - XHR

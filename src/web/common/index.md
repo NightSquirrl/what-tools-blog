@@ -1,5 +1,6 @@
 ---
-title: 🕹️ 19 种设计模式
+title: 07. 19 种设计模式
+icon: carbon:ibm-engineering-systems-design-rhapsody-model-manager
 tag:
   - 设计模式
   - 前端

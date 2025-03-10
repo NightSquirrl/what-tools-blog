@@ -1,5 +1,6 @@
 ---
-title: apply bind call
+title: 10. JS 理论 apply bind call
+icon: logos:javascript
 tag:
   - Javascript
 star: true

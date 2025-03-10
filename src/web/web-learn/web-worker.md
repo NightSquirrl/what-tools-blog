@@ -1,5 +1,6 @@
 ---
-title: Web Worker
+title: 20. Web Worker
+icon: gravity-ui:person-worker
 tag:
   - web
   - 前端

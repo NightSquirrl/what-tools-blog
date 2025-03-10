@@ -1,16 +1,12 @@
-# 性能优化
-
 ---
-
-title: 🥳 前端性能优化
+title: 13. 前端性能优化
+icon: icon-park:smart-optimization
 description: 从各个角度分析影响 Web 性能的原因
 tag:
 - 优化
 -  前端
 
 ---
-
-[TOC]
 
 # 前端性能优化介绍
 

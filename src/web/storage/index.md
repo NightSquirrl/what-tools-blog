@@ -1,5 +1,6 @@
 ---
-title: Cookie
+title: 17. 存储相关 Cookie
+icon: iconoir:db
 tag:
   - storage
 star: true

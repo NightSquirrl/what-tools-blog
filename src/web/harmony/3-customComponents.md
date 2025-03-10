@@ -1,5 +1,5 @@
 ---
-title: 🦋 3-自定义组件
+title:  3-自定义组件
 tag:
   - harmony
 star: true

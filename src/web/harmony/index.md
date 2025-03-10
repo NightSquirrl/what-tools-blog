@@ -1,5 +1,6 @@
 ---
-title: 🦋 1-harmony 项目工程结构
+title: 09. 1-harmony 项目工程结构
+icon: token-branded:harmony
 tag:
   - harmony
 star: true

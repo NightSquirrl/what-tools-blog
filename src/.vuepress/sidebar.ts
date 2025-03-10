@@ -5,22 +5,21 @@ export default sidebar({
     "",
     {
       text: "前端",
-      icon: "dragon",
+      icon: "ph:browsers-fill",
       prefix: "web",
       children: "structure",
       collapsible: true,
     },
     {
       text: "后端",
-      icon: "book-skull",
+      icon: "ri:server-fill",
       prefix: "rear-end",
       children: "structure",
       collapsible: true,
-
     },
     {
       text: "运维",
-      icon: "chess-board",
+      icon: "iconoir:web-window-solid",
       prefix: "server",
       children: "structure",
       collapsible: true,

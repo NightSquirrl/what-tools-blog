@@ -2,12 +2,12 @@ import { navbar } from "vuepress-theme-hope";
 
 export default navbar([
   "/",
-  { text: "前端", link: "/web/", icon: "dragon" },
-  { text: "后端", link: "/rear-end/", icon: "book-skull" },
-  { text: "运维", link: "/server/", icon: "chess-board" },
+  { text: "前端", link: "/web/", icon: "ph:browsers-fill" },
+  { text: "后端", link: "/rear-end/", icon: "ri:server-fill" },
+  { text: "运维", link: "/server/", icon: "iconoir:web-window-solid" },
   {
     text: "web",
-    icon: "pen-to-square",
+    icon: "logos:webstorm",
     children: [
       {
         text: "Vue",
@@ -75,6 +75,7 @@ export default navbar([
 
   {
     text: "后端",
+    icon: "devicon:intellij",
     children: [
       {
         text: "Java",
@@ -104,6 +105,7 @@ export default navbar([
   },
   {
     text: "运维",
+    icon:"devicon:apache",
     children: [
       { text: "NGINX", link: "/server/NGINX/index" },
       { text: "Docker", link: "/server/Docker/index" },

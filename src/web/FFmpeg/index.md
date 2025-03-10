@@ -1,6 +1,7 @@
 ---
+title: 04. ffmpeg 基本入门教程
+icon: logos:ffmpeg-icon
 description: ffmpeg 相关命令的使用 -> wasm
-title: 😤 ffmpeg 基本入门教程
 tag:
   - React
   - ffmpeg

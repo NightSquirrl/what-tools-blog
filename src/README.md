@@ -1,7 +1,7 @@
 ---
 home: true
 layout: BlogHome
-icon: home
+icon: fluent-color:home-16
 title: 回到主页
 heroImage: https://img.picgo.net/2024/02/05/logocffd7abf34977d0b.png
 heroText: Night.Soul

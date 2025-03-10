@@ -1,5 +1,6 @@
 ---
-title: 🪤 Webpack 
+title: Webpack 
+icon: skill-icons:webpack-dark
 tag:
   - Webpack
 ---

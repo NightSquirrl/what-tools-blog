@@ -1,5 +1,5 @@
 ---
-title: 😤 pdfjs 源码基本说明
+title: pdfjs 源码基本说明
 tag:
   - pdfjs
   - 前端

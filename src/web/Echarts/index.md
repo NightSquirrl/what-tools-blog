@@ -1,6 +1,7 @@
 ---
+title: 03. Echarts 基本教程
+icon: ix:piechart-filled
 description: 综合的讲解 Echarts 的使用
-title: 🔨 Echarts 基本教程
 tag:
   - 前端
   - Echarts

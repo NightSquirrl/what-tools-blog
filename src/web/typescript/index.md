@@ -1,5 +1,6 @@
 ---
-title: 1. 基础概念
+title: 18. TypeScript
+icon: skill-icons:typescript
 tag:
   -  TypeScript
 top: 1
