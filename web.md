@@ -2,3 +2,6 @@ https://sunfei123456.github.io/Blogs/VueStudy/Vue.js%20%E8%AE%BE%E8%AE%A1%E4%B8%
 https://segmentfault.com/a/1190000044147982
 https://vue3js.cn/reactivity/reactive.html
 https://vue3js.cn/vue-composition-api/#reactive
+
+
+redux :https://juejin.cn/post/6977992027459813407
