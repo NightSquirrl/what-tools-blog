@@ -4,7 +4,11 @@ import sidebar from "./sidebar.js";
 
 export default hopeTheme({
   hostname: "https://soft-vault.com",
-
+  encrypt: {
+    config: {
+      "/personal/": ["8023"]
+    },
+  },
   author: {
     name: "Night.Soul",
     url: "https://github.com/NightSquirrl",
@@ -68,17 +72,6 @@ export default hopeTheme({
     //   },
     },
   },
-
-  // 加密配置
-  encrypt: {
-    config: {
-      "/demo/encrypt.html": {
-        hint: "Password: 1234",
-        password: "1234",
-      },
-    },
-  },
-
   // 多语言配置
   metaLocales: {
     editLink: "在 GitHub 上编辑此页",
