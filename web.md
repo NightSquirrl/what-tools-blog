@@ -126,3 +126,6 @@ https://juejin.cn/post/6999922290628509732
 
 https://juejin.cn/post/7077102548640858125
 
+
+https://typescript.p6p.net/typescript-tutorial/tsconfig.json.html
+
