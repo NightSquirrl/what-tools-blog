@@ -366,3 +366,571 @@ HTTP/3基于UDP协议实现了类似于TCP的多路复用数据流、传输可�
 3. 多路复用：同一物理连接上可以有多个独立的逻辑数据流，实现了数据流的单独传输，解决了TCP的队头阻塞问题。
 4. 快速握手：由于基于UDP，可以实现使用0 \~ 1个RTT来建立连接。
 
+
+
+
+
+
+
+# Service Worker
+## 什么是`Service Worker`
+
+能够拦截当前网站的所有请求,如果可以直接使用缓存,直接返回缓存,否则再转给服务器.在**Service Worker** 中可以做拦截客户端的请求、向客户端发送消息、向服务器发起请求等先关操作，其中最重要且广泛的的作用就是离线资源缓存。
+
+### 特性
+
+1. 基于web worker（JavaScript主线程的独立线程，如果执行消耗大量资源的操作也不会堵塞主线程）
+2. 在web worker的基础上增加了离线缓存的能力
+3. 本质上充当Web应用程序（服务器）与浏览器之间的代理服务器
+4. 创建有效的离线体验（将一些不常更新的内容缓存在浏览器，提高访问体验）
+5. 由事件驱动的,具有生命周期
+6. 可以访问cache和indexDB
+7. 支持消息推送
+8. 并且可以让开发者自己控制管理缓存的内容以及版本
+9. 可以通过 postMessage 接口把数据传递给其他 JS 文件
+
+### 注意点
+
+1. 不能访问DOM(因为service worker运行在worker上下文)
+2. 不能进行同步操作(如 localStorage)
+3. 只能在`HTTPS`中使用或者本地开发的`localhost`
+4. 独立的生命周期
+
+    1. Service Worker的生命周期与页面无关(关联页面未关闭时，它也可以退出，没有关联页面时，它也可以启动）注册Service Worke后，浏览器会默默地在背后安装Service Worke
+
+## 生命周期
+
+其生命周期分为**首次加载**和**更新加载**
+
+首次访问页面时候**Service Worker**会立即被下载下来并进行尝试安装,安装成功后就会尝试去激活等操作
+
+更新在默认情况下**Service Worker** 一定会每24小时被下载一次,如果下载的文件是最新文件,那么它就会被重新注册和安装但不会被激活<span data-type="text" style="color: var(--b3-font-color9);">[此时该时序称为working in waiting]</span>，当不再有页面使用旧的 **Service Worker** 的时候，它就会被激活。
+
+### 首次加载
+
+1. 注册(register)
+2. 安装(installing)
+3. 活动(activated)或者异常(error)
+4. 空闲(idle)
+5. 拦截(fetch)或终止(terminated)
+
+### 更新加载
+
+1. 更新(update)
+2. 安装(installing)
+3. 等待活动(waiting)或者异常(error)
+
+## 注册
+
+### 直接注册
+
+```javascript
+if('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js');
+}
+```
+
+### 页面加载完成注册
+
+```javascript
+if('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+       navigator.serviceWorker.register('sw.js');
+  });
+}
+```
+
+### 注册作用域(scope)
+
+```javascript
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.register('sw.js', { scope: './' });
+}
+```
+
+>  **scope**表示定义**service worker**注册范围的URL ；**service worker**可以控制的URL范围。通常是相对URL。默认值是基于当前的location，并以此来解析传入的路径.
+
+在同一个 Origin 下，我们可以注册多个 Service Worker,但是注意,这些 Service Worker 所使用的 scope 必须是唯一且不同的
+
+```javascript
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.register('sw.js', { scope: './' });
+  
+  navigator.serviceWorker.register('/sw2/sw.js', { scope: './sw2' });
+}
+```
+
+## 安装
+
+sw注册完成之后,浏览器就开始尝试进行安装操作了可以通过安装事件进行监听(sw内可以使用**self**也可以使用this,每个sw仅会安装一次,除非发生更新)
+
+### sw.js
+
+```javascript
+self.addEventListener('install', function (event) {
+  console.log('Service Worker install');
+});
+```
+
+安装过程中缓存一些静态文件
+
+```javascript
+cons CACHE_NAME="site:static:file:v1"
+
+self.addEventListener('install', function (event) {
+  
+  let url_list=[
+      '/',
+	 'xxx'
+  ];
+  
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(function(cache) {
+        consloe.log("缓存打开成功");
+        cache.addAll(url_list).then(function(){
+            consloe.log("所有资源都已获取并缓存");
+        });
+      }).catch(function(error) {
+          console.log('缓存打开失败:', error);
+        })
+  );
+});
+```
+
+因为缓存文件需要时间所以可以通过**waitUntil**来防止缓存未完成就关闭**serviceWorker**一旦所有文件缓存成功那么**serviceWorker**就安装成功了,只要一个缓存失败就会导致安装失败**waitUntil**也会通过内部**promise**来获取安装事件和是否成功
+
+## 激活
+
+一旦首次安装成功后或者**sw**进行更新就会触发**activated**相对首次安装会直接进入激活状态更新触发会显得比较复杂比如
+
+**A**为老的**sw**
+**B**为新的**sw**
+**B**进入安装更新阶段时候**A**还在工作状态那么**B**就会进waiting阶段,只有等到**A**被terminated后,**B**才能完全替换**A**的工作
+
+**activated**阶段可以做很多有意义的事情，比如更新存储在cache中的key和value,可以清理旧缓存和旧的service worker关联的东西
+
+```javascript
+self.addEventListener('activate', function(event) {
+  console.log('Service Worker activate');
+    event.waitUntil(
+        // 遍历 caches 里所有缓存的 keys 值
+        caches.keys().then(function() {
+          return caches.keys().then(function (keys) {
+              const all = keys.map(function (key) {
+                  if (key.indexOf(CACHE_NAME) !== -1){
+                      console.log('[SW]: Delete cache:' + key);
+                      return caches.delete(key);
+                  }
+              });
+              return Promise.all(all);
+          });
+      })
+    );
+});
+```
+
+## 空闲
+
+**idle**空闲状态一般是不可见的，这种一般说明sw的事情都处理完毕了,然后处于闲置状态了,浏览器会周期性的轮询，去释放处于idle的sw占用的资源
+
+## 终止
+
+**terminated**终止状态一般触发条件由下面几种方式
+
+1. 关闭浏览器一段时间
+2. 手动清除serviceworker
+3. 在sw安装时直接跳过waiting阶段
+
+```javascript
+self.addEventListener('install', function(event) {
+    //跳过等待过程
+    self.skipWaiting();
+});
+```
+
+## 拦截
+
+**fetch**拦截阶段是**sw**最重要阶段,主要用于拦截代理所有指定的请求,然后进行二次相应的处理操作通过这个阶段我们可以实现很多有意思的操作
+
+### 输出缓存
+
+```javascript
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+        caches.match(event.request)
+            .then(function(response) {
+                //该fetch请求已经缓存
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request);
+                }
+            )
+    );
+});
+```
+
+### 输出JSON
+
+```javascript
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+        caches.match(event.request)
+            .then(function(response) {
+                //该fetch请求已经缓存
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request);
+                }
+            )
+    );
+});
+```
+
+### 输出HTML
+
+```javascript
+const html = `<!DOCTYPE html>
+<body>
+  <h1>Hello World</h1>
+  <p>This markup was generated by a Cloudflare Worker.</p>
+</body>`
+
+async function handleRequest(request) {
+  return new Response(html, {
+    headers: {
+      "content-type": "text/html;charset=UTF-8",
+    },
+  })
+}
+
+addEventListener("fetch", event => {
+  return event.respondWith(handleRequest(event.request))
+})
+```
+
+### 重定向URL
+
+```javascript
+const destinationURL = "https://www.baidu.com"
+const statusCode = 301
+
+async function handleRequest(request) {
+  return Response.redirect(destinationURL, statusCode)
+}
+
+addEventListener("fetch", async event => {
+  event.respondWith(handleRequest(event.request))
+})
+```
+
+### 缓存请求
+
+```javascript
+self.addEventListener('fetch', function(event) {
+    event.respondWith(
+        caches.match(event.request)
+            .then(function(response) {
+                //该fetch请求已经缓存
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request)
+                  .then(function(response){
+                
+                  // 检查是否响应成功 basic是判断是否为源发起的请求不缓存第三方资源
+                  if(!response || response.status !== 200 || response.type !== 'basic') {
+                    return response;
+                  }
+            
+                  // response是一个数据流 因为浏览器会消耗掉流所有先克隆一个流 响应体只会被消耗一次
+                  let responseClone = response.clone();
+            
+                  caches.open(CACHE_NAME)
+                  .then(function(cache) {
+                    cache.put(event.request, responseClone);
+                  });
+            
+            
+                  return response;
+                   })
+             })
+    );
+});
+```
+
+### 开发环境的简化配置
+
+因为**Service Worker**只有在特定情况下才会下载更新这对我们开发很不方便我们可以通过浏览器开发工具勾选**Update on reload**  选中之后每次我们刷新都能够使用最新的**Service Worker**文件
+
+### 通信
+
+>  页面发送数据
+
+```javascript
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.register('sw.js', { scope: './' })
+    .then(function (reg) {
+      console.log('success', reg);
+      navigator.serviceWorker.controller && 
+        navigator.serviceWorker.controller.postMessage("hello im page");
+    });
+}
+```
+
+为了保证 Service Worker 能够正常接收到来自页面的信息,可以在它被注册完成之后再发送信息
+**navigator.serviceWorker.controller**  为**ServiceWorker**实例 我们需要在**ServiceWorker** 实例上调用**postMessage**注意当我们使用的scope不是当前Origin **navigator.serviceWorker.controller**将为**Null**不可使用
+
+>  接收消息 sw.js
+
+```javascript
+this.addEventListener('message', function (event) {
+  console.log(event.data);
+})
+```
+
+### 不同的范围域
+
+> 发送消息
+
+```javascript
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.register('./sw.js', { scope: './sw' })
+    .then(function (reg) {
+      console.log('success', reg);
+      reg.active.postMessage("sw.js");
+    })
+  navigator.serviceWorker.register('./sw2.js', { scope: './sw2' })
+    .then(function (reg) {
+      console.log('success', reg);
+      reg.active.postMessage("sw2.js");
+    })
+}
+```
+
+>  sw.js
+
+```javascript
+this.addEventListener('message', function (event) {
+  console.log(event.data);
+});
+```
+
+>  sw2.js
+
+```javascript
+this.addEventListener('message', function (event) {
+  console.log(event.data);
+});
+```
+
+但是由于**Service Worker**  的激活是异步的,因此首次注册 **Service Worker**  的时候可能**Service Worker**  不会被立刻激活,  **reg.active**  为 **Null**，系统就会报错。
+
+这个时候我们可以采用**Promise**内部轮询逻辑进行处理如果 **Service Worker** 已经被激活那就**resolve**
+
+>  发送
+
+```javascript
+if ('serviceWorker' in window.navigator) {
+    navigator.serviceWorker.register('sw.js')
+    .then(function (reg) {
+      return new Promise((resolve, reject) => {
+        const interval = setInterval(function () {
+          if (reg.active) {
+            clearInterval(interval);
+            resolve(reg.active);
+          }
+        }, 50)
+      })
+    }).then(sw => {
+      sw.postMessage("im sw");
+    })
+```
+
+### SW通信到页面
+
+了解完页面到sw通讯我们现在了解下SW通信到页面不同于页面向 **Service Worker** 发送信息,我们需要在 WindowClient 实例上调用 postMessage 方法才能达到目的,而在页面的JS文件中监听 **navigator.serviceWorker** 的 **message**  事件就可以收到信息
+
+#### 定向发送
+
+>  谁发给我的,我就发给谁
+
+```javascript
+this.addEventListener('message', function (event) {
+  event.source.postMessage('我是 sw 将发送信息到 page');
+});
+```
+
+>  接收
+
+```javascript
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.addEventListener('message', function (e) {
+    console.log(e.data);
+  });
+}
+```
+
+#### 批量发送
+
+```javascript
+this.clients.matchAll().then(client => {
+  client[0].postMessage('我是 sw 将发送信息到 page');
+})
+```
+
+### 跨端通讯
+
+**Message Channel 消息通道**一种比较好用的通讯方法,使用这种方式能够使得通道两端之间可以相互通信，而不是只能向消息源发送信息
+
+>  页面
+
+```javascript
+navigator.serviceWorker.register('sw.js')
+    .then(function (reg) {
+      const messageChannel = new MessageChannel();
+      messageChannel.port1.onmessage = e => {
+        console.log(e.data); // 此消息从SW发送到页面
+      }
+      reg.active.postMessage("此消息从页面发送到SW", [messageChannel.por2]);
+})
+```
+
+>  sw
+
+```javascript
+this.addEventListener('message', function (event) {
+  console.log(event.data); // 此消息从页面发送到SW
+  event.ports[0].postMessage('此消息从SW发送到页面');
+});
+```
+
+### 两个sw服务之间进行通讯
+
+>  页面
+
+```javascript
+var messageChannel = new MessageChannel();
+
+navigator.serviceWorker.register('sw.js')
+    .then(function (reg) {
+      console.log(reg)
+      return new Promise((resolve, reject) => {
+        const interval = setInterval(function () {
+          if (reg.active) {
+            clearInterval(interval);
+            resolve(reg.active);
+          }
+        }, 50)
+      })
+    }).then(sw => {
+      sw.postMessage("此消息从页面发送到SW", [messageChannel.port1]);
+    })
+
+navigator.serviceWorker.register('sw2.js')
+    .then(function (reg) {
+      return new Promise((resolve, reject) => {
+        const interval = setInterval(function () {
+          if (reg.active) {
+            clearInterval(interval);
+            resolve(reg.active);
+          }
+        }, 50)
+      })
+    }).then(sw => {
+      sw.postMessage("此消息从页面发送到SW2", [messageChannel.port2]);
+    })
+```
+
+>  sw
+
+```javascript
+this.addEventListener('message', function (event) {
+  console.log(event.data); // 此消息从页面发送到SW
+  event.ports[0].onmessage = e => {
+    console.log('sw:', e.data); // sw: 此消息从SW2发送到SW1
+  }
+  event.ports[0].postMessage('此消息从SW发送到SW2');
+});
+```
+
+> sw2
+
+```javascript
+this.addEventListener('message', function (event) {
+  console.log(event.data); // 此消息从页面发送到SW2
+  event.ports[0].onmessage = e => {
+    console.log('sw2:', e.data); // sw2: 此消息从SW发送到SW2
+  }
+  event.ports[0].postMessage('此消息从SW2发送到SW1');
+});
+```
+
+首先页面同时给两个不同的sw发送消息并且把信息通道的端口一块发送出去,然后两个不同的sw分别使用设置接收消息的回调函数之后他们之间就可以相互发送接收来自对方的消息了
+
+## 后台同步
+
+假如用户在页面上操作数据点击了提交,而这个时候呢又刚好网络情况不好或者干脆就断网了这个时候页面只能一直在打转。。。。无尽等待直到有网,然后用户就会直接关掉页面这次请求也就中断了,这种情况就出现了两种问题
+
+1. 在Service Worker中监听sync事件
+2. 在浏览器中发起后台同步sync
+3. 就会触发Service Worker的sync事件,在该监听的回调中进行操作,例如向后端发起请求
+4. 然后可以在Service Worker中对服务端返回的数据进行处理
+
+### 页面触发同步
+
+```javascript
+if ('serviceWorker' in window.navigator) {
+  navigator.serviceWorker.register('sw.js')
+ 
+  navigator.serviceWorker.ready.then(function (registration) {
+      var tag = "data_sync";
+      document.getElementById('submit-btn').addEventListener('click', function () {
+          registration.sync.register(tag).then(function () {
+              console.log('后台同步已触发', tag);
+          }).catch(function (err) {
+              console.log('后台同步触发失败', err);
+          });
+      });
+  });
+}
+```
+
+由于后台同步功能需要在**Service Worker**注册完成后触发,所有我们可以使用**navigator.serviceWorker.ready**等待注册完成准备好之后使用**registration.sync.register**注册同步事件
+**registration.sync**  会返回一个**SyncManager**对象其中包含**register**方法和**getTags方法**
+
+>  register() **Create a new sync registration and return a Promise.**
+>
+> getTags() **Return a list of developer-defined identifiers for SyncManager registration.**
+
+>  SW监听同步事件
+
+当点击**submit-btn**触发同步事件后接下来的操作就可以交给SW **sync**  处理了
+
+>  sw.js
+
+```javascript
+self.addEventListener('sync', function (e) {
+  console.log(e);
+    console.log(`需要进行后台同步,tag: ${e.tag}`);
+  
+  var init = {
+        method: 'GET'
+  };
+  
+  switch (e.tag){
+    case "data_sync":
+       var request = new Request(`xxxxx/sync`, init);
+        e.waitUntil(
+            fetch(request).then(function (response) {
+                response.json().then(console.log.bind(console));
+                return response;
+            })
+        );
+        break;
+
+  }
+});
+```
