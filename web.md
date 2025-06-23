@@ -1311,3 +1311,85 @@ setTimeout(() => {
 * CommonJS 加载的是整个模块，即将所有的方法全部加载出来，ES6可以单独加载其中某个方法
 * CommonJS 中的 this 指向当前模块，ES6 中的 this 指向 undefined
 * CommonJS 默认非严格模式，ES6的模块自动采用严格模式
+
+
+
+
+
+
+
+
+
+
+
+
+==============================================================================================================================================
+### 严格模式的主要特征:
+
+1. **限制全局变量的创建**：
+
+    1. 在严格模式下，未声明的变量赋值会抛出`ReferenceError`，而不是自动创建全局变量。这有助于避免意外的全局变量污染。
+    2. ```javascript
+        "use strict";
+        // 以下代码会抛出错误
+        myVar = 42; // ReferenceError: myVar is not defined
+        ```
+
+2. **禁止使用八进制字面量**：
+
+    1. 严格模式下，以`0`开头的数字会被视为十进制，而不是八进制，避免潜在的混淆。
+    2. ```javascript
+        "use strict";
+        var octal = 077; // SyntaxError: Octal literals are not allowed in strict mode.
+        ```
+
+3. **禁止删除变量、函数和函数参数**：
+
+    1. 严格模式下，`delete`操作符不能用于变量、函数或函数参数，防止意外删除。
+    2. ```javascript
+        "use strict";
+        function test() {
+            var x = 10;
+            delete x; // SyntaxError: Cannot delete variable 'x'
+        }
+        ```
+
+4. **禁止重复的参数名称**：
+
+    1. 严格模式下，函数不能有重复的参数名称，避免逻辑错误。
+    2. ```javascript
+        "use strict";
+        function test(a, a) { // SyntaxError: Duplicate parameter names not allowed in strict mode
+            // 函数体
+        }
+        ```
+
+5. **限制**​**​`this`​**​**的值**：
+
+    1. 严格模式下，函数不能有重复的参数名称，避免逻辑错误
+    2. ```javascript
+        "use strict";
+        function test() {
+            console.log(this); // 输出: undefined
+        }
+        test();
+        ```
+
+6. **禁止使用**​**​`with`​**​**语句**：
+
+    1. 严格模式下，`with`语句被禁止，因为它们会改变作用域链，导致变量查找变得复杂和难以调试
+    2. ```javascript
+        "use strict";
+        with (obj) { // SyntaxError: 'with' statements are not allowed in strict mode
+            // 代码
+        }
+        ```
+
+7. **提升错误处理**：
+
+    1. 严格模式下，某些潜在的错误会被更早地捕获，例如对不可写的属性进行赋值会抛出`TypeError`。
+    2. ```javascript
+        "use strict";
+        Object.defineProperty(global, 'x', { writable: false });
+        x = 5; // TypeError: Cannot assign to read-only property 'x' of global
+        ```
