@@ -1393,3 +1393,69 @@ setTimeout(() => {
         Object.defineProperty(global, 'x', { writable: false });
         x = 5; // TypeError: Cannot assign to read-only property 'x' of global
         ```
+
+
+
+
+==================================================================================================================
+内存泄露
+
+
+
+const person = [
+    { name:'aa',age:20},
+    { name:'bb',age:21},
+    { name:'cc',age:31},
+    { name:'dd',age:10},
+];
+const averageAge = person.length 
+  ? (person.reduce((a, b) => a + b.age, 0) / person.length).toFixed(2)
+  : 0;
+  console.log(averageAge )
+垃圾回收的算法
+引用计数
+标记清除
+新生代/旧生代
+
+闭包
+内存泄露与闭包没有任何的关系
+function createIncrease() {
+    let count = 0;
+    return function() {
+        return count++
+    }
+}
+
+let increase = createIncrease();
+let handler = functrion() {
+    const n = increase ();
+   // if(n === 4) {
+   // window.removeEventListener('click',handler)
+   // handler  = null
+   // increase = null
+   // }
+    console.log(n)
+}
+
+window.addEventListener('click',handler )
+引起泄露的原因
+1. 挂在到全局的变量 且未正确的销毁
+2. 闭包未正确的使用
+3. 游离的DOM
+function test() {
+  let el = document.createElement("div");
+  document.body.appendChild(el);
+  let child = document.createElement("div");
+  el.appendChild(child);
+  
+  document.body.removeChild(el) // 由于 el 变量存在，el及其子元素都不能被GC
+  el = null;   // 虽置空了 el 变量，但由于 child 变量引用 el 的子节点，所以 el 元素依然不能被GC
+  child = null; // 已无变量引用，此时el可以GC
+  
+}
+​
+test();
+
+4. 事件监听器未移除
+5. 定时器未清理
+6. console
