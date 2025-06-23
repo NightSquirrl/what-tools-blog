@@ -934,3 +934,380 @@ self.addEventListener('sync', function (e) {
   }
 });
 ```
+
+
+
+
+
+
+
+
+
+
+
+
+
+==================================================================================================================================================
+
+
+
+>  CommonJS、AMD、CMD、UMD、ES6模块化
+
+## 默认代码的编写模式
+
+```javascript
+<script>
+  function add(a, b){
+    return a+b
+  }
+  add(1, 2)
+</script>
+```
+
+### 问题?
+
+1. 代码的的复用率低
+2. 全局作用域污染:无法保证不与其他的模块发生变量冲突,而且模块成员之间没有什么关系.
+3. 可维护性差
+
+
+## 命名空间和IIEF
+
+### 命名空间
+
+```javascript
+var namespace = {}
+namespace.add = function(a, b){ return a + b }
+namespace.add(1, 2)
+```
+
+#### 缺点：
+
+1. 文件依赖的顺序
+
+    1. ```javascript
+        <script src="./jquery.js"></script>
+        <script src="./utils.js"></script>
+        // 如果 utils.js 依赖于 jquery.js， 那么引用顺序就必须是 jquery 在前面，否则就会报错
+        ```
+
+2. 外部可以随意修改内部成员
+
+    1. ```javascript
+        // 例如外部调用 
+        utils.add = 100
+        // 其他地方在调用 utils.add(1,2) 就会报错
+        ```
+
+
+### IIEF: 立即执行函数
+
+> 可以通过立即函数可以达到隐藏细节的目的，这样在模块外部无法修改我们暴露的变量、函数
+
+```javascript
+// IIEF
+var utils = (function(){
+  var module = {}
+  module.add = function(a,b){ return a + b }
+  return module
+})()
+utils.add(1, 2)
+```
+
+#### 引入依赖
+
+```javascript
+var Module = (function($){
+  var _$body = $('body')
+  var foo = function(){
+    console.log(_$body)
+  }
+  return {
+    foo: foo
+  }
+})(jQuery)
+Module.foo()
+
+```
+
+## 为什么要模块化
+
+1. 网页变为单页面应用
+2. 复杂度增加
+3. 解耦性越来越被需要
+4. 部署希望得到优化，提高性能
+
+### 模块化希望带来的好处
+
+1. 避免命名冲突，减少命名空间污染
+2. 更好的文件分离，按需加载
+3. 更高的复用性
+4. 更高的维护性
+
+### 模块化以后带来的问题
+
+页面由引用一个js文件变为引用多个js文件
+
+```javascript
+<scirpt src="a.js"></scirpt>
+<scirpt src="b.js"></scirpt>
+<scirpt src="c.js"></scirpt>
+<scirpt src="d.js"></scirpt>
+<scirpt src="e.js"></scirpt>
+<scirpt src="f.js"></scirpt>
+
+```
+
+产生的问题? 请求的文件数量变多,同时可能存在依赖顺序的问题
+
+
+## 模块化规范
+
+### CommonJs/CJS:用在服务端
+
+>  网页端没有模块化编程时候只是页面 JS 逻辑复杂，但还是可以工作下去，在服务端却一定要有模块，所以JS 发展这么多年，第一个流行的模块化规范却是由服务端的 JS 应用带来的，CommonJS 规范是由 nodejs 发扬光大，这标志着 JS 模块化正式登上舞台
+
+1. 定义模块
+
+    1. 一个单独的文件就是一个模块,每一个模块都是一个单独的作用域,也就是说,在该模块内部定义额度变量,无法被其他模块读取,除非定义的变量为global对象的属性
+2. 模块输出
+
+    1. 模块只有一个输出,module.exports对象
+3. 暴露模块方式
+
+    1. ```javascript
+        export.xxx = value
+        module.exports = xxx
+        ```
+
+4. 加载模块:
+
+    1. 加载模块使用`require`方法,该方法读取一个文件并执行,返回内部的`module.exports`对象
+5. 实现:
+
+    1. 服务器端实现： Node.js
+    2. 浏览器端实现：Browserify （Browserify是一个node.js模块，主要用于改写现有的CommonJS模块，使得浏览器端也可以使用这些模块。）
+    3. 注意：浏览器不识别require 方法，需要提前编译打包处理
+    4. ```javascript
+        // utils.js文件
+        function add(a,b){
+          return a + b
+        }
+        module.exports = { add }
+
+        // main.js
+        var nameModule = require('./utils.js') 
+        nameModule.add(1,2)
+        ```
+
+缺点：**加载模块是同步的**，只有加载完后才能执行后面的操作；**现加载现用**，在服务器端编程，加载的模块一般存在本地硬盘里，加载起来比较快，不用考虑异步加载的问题，因为 CommonJS 规范比较适用。然后，并不适用于浏览器环境，同步意味着阻塞线程，浏览器资源的加载方式是异步的。
+
+### AMD
+
+>  AMD是`"Asynchronous Module Definition"`的缩写，意思就是"异步模块定义"。
+
+它采用异步加载方式加载模块，模块的加载不影响它后面的语句的运行，所有依赖这个模块的语句，都定义在一个回调函数中，等到加载完毕之后，这个回调函数才会执行。
+
+由于不是 `JS` 原生支持，使用`AMD` 规范进行页面开发需要用到对应的库函数，也就是大名鼎鼎的 `RequireJS`，实际上`AMD`是` requireJS` 在推广过程中对模块定义的规范化的产生。
+
+`RequireJS` 也是采用require() 加载模块，但是不同于 CommonJS，它要求两个参数
+
+```javascript
+require([module], callback)
+```
+
+第一个参数 module 是一个数组，里面的成员就是要加载的模块，第二个参数是callback 则是加载成功之后的回调函数。
+
+`requireJS`它也定义了一个函数 define, 他是全局变量，用来定义模块：
+
+```javascript
+define(id?, dependencies?, factory)
+// 第一个参数id,为定义的模块的名称,如果不传属于匿名模块,匿名模块需要在引用的使用需要使用相对路径来引用
+// 第二个参数,依赖的其他模块,比如:
+// 定义模块
+define(['jquery'], function($) {
+    return {
+        init: function() {
+            $('body').append('<h1>Hello AMD</h1>');
+        }
+    };
+});
+
+// 模块的依赖
+// 定义模块A
+define('moduleA', [], function() {
+    return {
+        sayA: function() {
+            console.log('Module A');
+        }
+    };
+});
+
+// 定义模块B，依赖模块A
+define('moduleB', ['moduleA'], function(moduleA) {
+    return {
+        sayB: function() {
+            moduleA.sayA();
+            console.log('Module B');
+        }
+    };
+});
+
+// 使用模块B
+require(['moduleB'], function(moduleB) {
+    moduleB.sayB();
+});
+```
+
+#### 基本的使用
+
+1. 引入`require.js`
+
+    1. ```javascript
+        /** 网页中引入require.js及main.js **/
+        <script src="js/require.js" data-main="js/main"></script>
+        ```
+
+2. 入口文件配置
+
+    1. ```javascript
+        // 首先用config()指定各模块路径和引用名
+        require.config({
+          baseUrl: "js/lib",
+          paths: {
+            "jquery": "jquery.min",  //实际路径为js/lib/jquery.min.js
+            "underscore": "underscore.min",
+          }
+        });
+        ```
+
+3. 执行基本操作
+
+    1. ```javascript
+        // 执行基本操作
+        require(["jquery","underscore"],function($,_){依赖引入的回调
+          // some code here
+        });
+        ```
+
+
+### CMD
+
+CMD规范是国内发展起来的，就像AMD有一个 requirejs, CMD 有个浏览器的实现 SeaJS. SeaJS 要解决的问题和 requirejs一样，只不过在模块定义方式和模块加载(可以说运行、解析) 时机上有所不同。
+
+在CMD 中，一个模块就是一个文件，代码的书写格式如下：
+
+```javascript
+// 定义有依赖的模块
+define(function(require, exports, module){
+  // 模块代码
+  // 引入依赖模块(同步)
+  var module2 = require('./module2')
+  // 引入依赖模块(异步)
+  require.sync("./module3", function(m3){
+    // 模块代码
+  })
+  // 暴露模块
+  export.xxx = value
+})
+```
+
+* require 是可以把其他模块导入进来的一个参数
+* exports 是可以把模块内的一些属性和方法导出，
+* module 是一个对象，上面存储了与当前模块相关联的一些属性和方法
+
+### AMD和CMD：区别
+
+AMD是依赖关系前置，在定义模块的时候就要声明其依赖的模块
+
+CMD是按需加载依赖就近，只有在用到某个模块的时候再去 require
+
+```javascript
+// CMD
+define(function(require, exports, module) {
+  var a = require('./a')
+  a.doSomething()
+  // 此处略去 100 行
+  var b = require('./b') // 依赖可以就近书写
+  b.doSomething()
+  // ... 
+})
+
+// AMD 默认推荐的是
+define(['./a', './b'], function(a, b) { // 依赖必须一开始就写好
+  a.doSomething()
+  // 此处略去 100 行
+  b.doSomething()
+  ...
+}) 
+```
+
+### UMD
+
+>  `UMD (Universal Module Definition)`，就是一种`javascript`通用模块定义规范，让你的模块能在`javascript`所有运行环境中发挥作用。
+
+UMD先判断是否支持Node.js的模块（exports）是否存在，存在则使用Node.js模块模式, 在判断是否支持AMD（define是否存在），存在则使用AMD方式加载模块。
+
+```javascript
+(function(root, factory) {
+    if (typeof module === 'object' && typeof module.exports === 'object') {
+        console.log('是commonjs模块规范，nodejs环境')
+        module.exports = factory();
+    } else if (typeof define === 'function' && define.amd) {
+        console.log('是AMD模块规范，如require.js')
+        define(factory())
+    } else if (typeof define === 'function' && define.cmd) {
+        console.log('是CMD模块规范，如sea.js')
+        define(function(require, exports, module) {
+            module.exports = factory()
+        })
+    } else {
+        console.log('没有模块环境，直接挂载在全局对象上')
+        root.umdModule = factory();
+    }
+}(this, function() {
+    return {
+        name: '我是一个umd模块'
+    }
+}))
+```
+
+### ES6 modules
+
+>  需要对依赖模块进行编译打包, 使用 **Babel**
+
+```javascript
+// a.js
+import { age } from './b.js';
+
+console.log(age);
+setTimeout(() => {
+    console.log(age);
+    import('./b.js').then(({ age }) => {
+        console.log(age);
+    })
+}, 100);
+
+// b.js
+export let age = 1;
+
+setTimeout(() => {
+    age = 2;
+}, 10);
+// 打开 index.html 引用的是 a.js
+// 执行结果：
+// 1
+// 2
+// 2
+```
+
+### CommonJS 与ES6的区别
+
+* CommonJS 是运行时候加载，ES6 模块是编译时候输出接口
+  原因：因为 CommonJS 加载的时候是一个对象 (即 module.exports 属性)，该对象只有在脚本运行完才会生成；而 ES6 模块不是对象，它的对外接口只是一个静态定义，在代码静态解析阶段就会生成。
+  ES6 模块的设计思想是尽量放入静态化，使得在编译时候就确定依赖关系
+  而CommonJS 就只能在运行时候确定这些输入和输出的变量
+* CommonJS 模块输出的是一个值的复制，ES6 模块输出的值是值的引用
+* CommonJS 加载的是整个模块，即将所有的方法全部加载出来，ES6可以单独加载其中某个方法
+* CommonJS 中的 this 指向当前模块，ES6 中的 this 指向 undefined
+* CommonJS 默认非严格模式，ES6的模块自动采用严格模式
