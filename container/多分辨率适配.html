@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel表达式处理器</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: 'Courier New', monospace;
+        }
+        
+        button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: transform 0.2s ease;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .result {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .result h3 {
+            margin-top: 0;
+            color: #495057;
+        }
+        
+        .expression {
+            background: #e7f3ff;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            border-left: 4px solid #007bff;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .examples {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .examples h4 {
+            margin-top: 0;
+            color: #856404;
+        }
+        
+        .example-item {
+            font-family: 'Courier New', monospace;
+            margin: 5px 0;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Excel表达式处理器</h1>
+        
+        <div class="examples">
+            <h4>📝 示例表达式（支持嵌套 + 部分处理）：</h4>
+            <div class="example-item">• ifelse(a>b, (c+d)/2, actual_w*3)</div>
+            <div class="example-item">• ifelse(x==1, ifelse(y>0, z*2, w+1), (p+q)/3)</div>
+            <div class="example-item">• ifelse(condition, 840*#ratioX+10+actual_w, normal_expr)</div>
+            <div class="example-item">• ifelse(ge(840*#ratioX-#x_gra*3,840*ratioX+10+actual_w),840*#ratioX+10+#a.actual_w,840*#ratioX-#x_gra*3)</div>
+        </div>
+        
+        <div class="input-section">
+            <label for="expression">输入表达式：</label>
+            <textarea id="expression" placeholder="例如: ifelse(x>0, (a+b)/2, actual_w*3)"></textarea>
+        </div>
+        
+        <div class="input-section">
+            <label for="coefficient">系数 (默认为2)：</label>
+            <input type="number" id="coefficient" value="2" step="0.1">
+        </div>
+        
+        <button onclick="processExpression()">🚀 处理表达式</button>
+        <button onclick="runTests()" style="margin-left: 10px; background: linear-gradient(45deg, #28a745, #20c997);">🧪 运行测试</button>
+        
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function findMatchingParen(str, startIndex) {
+            let count = 1;
+            let i = startIndex + 1;
+            
+            while (i < str.length && count > 0) {
+                if (str[i] === '(') count++;
+                else if (str[i] === ')') count--;
+                i++;
+            }
+            
+            return count === 0 ? i - 1 : -1;
+        }
+
+        function parseIfelse(expression) {
+            // 移除首尾空格
+            expression = expression.trim();
+            
+            // 检查是否是ifelse函数
+            if (!expression.startsWith('ifelse(')) {
+                return null;
+            }
+            
+            // 找到主要的括号范围
+            const openParen = expression.indexOf('(');
+            const closeParen = findMatchingParen(expression, openParen);
+            
+            if (closeParen === -1) {
+                throw new Error('括号不匹配');
+            }
+            
+            // 提取括号内的内容
+            const content = expression.substring(openParen + 1, closeParen);
+            
+            // 解析三个参数
+            const params = [];
+            let currentParam = '';
+            let parenCount = 0;
+            let inString = false;
+            
+            for (let i = 0; i < content.length; i++) {
+                const char = content[i];
+                
+                if (char === '"' || char === "'") {
+                    inString = !inString;
+                    currentParam += char;
+                } else if (!inString) {
+                    if (char === '(') {
+                        parenCount++;
+                        currentParam += char;
+                    } else if (char === ')') {
+                        parenCount--;
+                        currentParam += char;
+                    } else if (char === ',' && parenCount === 0) {
+                        params.push(currentParam.trim());
+                        currentParam = '';
+                        continue;
+                    } else {
+                        currentParam += char;
+                    }
+                } else {
+                    currentParam += char;
+                }
+            }
+            
+            if (currentParam.trim()) {
+                params.push(currentParam.trim());
+            }
+            
+            if (params.length !== 3) {
+                throw new Error(`ifelse函数需要3个参数，但找到了${params.length}个`);
+            }
+            
+            return {
+                condition: params[0],
+                trueValue: params[1],
+                falseValue: params[2]
+            };
+        }
+
+        function processResultExpression(expr, coefficient) {
+            expr = expr.trim();
+            
+            console.log(`处理表达式: "${expr}", 系数: ${coefficient}`);
+            
+            // 检查是否是嵌套的 ifelse 表达式 - 这个检查要在 actual_w 检查之前！
+            if (expr.startsWith('ifelse(')) {
+                console.log(`检测到嵌套ifelse: ${expr}`);
+                return processNestedIfelse(expr, coefficient);
+            }
+            
+            // 新规则：如果包含 actual_w，进行部分处理
+            if (expr.includes('actual_w')) {
+                console.log(`包含actual_w，进行部分处理: ${expr}`);
+                return processPartialExpression(expr, coefficient);
+            }
+            
+            // 如果是简单的数字或变量，直接乘以系数
+            if (/^[a-zA-Z_]\w*$/.test(expr) || /^\d+(\.\d+)?$/.test(expr)) {
+                const result = `${expr}*${coefficient}`;
+                console.log(`简单表达式处理: ${expr} -> ${result}`);
+                return result;
+            }
+            
+            // 对于复杂表达式，用括号包围后乘以系数
+            const result = `(${expr})*${coefficient}`;
+            console.log(`复杂表达式处理: ${expr} -> ${result}`);
+            return result;
+        }
+
+        function processPartialExpression(expr, coefficient) {
+            console.log(`部分处理表达式: ${expr}`);
+            
+            // 简化的处理方法：找到所有的加法和乘法项
+            // 对于形如 A+B+actual_w 或 A*B+actual_w 的表达式
+            
+            // 先处理乘法：找到不包含actual_w的数字并乘以系数
+            let result = expr;
+            
+            // 处理独立的数字（不与actual_w直接相连的）
+            // 使用更精确的正则表达式来匹配数字
+            const patterns = [
+                // 匹配 +数字（不紧跟actual_w）
+                /(\+\s*)(\d+(?:\.\d+)?)(?!\s*[\+\-\*\/]*\s*[#\w]*actual_w)/g,
+                // 匹配 -数字（不紧跟actual_w）  
+                /(\-\s*)(\d+(?:\.\d+)?)(?!\s*[\+\-\*\/]*\s*[#\w]*actual_w)/g,
+                // 匹配开头的数字（不紧跟actual_w）
+                /^(\d+(?:\.\d+)?)(?!\s*[\+\-\*\/]*\s*[#\w]*actual_w)/g,
+                // 匹配 *数字（不紧跟actual_w）
+                /(\*\s*)(\d+(?:\.\d+)?)(?!\s*[\+\-\*\/]*\s*[#\w]*actual_w)/g
+            ];
+            
+            patterns.forEach(pattern => {
+                result = result.replace(pattern, (match, prefix, number) => {
+                    if (prefix) {
+                        console.log(`处理: ${prefix}${number} -> ${prefix}${number}*${coefficient}`);
+                        return `${prefix}${number}*${coefficient}`;
+                    } else {
+                        console.log(`处理: ${number} -> ${number}*${coefficient}`);
+                        return `${number}*${coefficient}`;
+                    }
+                });
+            });
+            
+            console.log(`部分处理结果: ${expr} -> ${result}`);
+            return result;
+        }
+
+        function processNestedIfelse(expression, coefficient) {
+            console.log(`处理嵌套ifelse: ${expression}`);
+            try {
+                const parsed = parseIfelse(expression);
+                if (!parsed) {
+                    console.log(`解析失败，当作普通表达式处理`);
+                    // 如果解析失败，当作普通表达式处理
+                    if (expression.includes('actual_w')) {
+                        return expression;
+                    }
+                    return `(${expression})*${coefficient}`;
+                }
+                
+                console.log(`解析成功:`, parsed);
+                
+                // 递归处理嵌套的 ifelse - 这里关键是要递归处理所有分支
+                const processedTrueValue = processResultExpression(parsed.trueValue, coefficient);
+                const processedFalseValue = processResultExpression(parsed.falseValue, coefficient);
+                
+                const result = `ifelse(${parsed.condition}, ${processedTrueValue}, ${processedFalseValue})`;
+                console.log(`嵌套处理结果: ${result}`);
+                return result;
+            } catch (error) {
+                console.log(`处理嵌套ifelse出错: ${error.message}`);
+                // 解析失败时当作普通表达式处理
+                if (expression.includes('actual_w')) {
+                    return expression;
+                }
+                return `(${expression})*${coefficient}`;
+            }
+        }
+
+        function processExpression() {
+            const expressionInput = document.getElementById('expression').value;
+            const coefficient = parseFloat(document.getElementById('coefficient').value) || 2;
+            const resultDiv = document.getElementById('result');
+            
+            if (!expressionInput.trim()) {
+                resultDiv.innerHTML = '<div class="error">请输入表达式</div>';
+                return;
+            }
+            
+            try {
+                const parsed = parseIfelse(expressionInput);
+                
+                if (!parsed) {
+                    resultDiv.innerHTML = '<div class="error">不是有效的ifelse表达式</div>';
+                    return;
+                }
+                
+                // 处理 trueValue 和 falseValue（支持嵌套）
+                const processedTrueValue = processResultExpression(parsed.trueValue, coefficient);
+                const processedFalseValue = processResultExpression(parsed.falseValue, coefficient);
+                
+                // 重新构建表达式
+                const newExpression = `ifelse(${parsed.condition}, ${processedTrueValue}, ${processedFalseValue})`;
+                
+                // 构建详细的解析树显示
+                const parseTree = buildParseTree(parsed, coefficient);
+                
+                resultDiv.innerHTML = `
+                    <div class="result">
+                        <h3>🔍 解析结果：</h3>
+                        ${parseTree}
+                        
+                        <h3>✨ 最终表达式：</h3>
+                        <div class="expression" style="background: #d4edda; border-left-color: #28a745;">
+                            ${newExpression}
+                        </div>
+                    </div>
+                `;
+                
+            } catch (error) {
+                resultDiv.innerHTML = `<div class="error">错误: ${error.message}</div>`;
+            }
+        }
+
+        // 添加一些示例
+        function loadExample(example) {
+            document.getElementById('expression').value = example;
+            processExpression();
+        }
+
+        function buildParseTree(parsed, coefficient, level = 0) {
+            const indent = '&nbsp;'.repeat(level * 4);
+            let html = `
+                <div style="margin-left: ${level * 20}px; border-left: ${level > 0 ? '2px solid #ddd' : 'none'}; padding-left: 10px;">
+                    <p><strong>${indent}条件：</strong> <code>${parsed.condition}</code></p>
+            `;
+            
+            // 处理真值分支
+            html += `<p><strong>${indent}真值结果：</strong></p>`;
+            if (parsed.trueValue.startsWith('ifelse(')) {
+                try {
+                    const nestedParsed = parseIfelse(parsed.trueValue);
+                    if (nestedParsed) {
+                        html += `<div class="expression">原始: ${parsed.trueValue}</div>`;
+                        html += buildParseTree(nestedParsed, coefficient, level + 1);
+                    } else {
+                        html += `<div class="expression">原始: ${parsed.trueValue}</div>`;
+                        html += `<div class="expression">处理后: ${processResultExpression(parsed.trueValue, coefficient)}</div>`;
+                    }
+                } catch (e) {
+                    html += `<div class="expression">原始: ${parsed.trueValue}</div>`;
+                    html += `<div class="expression">处理后: ${processResultExpression(parsed.trueValue, coefficient)}</div>`;
+                }
+            } else {
+                html += `<div class="expression">原始: ${parsed.trueValue}</div>`;
+                html += `<div class="expression">处理后: ${processResultExpression(parsed.trueValue, coefficient)}</div>`;
+            }
+            
+            // 处理假值分支
+            html += `<p><strong>${indent}假值结果：</strong></p>`;
+            if (parsed.falseValue.startsWith('ifelse(')) {
+                try {
+                    const nestedParsed = parseIfelse(parsed.falseValue);
+                    if (nestedParsed) {
+                        html += `<div class="expression">原始: ${parsed.falseValue}</div>`;
+                        html += buildParseTree(nestedParsed, coefficient, level + 1);
+                    } else {
+                        html += `<div class="expression">原始: ${parsed.falseValue}</div>`;
+                        html += `<div class="expression">处理后: ${processResultExpression(parsed.falseValue, coefficient)}</div>`;
+                    }
+                } catch (e) {
+                    html += `<div class="expression">原始: ${parsed.falseValue}</div>`;
+                    html += `<div class="expression">处理后: ${processResultExpression(parsed.falseValue, coefficient)}</div>`;
+                }
+            } else {
+                html += `<div class="expression">原始: ${parsed.falseValue}</div>`;
+                html += `<div class="expression">处理后: ${processResultExpression(parsed.falseValue, coefficient)}</div>`;
+            }
+            
+            html += '</div>';
+            return html;
+        }
+    </script>
+</body>
+</html>
