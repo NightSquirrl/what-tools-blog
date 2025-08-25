@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Grid 绝对坐标计算器</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+```
+    body {
+        font-family: 'Arial', sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+    }
+
+    .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    h1 {
+        text-align: center;
+        color: white;
+        margin-bottom: 30px;
+        font-size: 2.5em;
+        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .config-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .parent-config, .items-config {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        color: white;
+    }
+
+    .parent-config h3, .items-config h3 {
+        margin-bottom: 15px;
+        color: #fff;
+        font-size: 1.3em;
+    }
+
+    .config-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 15px;
+        margin-bottom: 15px;
+    }
+
+    .config-item {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .config-item label {
+        font-weight: bold;
+        font-size: 0.9em;
+    }
+
+    .config-item input, .config-item select {
+        padding: 10px;
+        border: none;
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.9);
+        font-size: 1em;
+        transition: all 0.3s ease;
+    }
+
+    .config-item input:focus, .config-item select:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+        transform: scale(1.02);
+    }
+
+    button {
+        padding: 12px 24px;
+        background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        color: white;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1em;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        margin: 5px;
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+    }
+
+    .visualization {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .grid-preview, .absolute-preview {
+        background: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .grid-preview h3, .absolute-preview h3 {
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .grid-container {
+        position: relative;
+        width: 500px;
+        height: 200px;
+        margin: 0 auto;
+        background: #f8f9fa;
+        border: 2px solid #dee2e6;
+        border-radius: 10px;
+        display: grid;
+    }
+
+    .absolute-container {
+        position: relative;
+        width: 500px;
+        height: 200px;
+        margin: 0 auto;
+        background: #f8f9fa;
+        border: 2px solid #dee2e6;
+        border-radius: 10px;
+    }
+
+    .grid-item {
+        background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 0.9em;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        border: 2px solid rgba(255,255,255,0.3);
+    }
+
+    .absolute-item {
+        position: absolute;
+        background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 0.8em;
+        text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        border: 2px solid rgba(255,255,255,0.3);
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .absolute-item:hover, .grid-item:hover {
+        transform: scale(1.05);
+        z-index: 10;
+    }
+
+    .coordinates {
+        position: absolute;
+        top: -25px;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        color: white;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-size: 0.7em;
+        white-space: nowrap;
+    }
+
+    .json-display {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 20px;
+        border-radius: 15px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9em;
+        line-height: 1.6;
+        overflow-x: auto;
+        box-shadow: inset 0 2px 10px rgba(0,0,0,0.3);
+        margin-bottom: 20px;
+    }
+
+    .json-display h3 {
+        color: #81c784;
+        margin-bottom: 15px;
+    }
+
+    .results-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .result-card {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 20px;
+        border-radius: 15px;
+        color: white;
+    }
+
+    .result-card h4 {
+        margin-bottom: 10px;
+        color: #fff;
+    }
+
+    .highlight {
+        background: rgba(255, 193, 7, 0.3);
+        padding: 2px 4px;
+        border-radius: 3px;
+    }
+
+    .axis-labels {
+        position: absolute;
+        font-size: 0.7em;
+        color: #666;
+        font-weight: bold;
+    }
+
+    .x-axis {
+        bottom: -20px;
+        left: 0;
+    }
+
+    .y-axis {
+        top: 0;
+        left: -20px;
+    }
+
+    @media (max-width: 1200px) {
+        .config-section, .visualization {
+            grid-template-columns: 1fr;
+        }
+        
+        .grid-container, .absolute-container {
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <h1>📐 CSS Grid 绝对坐标计算器</h1>
+
+```
+    <div class="config-section">
+        <div class="parent-config">
+            <h3>🎯 父容器配置</h3>
+            <div class="config-grid">
+                <div class="config-item">
+                    <label>容器宽度(px):</label>
+                    <input type="number" id="parentWidth" value="500" min="100" max="1000">
+                </div>
+                <div class="config-item">
+                    <label>容器高度(px):</label>
+                    <input type="number" id="parentHeight" value="200" min="100" max="600">
+                </div>
+                <div class="config-item">
+                    <label>网格列数:</label>
+                    <input type="number" id="gridCols" value="4" min="1" max="12">
+                </div>
+                <div class="config-item">
+                    <label>网格行数:</label>
+                    <input type="number" id="gridRows" value="3" min="1" max="12">
+                </div>
+                <div class="config-item">
+                    <label>列间距(px):</label>
+                    <input type="number" id="colGap" value="10" min="0" max="50">
+                </div>
+                <div class="config-item">
+                    <label>行间距(px):</label>
+                    <input type="number" id="rowGap" value="10" min="0" max="50">
+                </div>
+            </div>
+            <button onclick="updateCalculation()">🔄 重新计算</button>
+            <button onclick="addRandomItem()">➕ 添加随机元素</button>
+            <button onclick="clearItems()">🗑️ 清空元素</button>
+        </div>
+
+        <div class="items-config">
+            <h3>📝 JSON 配置</h3>
+            <textarea id="jsonInput" rows="8" style="width: 100%; padding: 10px; border-radius: 8px; border: none; font-family: 'Courier New', monospace; font-size: 0.9em; background: rgba(255,255,255,0.9);">
+```
+
+{
+“items”: [
+{ “name”: “Header”, “gridColumn”: “1/5”, “gridRow”: “1/2” },
+{ “name”: “Nav”, “gridColumn”: “1/2”, “gridRow”: “2/3” },
+{ “name”: “Content”, “gridColumn”: “2/4”, “gridRow”: “2/3” },
+{ “name”: “Sidebar”, “gridColumn”: “4/5”, “gridRow”: “2/3” },
+{ “name”: “Footer”, “gridColumn”: “1/5”, “gridRow”: “3/4” }
+]
+}</textarea>
+<button onclick="parseJsonAndCalculate()">📊 解析JSON并计算</button>
+<button onclick="generateRandomJson()">🎲 生成随机配置</button>
+</div>
+</div>
+
+```
+    <div class="visualization">
+        <div class="grid-preview">
+            <h3>🎨 CSS Grid 预览</h3>
+            <div class="grid-container" id="gridContainer">
+                <div class="axis-labels x-axis">X: 0 → 500px</div>
+                <div class="axis-labels y-axis">Y: 0 ↓ 200px</div>
+            </div>
+        </div>
+
+        <div class="absolute-preview">
+            <h3>📍 绝对坐标预览</h3>
+            <div class="absolute-container" id="absoluteContainer">
+                <div class="axis-labels x-axis">X: 0 → 500px</div>
+                <div class="axis-labels y-axis">Y: 0 ↓ 200px</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="results-grid" id="resultsGrid">
+        <!-- 计算结果将在这里显示 -->
+    </div>
+
+    <div class="json-display">
+        <h3>📄 计算结果数据</h3>
+        <pre id="calculationResults"></pre>
+    </div>
+</div>
+
+<script>
+    class AbsolutePositionCalculator {
+        constructor() {
+            this.parentWidth = 500;
+            this.parentHeight = 200;
+            this.gridCols = 4;
+            this.gridRows = 3;
+            this.colGap = 10;
+            this.rowGap = 10;
+            this.items = [];
+            
+            this.init();
+        }
+
+        init() {
+            this.parseJsonAndCalculate();
+        }
+
+        // 解析网格位置字符串 (如 "1/3" 或 "span 2")
+        parseGridPosition(position, maxValue) {
+            if (typeof position === 'string') {
+                if (position.includes('/')) {
+                    const [start, end] = position.split('/').map(p => parseInt(p.trim()));
+                    return { start: start - 1, end: end - 1 }; // 转换为0基索引
+                } else if (position.includes('span')) {
+                    const span = parseInt(position.replace('span', '').trim());
+                    return { start: 0, end: span - 1 };
+                } else {
+                    const pos = parseInt(position) - 1; // 转换为0基索引
+                    return { start: pos, end: pos };
+                }
+            } else if (typeof position === 'number') {
+                return { start: position - 1, end: position - 1 };
+            }
+            return { start: 0, end: 0 };
+        }
+
+        // 计算每个网格单元的尺寸和位置
+        calculateGridCellPositions() {
+            // 计算总的间距
+            const totalColGap = (this.gridCols - 1) * this.colGap;
+            const totalRowGap = (this.gridRows - 1) * this.rowGap;
+            
+            // 计算每个单元格的尺寸
+            const cellWidth = (this.parentWidth - totalColGap) / this.gridCols;
+            const cellHeight = (this.parentHeight - totalRowGap) / this.gridRows;
+            
+            // 生成每个网格位置的坐标
+            const gridPositions = [];
+            for (let row = 0; row < this.gridRows; row++) {
+                for (let col = 0; col < this.gridCols; col++) {
+                    const x = col * (cellWidth + this.colGap);
+                    const y = row * (cellHeight + this.rowGap);
+                    
+                    gridPositions.push({
+                        row,
+                        col,
+                        x: Math.round(x),
+                        y: Math.round(y),
+                        width: Math.round(cellWidth),
+                        height: Math.round(cellHeight)
+                    });
+                }
+            }
+            
+            return { gridPositions, cellWidth, cellHeight };
+        }
+
+        // 根据grid-area计算绝对坐标
+        calculateItemPositions() {
+            const { gridPositions, cellWidth, cellHeight } = this.calculateGridCellPositions();
+            const calculatedItems = [];
+
+            this.items.forEach((item, index) => {
+                // 解析grid-column和grid-row
+                const colPos = this.parseGridPosition(item.gridColumn, this.gridCols);
+                const rowPos = this.parseGridPosition(item.gridRow, this.gridRows);
+
+                // 计算起始坐标
+                const startX = colPos.start * (cellWidth + this.colGap);
+                const startY = rowPos.start * (cellHeight + this.rowGap);
+
+                // 计算尺寸 (跨越的单元格数量)
+                const spanCols = colPos.end - colPos.start + 1;
+                const spanRows = rowPos.end - rowPos.start + 1;
+                
+                const width = spanCols * cellWidth + (spanCols - 1) * this.colGap;
+                const height = spanRows * cellHeight + (spanRows - 1) * this.rowGap;
+
+                const calculatedItem = {
+                    ...item,
+                    index,
+                    // 网格信息
+                    gridInfo: {
+                        columnStart: colPos.start + 1,
+                        columnEnd: colPos.end + 1,
+                        rowStart: rowPos.start + 1,
+                        rowEnd: rowPos.end + 1,
+                        spanCols,
+                        spanRows
+                    },
+                    // 绝对坐标
+                    coordinates: {
+                        x: Math.round(startX),
+                        y: Math.round(startY),
+                        width: Math.round(width),
+                        height: Math.round(height)
+                    },
+                    // CSS样式
+                    cssStyles: {
+                        position: 'absolute',
+                        left: Math.round(startX) + 'px',
+                        top: Math.round(startY) + 'px',
+                        width: Math.round(width) + 'px',
+                        height: Math.round(height) + 'px'
+                    },
+                    // 边界信息
+                    boundaries: {
+                        right: Math.round(startX + width),
+                        bottom: Math.round(startY + height)
+                    }
+                };
+
+                calculatedItems.push(calculatedItem);
+            });
+
+            return calculatedItems;
+        }
+
+        // 更新配置
+        updateConfig() {
+            this.parentWidth = parseInt(document.getElementById('parentWidth').value);
+            this.parentHeight = parseInt(document.getElementById('parentHeight').value);
+            this.gridCols = parseInt(document.getElementById('gridCols').value);
+            this.gridRows = parseInt(document.getElementById('gridRows').value);
+            this.colGap = parseInt(document.getElementById('colGap').value);
+            this.rowGap = parseInt(document.getElementById('rowGap').value);
+        }
+
+        // 解析JSON并计算
+        parseJsonAndCalculate() {
+            try {
+                const jsonText = document.getElementById('jsonInput').value;
+                const data = JSON.parse(jsonText);
+                this.items = data.items || [];
+                this.updateCalculation();
+            } catch (error) {
+                alert('JSON格式错误: ' + error.message);
+            }
+        }
+
+        // 更新计算
+        updateCalculation() {
+            this.updateConfig();
+            const calculatedItems = this.calculateItemPositions();
+            this.renderVisualization(calculatedItems);
+            this.renderResults(calculatedItems);
+        }
+
+        // 渲染可视化
+        renderVisualization(calculatedItems) {
+            // 更新容器尺寸
+            const gridContainer = document.getElementById('gridContainer');
+            const absoluteContainer = document.getElementById('absoluteContainer');
+            
+            gridContainer.style.width = this.parentWidth + 'px';
+            gridContainer.style.height = this.parentHeight + 'px';
+            gridContainer.style.gridTemplateColumns = `repeat(${this.gridCols}, 1fr)`;
+            gridContainer.style.gridTemplateRows = `repeat(${this.gridRows}, 1fr)`;
+            gridContainer.style.gap = `${this.rowGap}px ${this.colGap}px`;
+            
+            absoluteContainer.style.width = this.parentWidth + 'px';
+            absoluteContainer.style.height = this.parentHeight + 'px';
+
+            // 清空容器
+            gridContainer.innerHTML = '<div class="axis-labels x-axis">X: 0 → ' + this.parentWidth + 'px</div><div class="axis-labels y-axis">Y: 0 ↓ ' + this.parentHeight + 'px</div>';
+            absoluteContainer.innerHTML = '<div class="axis-labels x-axis">X: 0 → ' + this.parentWidth + 'px</div><div class="axis-labels y-axis">Y: 0 ↓ ' + this.parentHeight + 'px</div>';
+
+            // 渲染Grid项目
+            calculatedItems.forEach(item => {
+                const gridElement = document.createElement('div');
+                gridElement.className = 'grid-item';
+                gridElement.textContent = item.name;
+                gridElement.style.gridColumn = item.gridColumn;
+                gridElement.style.gridRow = item.gridRow;
+                gridContainer.appendChild(gridElement);
+
+                // 渲染绝对定位项目
+                const absoluteElement = document.createElement('div');
+                absoluteElement.className = 'absolute-item';
+                absoluteElement.innerHTML = `
+                    <div class="coordinates">(${item.coordinates.x}, ${item.coordinates.y})</div>
+                    ${item.name}
+                `;
+                absoluteElement.style.left = item.cssStyles.left;
+                absoluteElement.style.top = item.cssStyles.top;
+                absoluteElement.style.width = item.cssStyles.width;
+                absoluteElement.style.height = item.cssStyles.height;
+                absoluteContainer.appendChild(absoluteElement);
+            });
+        }
+
+        // 渲染结果
+        renderResults(calculatedItems) {
+            const resultsGrid = document.getElementById('resultsGrid');
+            const calculationResults = document.getElementById('calculationResults');
+
+            // 渲染结果卡片
+            resultsGrid.innerHTML = '';
+            calculatedItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'result-card';
+                card.innerHTML = `
+                    <h4>${item.name}</h4>
+                    <p><strong>网格位置:</strong> ${item.gridColumn} × ${item.gridRow}</p>
+                    <p><strong>绝对坐标:</strong> <span class="highlight">(${item.coordinates.x}, ${item.coordinates.y})</span></p>
+                    <p><strong>尺寸:</strong> ${item.coordinates.width} × ${item.coordinates.height}px</p>
+                    <p><strong>边界:</strong> 右边${item.boundaries.right}px, 下边${item.boundaries.bottom}px</p>
+                    <p><strong>跨越:</strong> ${item.gridInfo.spanCols}列 × ${item.gridInfo.spanRows}行</p>
+                `;
+                resultsGrid.appendChild(card);
+            });
+
+            // 显示完整计算结果
+            const results = {
+                parentContainer: {
+                    width: this.parentWidth,
+                    height: this.parentHeight,
+                    gridCols: this.gridCols,
+                    gridRows: this.gridRows,
+                    colGap: this.colGap,
+                    rowGap: this.rowGap
+                },
+                calculatedItems: calculatedItems.map(item => ({
+                    name: item.name,
+                    gridColumn: item.gridColumn,
+                    gridRow: item.gridRow,
+                    coordinates: item.coordinates,
+                    cssStyles: item.cssStyles,
+                    gridInfo: item.gridInfo,
+                    boundaries: item.boundaries
+                }))
+            };
+
+            calculationResults.textContent = JSON.stringify(results, null, 2);
+        }
+
+        // 添加随机元素
+        addRandomItem() {
+            const names = ['Header', 'Nav', 'Content', 'Sidebar', 'Footer', 'Article', 'Banner', 'Widget'];
+            const randomName = names[Math.floor(Math.random() * names.length)] + '-' + Date.now().toString().slice(-3);
+            
+            const startCol = Math.floor(Math.random() * this.gridCols) + 1;
+            const startRow = Math.floor(Math.random() * this.gridRows) + 1;
+            const endCol = Math.min(startCol + Math.floor(Math.random() * 3) + 1, this.gridCols + 1);
+            const endRow = Math.min(startRow + Math.floor(Math.random() * 2) + 1, this.gridRows + 1);
+
+            const newItem = {
+                name: randomName,
+                gridColumn: `${startCol}/${endCol}`,
+                gridRow: `${startRow}/${endRow}`
+            };
+
+            this.items.push(newItem);
+            this.updateJsonDisplay();
+            this.updateCalculation();
+        }
+
+        // 更新JSON显示
+        updateJsonDisplay() {
+            document.getElementById('jsonInput').value = JSON.stringify({ items: this.items }, null, 2);
+        }
+
+        // 清空元素
+        clearItems() {
+            this.items = [];
+            this.updateJsonDisplay();
+            this.updateCalculation();
+        }
+
+        // 生成随机JSON配置
+        generateRandomJson() {
+            const randomItems = [];
+            const itemCount = 3 + Math.floor(Math.random() * 4);
+            const names = ['Header', 'Nav', 'Main', 'Sidebar', 'Footer', 'Article', 'Banner', 'Widget'];
+
+            for (let i = 0; i < itemCount; i++) {
+                const startCol = Math.floor(Math.random() * this.gridCols) + 1;
+                const startRow = Math.floor(Math.random() * this.gridRows) + 1;
+                const endCol = Math.min(startCol + Math.floor(Math.random() * 2) + 1, this.gridCols + 1);
+                const endRow = Math.min(startRow + Math.floor(Math.random() * 2) + 1, this.gridRows + 1);
+
+                randomItems.push({
+                    name: names[i % names.length] + '-' + (i + 1),
+                    gridColumn: `${startCol}/${endCol}`,
+                    gridRow: `${startRow}/${endRow}`
+                });
+            }
+
+            this.items = randomItems;
+            this.updateJsonDisplay();
+            this.updateCalculation();
+        }
+    }
+
+    // 初始化计算器
+    const calculator = new AbsolutePositionCalculator();
+
+    // 全局函数
+    function updateCalculation() {
+        calculator.updateCalculation();
+    }
+
+    function parseJsonAndCalculate() {
+        calculator.parseJsonAndCalculate();
+    }
+
+    function addRandomItem() {
+        calculator.addRandomItem();
+    }
+
+    function clearItems() {
+        if (confirm('确定要清空所有元素吗？')) {
+            calculator.clearItems();
+        }
+    }
+
+    function generateRandomJson() {
+        calculator.generateRandomJson();
+    }
+
+    // 监听输入变化
+    document.getElementById('jsonInput').addEventListener('input', function() {
+        // 延迟执行以避免频繁更新
+        clearTimeout(this.updateTimer);
+        this.updateTimer = setTimeout(() => {
+            calculator.parseJsonAndCalculate();
+        }, 1000);
+    });
+
+    // 键盘快捷键
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey || e.metaKey) {
+            switch(e.key) {
+                case 'Enter':
+                    e.preventDefault();
+                    updateCalculation();
+                    break;
+                case 'n':
+                    e.preventDefault();
+                    addRandomItem();
+                    break;
+            }
+        }
+    });
+</script>
+```
+
+</body>
+</html>
