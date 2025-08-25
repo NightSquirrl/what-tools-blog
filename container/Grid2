@@ -1,0 +1,408 @@
+<template>
+  <div 
+    class="grid-container" 
+    :style="{
+      width: width + 'px',
+      height: height + 'px',
+      position: 'relative'
+    }"
+  >
+    <div
+      v-for="(child, index) in childrenWithPositions"
+      :key="index"
+      :style="{
+        position: 'absolute',
+        left: child.x + 'px',
+        top: child.y + 'px',
+        width: child.width + 'px',
+        height: child.height + 'px'
+      }"
+    >
+      <component :is="child.vnode" />
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { useSlots, computed } from 'vue'
+
+// Props定义
+const props = defineProps({
+  // 容器尺寸
+  width: {
+    type: Number,
+    required: true
+  },
+  height: {
+    type: Number,
+    required: true
+  },
+  
+  // Grid属性
+  gridTemplateColumns: {
+    type: String,
+    default: 'repeat(auto-fit, minmax(200px, 1fr))'
+  },
+  gridTemplateRows: {
+    type: String,
+    default: 'auto'
+  },
+  gridGap: {
+    type: [String, Number],
+    default: 0
+  },
+  gap: {
+    type: [String, Number],
+    default: 0
+  },
+  rowGap: {
+    type: [String, Number],
+    default: 0
+  },
+  columnGap: {
+    type: [String, Number],
+    default: 0
+  },
+  
+  // 对齐方式
+  justifyContent: {
+    type: String,
+    default: 'stretch' // start, end, center, stretch, space-between, space-around, space-evenly
+  },
+  alignContent: {
+    type: String,
+    default: 'stretch' // start, end, center, stretch, space-between, space-around, space-evenly
+  },
+  justifyItems: {
+    type: String,
+    default: 'stretch' // start, end, center, stretch
+  },
+  alignItems: {
+    type: String,
+    default: 'stretch' // start, end, center, stretch
+  },
+  
+  // 自动流向
+  gridAutoFlow: {
+    type: String,
+    default: 'row' // row, column, row dense, column dense
+  },
+  gridAutoColumns: {
+    type: String,
+    default: 'auto'
+  },
+  gridAutoRows: {
+    type: String,
+    default: 'auto'
+  }
+})
+
+const slots = useSlots()
+
+// 解析CSS尺寸值
+const parseCSSValue = (value, containerSize, totalFrUnits = 1) => {
+  if (typeof value === 'number') return value
+  if (typeof value === 'string') {
+    if (value.endsWith('px')) return parseInt(value)
+    if (value.endsWith('%')) return (containerSize * parseInt(value)) / 100
+    if (value === 'auto') return 200 // auto默认值
+    if (value.includes('fr')) {
+      const frValue = parseFloat(value)
+      return (containerSize * frValue) / totalFrUnits
+    }
+    if (value.endsWith('em')) return parseInt(value) * 16 // 假设1em = 16px
+    if (value.endsWith('rem')) return parseInt(value) * 16 // 假设1rem = 16px
+  }
+  return 200 // 默认值
+}
+
+// 计算fr单位的总和
+const calculateTotalFrUnits = (values) => {
+  return values.reduce((total, value) => {
+    if (typeof value === 'string' && value.includes('fr')) {
+      return total + parseFloat(value)
+    }
+    return total
+  }, 0)
+}
+
+// 解析grid-template-columns/rows
+const parseGridTemplate = (template, containerSize) => {
+  if (template.includes('repeat')) {
+    // 处理repeat函数
+    const match = template.match(/repeat\((\d+|auto-fit|auto-fill),\s*(.+)\)/)
+    if (match) {
+      const [, count, size] = match
+      if (count === 'auto-fit' || count === 'auto-fill') {
+        const itemSize = parseCSSValue(size.includes('minmax') ? 
+          size.match(/minmax\((.+?),/)?.[1] || '200px' : size, containerSize)
+        return Math.floor(containerSize / itemSize)
+      }
+      return parseInt(count)
+    }
+  }
+  
+  // 处理空格分隔的值
+  const values = template.split(/\s+/).filter(v => v.trim())
+  return values.length
+}
+
+// 计算gap值
+const getGapValue = () => {
+  const gapValue = props.gap || props.gridGap || 0
+  return typeof gapValue === 'number' ? gapValue : parseInt(gapValue) || 0
+}
+
+const getRowGapValue = () => {
+  const rowGapValue = props.rowGap || getGapValue()
+  return typeof rowGapValue === 'number' ? rowGapValue : parseInt(rowGapValue) || 0
+}
+
+const getColumnGapValue = () => {
+  const columnGapValue = props.columnGap || getGapValue()
+  return typeof columnGapValue === 'number' ? columnGapValue : parseInt(columnGapValue) || 0
+}
+
+// 解析grid-template具体尺寸
+const parseGridTemplateSizes = (template, containerSize, count) => {
+  if (template === 'auto' || !template) {
+    return Array(count).fill(containerSize / count)
+  }
+  
+  if (template.includes('repeat')) {
+    const match = template.match(/repeat\((\d+|auto-fit|auto-fill),\s*(.+)\)/)
+    if (match) {
+      const [, repeatCount, size] = match
+      const actualCount = (repeatCount === 'auto-fit' || repeatCount === 'auto-fill') ? count : parseInt(repeatCount)
+      const itemSize = parseCSSValue(size.includes('minmax') ? 
+        size.match(/minmax\((.+?),/)?.[1] || '200px' : size, containerSize)
+      return Array(actualCount).fill(itemSize)
+    }
+  }
+  
+  const values = template.split(/\s+/).filter(v => v.trim())
+  if (values.length > 0) {
+    const totalFrUnits = calculateTotalFrUnits(values)
+    const fixedSizes = values.map(value => {
+      if (value.includes('fr')) return null
+      return parseCSSValue(value, containerSize)
+    })
+    
+    const usedSpace = fixedSizes.reduce((sum, size) => sum + (size || 0), 0)
+    const remainingSpace = Math.max(0, containerSize - usedSpace)
+    
+    return values.map(value => {
+      if (value.includes('fr')) {
+        const frValue = parseFloat(value)
+        return totalFrUnits > 0 ? (remainingSpace * frValue) / totalFrUnits : 0
+      }
+      return parseCSSValue(value, containerSize)
+    })
+  }
+  
+  return Array(count).fill(containerSize / count)
+}
+
+// 应用对齐方式的辅助函数
+const applySpaceDistribution = (totalSpace, itemCount, alignment, itemSizes) => {
+  const totalItemSpace = itemSizes.reduce((sum, size) => sum + size, 0)
+  const remainingSpace = totalSpace - totalItemSpace
+  
+  switch (alignment) {
+    case 'space-between':
+      if (itemCount <= 1) return Array(itemCount).fill(0)
+      const spaceBetween = remainingSpace / (itemCount - 1)
+      return Array(itemCount).fill(spaceBetween)
+      
+    case 'space-around':
+      const spaceAround = remainingSpace / itemCount
+      return Array(itemCount).fill(spaceAround)
+      
+    case 'space-evenly':
+      const spaceEvenly = remainingSpace / (itemCount + 1)
+      return Array(itemCount).fill(spaceEvenly)
+      
+    case 'center':
+      return [remainingSpace / 2, ...Array(itemCount - 1).fill(0)]
+      
+    case 'end':
+      return [remainingSpace, ...Array(itemCount - 1).fill(0)]
+      
+    default: // start, stretch
+      return Array(itemCount).fill(0)
+  }
+}
+
+// 计算子元素位置
+const childrenWithPositions = computed(() => {
+  const defaultSlot = slots.default?.() || []
+  if (!defaultSlot.length) return []
+
+  // 计算网格参数
+  const columns = parseGridTemplate(props.gridTemplateColumns, props.width)
+  const rowGap = getRowGapValue()
+  const columnGap = getColumnGapValue()
+  
+  // 根据gridAutoFlow和内容计算行数，处理隐式网格
+  let rows, actualRows
+  let implicitRows = 0
+  let implicitColumns = 0
+  
+  if (props.gridAutoFlow.includes('column')) {
+    rows = parseGridTemplate(props.gridTemplateRows, props.height)
+    actualRows = rows
+    // 列优先时，可能需要更多列（隐式网格）
+    const neededColumns = Math.ceil(defaultSlot.length / rows)
+    if (neededColumns > columns) {
+      implicitColumns = neededColumns - columns
+    }
+  } else {
+    if (props.gridTemplateRows !== 'auto') {
+      rows = parseGridTemplate(props.gridTemplateRows, props.height)
+      actualRows = rows
+    } else {
+      rows = Math.ceil(defaultSlot.length / columns)
+      actualRows = rows
+    }
+    // 行优先时，可能需要更多行（隐式网格）
+    const neededRows = Math.ceil(defaultSlot.length / columns)
+    if (neededRows > rows) {
+      implicitRows = neededRows - rows
+      actualRows = neededRows
+    }
+  }
+  
+  // 计算每列和每行的具体尺寸
+  const explicitColumnSizes = parseGridTemplateSizes(props.gridTemplateColumns, props.width - (columns - 1) * columnGap, columns)
+  const explicitRowSizes = parseGridTemplateSizes(props.gridTemplateRows, props.height - (actualRows - 1) * rowGap, rows)
+  
+  // 处理隐式网格
+  const implicitColumnSize = parseCSSValue(props.gridAutoColumns, props.width / (columns + implicitColumns))
+  const implicitRowSize = parseCSSValue(props.gridAutoRows, props.height / (actualRows))
+  
+  const columnSizes = [
+    ...explicitColumnSizes,
+    ...Array(implicitColumns).fill(implicitColumnSize)
+  ]
+  
+  const rowSizes = [
+    ...explicitRowSizes,
+    ...Array(implicitRows).fill(implicitRowSize)
+  ]
+  
+  // 计算实际使用的列数和行数
+  const totalColumns = columns + implicitColumns
+  const totalRows = actualRows
+  
+  // 应用justifyContent和alignContent的空间分布
+  const columnSpaces = applySpaceDistribution(props.width, totalColumns, props.justifyContent, columnSizes)
+  const rowSpaces = applySpaceDistribution(props.height, totalRows, props.alignContent, rowSizes)
+  
+  return defaultSlot.map((vnode, index) => {
+    let row, col
+    
+    if (props.gridAutoFlow.includes('column')) {
+      row = index % totalRows
+      col = Math.floor(index / totalRows)
+    } else {
+      row = Math.floor(index / totalColumns)
+      col = index % totalColumns
+    }
+    
+    // 确保不超出网格范围
+    row = Math.min(row, totalRows - 1)
+    col = Math.min(col, totalColumns - 1)
+    
+    // 计算累积位置（考虑空间分布）
+    let x = 0
+    for (let i = 0; i < col; i++) {
+      x += columnSizes[i] + columnGap
+      if (props.justifyContent === 'space-between' && i === 0) {
+        // space-between的第一个间距在开始处不加
+      } else if (props.justifyContent === 'space-around') {
+        x += columnSpaces[i] / 2
+        if (i > 0) x += columnSpaces[i] / 2
+      } else if (props.justifyContent === 'space-evenly') {
+        x += columnSpaces[i]
+      } else if (props.justifyContent === 'center' && i === 0) {
+        x += columnSpaces[0]
+      } else if (props.justifyContent === 'end' && i === 0) {
+        x += columnSpaces[0]
+      }
+    }
+    
+    let y = 0
+    for (let i = 0; i < row; i++) {
+      y += rowSizes[i] + rowGap
+      if (props.alignContent === 'space-between' && i === 0) {
+        // space-between的第一个间距在开始处不加
+      } else if (props.alignContent === 'space-around') {
+        y += rowSpaces[i] / 2
+        if (i > 0) y += rowSpaces[i] / 2
+      } else if (props.alignContent === 'space-evenly') {
+        y += rowSpaces[i]
+      } else if (props.alignContent === 'center' && i === 0) {
+        y += rowSpaces[0]
+      } else if (props.alignContent === 'end' && i === 0) {
+        y += rowSpaces[0]
+      }
+    }
+    
+    // 获取当前单元格尺寸
+    const cellWidth = columnSizes[col] || columnSizes[columnSizes.length - 1]
+    const cellHeight = rowSizes[row] || rowSizes[rowSizes.length - 1]
+    
+    // 应用justifyItems和alignItems调整
+    let itemX = x
+    let itemY = y
+    let itemWidth = cellWidth
+    let itemHeight = cellHeight
+    
+    // 处理justifyItems
+    switch (props.justifyItems) {
+      case 'start':
+        // 默认行为，不需要调整
+        break
+      case 'end':
+        itemX = x + cellWidth - itemWidth
+        break
+      case 'center':
+        itemX = x + (cellWidth - itemWidth) / 2
+        break
+      case 'stretch':
+        // itemWidth已经等于cellWidth，不需要调整
+        break
+    }
+    
+    // 处理alignItems
+    switch (props.alignItems) {
+      case 'start':
+        // 默认行为，不需要调整
+        break
+      case 'end':
+        itemY = y + cellHeight - itemHeight
+        break
+      case 'center':
+        itemY = y + (cellHeight - itemHeight) / 2
+        break
+      case 'stretch':
+        // itemHeight已经等于cellHeight，不需要调整
+        break
+    }
+    
+    return {
+      vnode,
+      x: Math.round(itemX),
+      y: Math.round(itemY),
+      width: Math.round(itemWidth),
+      height: Math.round(itemHeight)
+    }
+  })
+})
+</script>
+
+<style scoped>
+.grid-container {
+  overflow: hidden;
+}
+</style>
