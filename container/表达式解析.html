@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表达式解析处理系统</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+```
+    .container {
+        background: white;
+        border-radius: 15px;
+        padding: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+        color: #333;
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.2em;
+    }
+    
+    .input-section {
+        margin-bottom: 30px;
+    }
+    
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #555;
+    }
+    
+    input, textarea {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e1e5e9;
+        border-radius: 8px;
+        font-size: 14px;
+        transition: border-color 0.3s ease;
+        box-sizing: border-box;
+    }
+    
+    input:focus, textarea:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    textarea {
+        min-height: 80px;
+        resize: vertical;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    button {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: transform 0.2s ease;
+    }
+    
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-secondary {
+        background: linear-gradient(45deg, #28a745, #20c997);
+    }
+    
+    .btn-info {
+        background: linear-gradient(45deg, #17a2b8, #138496);
+    }
+    
+    .result {
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 20px;
+        margin-top: 20px;
+    }
+    
+    .result h3 {
+        margin-top: 0;
+        color: #495057;
+    }
+    
+    .ast-tree {
+        font-family: 'Courier New', monospace;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 5px;
+        margin: 10px 0;
+        overflow-x: auto;
+        white-space: pre;
+        font-size: 12px;
+        line-height: 1.4;
+    }
+    
+    .expression {
+        background: #e7f3ff;
+        padding: 10px;
+        border-radius: 5px;
+        margin: 10px 0;
+        font-family: 'Courier New', monospace;
+        border-left: 4px solid #007bff;
+    }
+    
+    .error {
+        background: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 10px 0;
+    }
+    
+    .examples {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .examples h4 {
+        margin-top: 0;
+        color: #856404;
+    }
+    
+    .example-item {
+        font-family: 'Courier New', monospace;
+        margin: 5px 0;
+        font-size: 13px;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 3px;
+        transition: background-color 0.2s;
+    }
+    
+    .example-item:hover {
+        background-color: rgba(255, 235, 167, 0.5);
+    }
+    
+    .token {
+        display: inline-block;
+        margin: 2px;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+    }
+    
+    .token-function { background: #e1f5fe; color: #01579b; }
+    .token-operator { background: #f3e5f5; color: #4a148c; }
+    .token-number { background: #e8f5e8; color: #1b5e20; }
+    .token-variable { background: #fff3e0; color: #e65100; }
+    .token-external { background: #fce4ec; color: #880e4f; }
+    .token-actual-w { background: #ffebee; color: #c62828; border: 1px solid #ef5350; }
+    .token-string { background: #f1f8e9; color: #33691e; }
+    .token-parenthesis { background: #f5f5f5; color: #424242; }
+    .token-comma { background: #f5f5f5; color: #424242; }
+</style>
+```
+
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 表达式解析处理系统</h1>
+
+```
+    <div class="examples">
+        <h4>📝 支持的表达式类型：</h4>
+        <div class="example-item" onclick="loadExample('ifelse(a>b, (c+d)/2, actual_w*3)')">• ifelse(a>b, (c+d)/2, actual_w*3) - 基础条件表达式</div>
+        <div class="example-item" onclick="loadExample('ifelse(x==1, ifelse(y>0, z*2, w+1), (p+q)/3)')">• ifelse(x==1, ifelse(y>0, z*2, w+1), (p+q)/3) - 嵌套表达式</div>
+        <div class="example-item" onclick="loadExample('ifelse(condition, 840*#ratioX+10+actual_w, normal_expr)')">• ifelse(condition, 840*#ratioX+10+actual_w, normal_expr) - 外部变量</div>
+        <div class="example-item" onclick="loadExample('ifelse(ge(#var1-3,#var2+actual_w), #a.actual_w+10, expr*5)')">• ifelse(ge(#var1-3,#var2+actual_w), #a.actual_w+10, expr*5) - 复杂表达式</div>
+    </div>
+    
+    <div class="input-section">
+        <label for="expression">输入表达式：</label>
+        <textarea id="expression" placeholder="例如: ifelse(ge(840*#ratioX-#x_gra*3, 840*ratioX+10+actual_w), 840*#ratioX+10+#a.actual_w, 840*#ratioX-#x_gra*3)"></textarea>
+    </div>
+    
+    <div class="input-section">
+        <label for="coefficient">系数 (默认为2)：</label>
+        <input type="number" id="coefficient" value="2" step="0.1">
+    </div>
+    
+    <div class="button-group">
+        <button onclick="parseExpression()">🔍 解析表达式</button>
+        <button onclick="processExpression()" class="btn-secondary">⚙️ 处理表达式</button>
+        <button onclick="showTokens()" class="btn-info">🏷️ 显示标记</button>
+    </div>
+    
+    <div id="result"></div>
+</div>
+
+<script>
+    // 简化版的表达式处理器
+    class SimpleExpressionProcessor {
+        constructor() {
+            this.tokens = [];
+            this.ast = null;
+        }
+
+        // 词法分析 - 将表达式分解为标记
+        tokenize(expression) {
+            const tokens = [];
+            let i = 0;
+            
+            while (i < expression.length) {
+                if (/\s/.test(expression[i])) {
+                    i++;
+                    continue;
+                }
+                
+                // 函数名或变量
+                if (/[a-zA-Z_#]/.test(expression[i])) {
+                    let start = i;
+                    while (i < expression.length && /[a-zA-Z0-9_#\.]/.test(expression[i])) {
+                        i++;
+                    }
+                    let value = expression.substring(start, i);
+                    
+                    let type = 'VARIABLE';
+                    if (value.startsWith('#')) {
+                        type = 'EXTERNAL_VAR';
+                    } else if (value.includes('actual_w')) {
+                        type = 'ACTUAL_W';
+                    } else if (i < expression.length && expression[i] === '(') {
+                        type = 'FUNCTION';
+                    }
+                    
+                    tokens.push({ type, value, start, end: i });
+                }
+                // 数字
+                else if (/\d/.test(expression[i])) {
+                    let start = i;
+                    while (i < expression.length && /[\d\.]/.test(expression[i])) {
+                        i++;
+                    }
+                    let value = expression.substring(start, i);
+                    tokens.push({ type: 'NUMBER', value, start, end: i });
+                }
+                // 操作符
+                else if (/[+\-*/=<>!&|]/.test(expression[i])) {
+                    let start = i;
+                    let value = expression[i];
+                    i++;
+                    
+                    // 处理双字符操作符
+                    if (i < expression.length) {
+                        let nextChar = expression[i];
+                        if ((value === '=' && nextChar === '=') ||
+                            (value === '!' && nextChar === '=') ||
+                            (value === '<' && nextChar === '=') ||
+                            (value === '>' && nextChar === '=')) {
+                            value += nextChar;
+                            i++;
+                        }
+                    }
+                    
+                    tokens.push({ type: 'OPERATOR', value, start, end: i });
+                }
+                // 括号和逗号
+                else if (/[(),]/.test(expression[i])) {
+                    let type = expression[i] === ',' ? 'COMMA' : 'PARENTHESIS';
+                    tokens.push({ type, value: expression[i], start: i, end: i + 1 });
+                    i++;
+                }
+                else {
+                    i++; // 跳过未知字符
+                }
+            }
+            
+            return tokens;
+        }
+
+        // 语法分析 - 构建抽象语法树
+        parse(expression) {
+            this.tokens = this.tokenize(expression);
+            this.position = 0;
+            return this.parseExpression();
+        }
+
+        peek() {
+            return this.position < this.tokens.length ? this.tokens[this.position] : null;
+        }
+
+        next() {
+            return this.position < this.tokens.length ? this.tokens[this.position++] : null;
+        }
+
+        parseExpression() {
+            return this.parseComparison();
+        }
+
+        parseComparison() {
+            let left = this.parseArithmetic();
+            
+            while (this.peek() && this.peek().type === 'OPERATOR' && 
+                   ['==', '!=', '<', '>', '<=', '>='].includes(this.peek().value)) {
+                let operator = this.next();
+                let right = this.parseArithmetic();
+                left = {
+                    type: 'BINARY_OP',
+                    operator: operator.value,
+                    left: left,
+                    right: right
+                };
+            }
+            
+            return left;
+        }
+
+        parseArithmetic() {
+            let left = this.parseTerm();
+            
+            while (this.peek() && this.peek().type === 'OPERATOR' && 
+                   ['+', '-'].includes(this.peek().value)) {
+                let operator = this.next();
+                let right = this.parseTerm();
+                left = {
+                    type: 'BINARY_OP',
+                    operator: operator.value,
+                    left: left,
+                    right: right
+                };
+            }
+            
+            return left;
+        }
+
+        parseTerm() {
+            let left = this.parseFactor();
+            
+            while (this.peek() && this.peek().type === 'OPERATOR' && 
+                   ['*', '/'].includes(this.peek().value)) {
+                let operator = this.next();
+                let right = this.parseFactor();
+                left = {
+                    type: 'BINARY_OP',
+                    operator: operator.value,
+                    left: left,
+                    right: right
+                };
+            }
+            
+            return left;
+        }
+
+        parseFactor() {
+            let token = this.peek();
+            
+            if (!token) return null;
+            
+            if (token.type === 'NUMBER') {
+                this.next();
+                return {
+                    type: 'NUMBER',
+                    value: parseFloat(token.value)
+                };
+            } else if (token.type === 'VARIABLE') {
+                this.next();
+                return {
+                    type: 'VARIABLE',
+                    value: token.value
+                };
+            } else if (token.type === 'EXTERNAL_VAR') {
+                this.next();
+                return {
+                    type: 'EXTERNAL_VAR',
+                    value: token.value
+                };
+            } else if (token.type === 'ACTUAL_W') {
+                this.next();
+                return {
+                    type: 'ACTUAL_W',
+                    value: token.value
+                };
+            } else if (token.type === 'FUNCTION') {
+                return this.parseFunctionCall();
+            } else if (token.type === 'PARENTHESIS' && token.value === '(') {
+                this.next(); // skip '('
+                let expr = this.parseExpression();
+                if (this.peek() && this.peek().value === ')') {
+                    this.next(); // skip ')'
+                }
+                return expr;
+            }
+            
+            return null;
+        }
+
+        parseFunctionCall() {
+            let functionToken = this.next();
+            let node = {
+                type: 'FUNCTION_CALL',
+                name: functionToken.value,
+                arguments: []
+            };
+            
+            if (this.peek() && this.peek().value === '(') {
+                this.next(); // skip '('
+                
+                while (this.peek() && this.peek().value !== ')') {
+                    let arg = this.parseExpression();
+                    if (arg) {
+                        node.arguments.push(arg);
+                    }
+                    
+                    if (this.peek() && this.peek().value === ',') {
+                        this.next(); // skip ','
+                    }
+                }
+                
+                if (this.peek() && this.peek().value === ')') {
+                    this.next(); // skip ')'
+                }
+            }
+            
+            return node;
+        }
+
+        // 处理表达式 - 应用业务规则
+        processAST(ast, coefficient = 2) {
+            if (!ast) return null;
+            
+            switch (ast.type) {
+                case 'FUNCTION_CALL':
+                    return this.processFunctionCall(ast, coefficient);
+                case 'BINARY_OP':
+                    return this.processBinaryOp(ast, coefficient);
+                case 'NUMBER':
+                    return ast;
+                case 'VARIABLE':
+                case 'EXTERNAL_VAR':
+                case 'ACTUAL_W':
+                    return ast;
+                default:
+                    return ast;
+            }
+        }
+
+        processFunctionCall(ast, coefficient) {
+            let newNode = {
+                type: 'FUNCTION_CALL',
+                name: ast.name,
+                arguments: []
+            };
+            
+            if (ast.name === 'ifelse' && ast.arguments.length >= 3) {
+                // 条件不处理
+                newNode.arguments.push(this.processAST(ast.arguments[0], coefficient));
+                
+                // 处理真值和假值分支
+                for (let i = 1; i < ast.arguments.length; i++) {
+                    newNode.arguments.push(this.processResultBranch(ast.arguments[i], coefficient));
+                }
+            } else {
+                // 其他函数，处理所有参数
+                ast.arguments.forEach(arg => {
+                    newNode.arguments.push(this.processAST(arg, coefficient));
+                });
+            }
+            
+            return newNode;
+        }
+
+        processBinaryOp(ast, coefficient) {
+            let newNode = {
+                type: 'BINARY_OP',
+                operator: ast.operator,
+                left: this.processAST(ast.left, coefficient),
+                right: this.processAST(ast.right, coefficient)
+            };
+            
+            return newNode;
+        }
+
+        processResultBranch(ast, coefficient) {
+            if (this.containsActualW(ast)) {
+                return this.processPartialNode(ast, coefficient);
+            } else {
+                return this.multiplyByCoefficient(this.processAST(ast, coefficient), coefficient);
+            }
+        }
+
+        processPartialNode(ast, coefficient) {
+            if (!ast) return null;
+            
+            switch (ast.type) {
+                case 'NUMBER':
+                    // 数字需要乘以系数
+                    return {
+                        type: 'BINARY_OP',
+                        operator: '*',
+                        left: ast,
+                        right: { type: 'NUMBER', value: coefficient }
+                    };
+                case 'ACTUAL_W':
+                    // actual_w保持不变
+                    return ast;
+                case 'BINARY_OP':
+                    return {
+                        type: 'BINARY_OP',
+                        operator: ast.operator,
+                        left: this.processPartialNode(ast.left, coefficient),
+                        right: this.processPartialNode(ast.right, coefficient)
+                    };
+                default:
+                    return this.processAST(ast, coefficient);
+            }
+        }
+
+        containsActualW(ast) {
+            if (!ast) return false;
+            if (ast.type === 'ACTUAL_W') return true;
+            
+            if (ast.arguments) {
+                return ast.arguments.some(arg => this.containsActualW(arg));
+            }
+            
+            if (ast.left && this.containsActualW(ast.left)) return true;
+            if (ast.right && this.containsActualW(ast.right)) return true;
+            
+            return false;
+        }
+
+        multiplyByCoefficient(ast, coefficient) {
+            if (!ast) return null;
+            
+            if (ast.type === 'NUMBER') {
+                return {
+                    type: 'NUMBER',
+                    value: ast.value * coefficient
+                };
+            }
+            
+            // 对于复杂表达式，创建乘法节点
+            return {
+                type: 'BINARY_OP',
+                operator: '*',
+                left: ast,
+                right: { type: 'NUMBER', value: coefficient }
+            };
+        }
+
+        // 将AST转换回字符串
+        astToString(ast) {
+            if (!ast) return '';
+            
+            switch (ast.type) {
+                case 'FUNCTION_CALL':
+                    let args = ast.arguments.map(arg => this.astToString(arg)).join(', ');
+                    return `${ast.name}(${args})`;
+                case 'BINARY_OP':
+                    let left = this.astToString(ast.left);
+                    let right = this.astToString(ast.right);
+                    // 添加括号以确保优先级
+                    if (ast.left && ast.left.type === 'BINARY_OP' && this.needsParentheses(ast.left, ast, 'left')) {
+                        left = `(${left})`;
+                    }
+                    if (ast.right && ast.right.type === 'BINARY_OP' && this.needsParentheses(ast.right, ast, 'right')) {
+                        right = `(${right})`;
+                    }
+                    return `${left} ${ast.operator} ${right}`;
+                case 'NUMBER':
+                    return ast.value.toString();
+                case 'VARIABLE':
+                case 'EXTERNAL_VAR':
+                case 'ACTUAL_W':
+                    return ast.value;
+                default:
+                    return '';
+            }
+        }
+
+        needsParentheses(childAst, parentAst, position) {
+            const precedence = {
+                '*': 3, '/': 3,
+                '+': 2, '-': 2,
+                '==': 1, '!=': 1, '<': 1, '>': 1, '<=': 1, '>=': 1
+            };
+            
+            const childPrec = precedence[childAst.operator] || 0;
+            const parentPrec = precedence[parentAst.operator] || 0;
+            
+            if (childPrec < parentPrec) return true;
+            if (childPrec === parentPrec && position === 'right' && ['-', '/'].includes(parentAst.operator)) return true;
+            
+            return false;
+        }
+
+        // 将AST转换为树状显示
+        astToTree(ast, depth = 0) {
+            if (!ast) return '';
+            
+            const indent = '  '.repeat(depth);
+            let result = `${indent}${ast.type}`;
+            
+            if (ast.name) result += `: ${ast.name}`;
+            else if (ast.operator) result += `: ${ast.operator}`;
+            else if (ast.value !== undefined) result += `: ${ast.value}`;
+            
+            result += '\n';
+            
+            if (ast.arguments) {
+                ast.arguments.forEach(arg => {
+                    result += this.astToTree(arg, depth + 1);
+                });
+            }
+            
+            if (ast.left) {
+                result += this.astToTree(ast.left, depth + 1);
+            }
+            
+            if (ast.right) {
+                result += this.astToTree(ast.right, depth + 1);
+            }
+            
+            return result;
+        }
+    }
+
+    // 全局实例
+    const processor = new SimpleExpressionProcessor();
+    let currentAST = null;
+
+    function loadExample(example) {
+        document.getElementById('expression').value = example;
+        parseExpression();
+    }
+
+    function parseExpression() {
+        const expressionInput = document.getElementById('expression').value;
+        const resultDiv = document.getElementById('result');
+        
+        if (!expressionInput.trim()) {
+            resultDiv.innerHTML = '<div class="error">请输入表达式</div>';
+            return;
+        }
+
+        try {
+            currentAST = processor.parse(expressionInput);
+            
+            resultDiv.innerHTML = `
+                <div class="result">
+                    <h3>🌳 抽象语法树 (AST)：</h3>
+                    <div class="ast-tree">${processor.astToTree(currentAST)}</div>
+                    
+                    <h3>🔄 重构表达式：</h3>
+                    <div class="expression">${processor.astToString(currentAST)}</div>
+                </div>
+            `;
+            
+        } catch (error) {
+            resultDiv.innerHTML = `<div class="error">解析错误: ${error.message}</div>`;
+        }
+    }
+
+    function processExpression() {
+        if (!currentAST) {
+            parseExpression();
+            if (!currentAST) return;
+        }
+        
+        const coefficient = parseFloat(document.getElementById('coefficient').value) || 2;
+        const resultDiv = document.getElementById('result');
+        
+        try {
+            const processedAST = processor.processAST(currentAST, coefficient);
+            
+            const originalExpr = processor.astToString(currentAST);
+            const processedExpr = processor.astToString(processedAST);
+            
+            resultDiv.innerHTML = `
+                <div class="result">
+                    <h3>📋 原始表达式：</h3>
+                    <div class="expression">${originalExpr}</div>
+                    
+                    <h3>⚙️ 处理后表达式：</h3>
+                    <div class="expression" style="background: #d4edda; border-left-color: #28a745;">${processedExpr}</div>
+                    
+                    <h3>🌳 处理后的AST：</h3>
+                    <div class="ast-tree">${processor.astToTree(processedAST)}</div>
+                </div>
+            `;
+            
+        } catch (error) {
+            resultDiv.innerHTML = `<div class="error">处理错误: ${error.message}</div>`;
+        }
+    }
+
+    function showTokens() {
+        const expressionInput = document.getElementById('expression').value;
+        const resultDiv = document.getElementById('result');
+        
+        if (!expressionInput.trim()) {
+            resultDiv.innerHTML = '<div class="error">请输入表达式</div>';
+            return;
+        }
+
+        try {
+            const tokens = processor.tokenize(expressionInput);
+            
+            let tokensHtml = '<div class="result"><h3>🏷️ 标记解析：</h3><div>';
+            
+            tokens.forEach(token => {
+                let className = '';
+                switch (token.type) {
+                    case 'FUNCTION': className = 'token-function'; break;
+                    case 'OPERATOR': className = 'token-operator'; break;
+                    case 'NUMBER': className = 'token-number'; break;
+                    case 'VARIABLE': className = 'token-variable'; break;
+                    case 'EXTERNAL_VAR': className = 'token-external'; break;
+                    case 'ACTUAL_W': className = 'token-actual-w'; break;
+                    case 'PARENTHESIS': className = 'token-parenthesis'; break;
+                    case 'COMMA': className = 'token-comma'; break;
+                }
+                
+                tokensHtml += `<span class="token ${className}" title="${token.type}">${token.value}</span>`;
+            });
+            
+            tokensHtml += '</div>';
+            
+            // 添加图例
+            tokensHtml += `
+                <div style="margin-top: 20px;">
+                    <h4>🎨 标记类型图例：</h4>
+                    <span class="token token-function">函数</span>
+                    <span class="token token-operator">操作符</span>
+                    <span class="token token-number">数字</span>
+                    <span class="token token-variable">变量</span>
+                    <span class="token token-external">外部变量(#)</span>
+                    <span class="token token-actual-w">actual_w</span>
+                    <span class="token token-parenthesis">括号</span>
+                    <span class="token token-comma">逗号</span>
+                </div>
+            </div>`;
+            
+            resultDiv.innerHTML = tokensHtml;
+            
+        } catch (error) {
+            resultDiv.innerHTML = `<div class="error">标记化错误: ${error.message}</div>`;
+        }
+    }
+</script>
+```
+
+</body>
+</html>
