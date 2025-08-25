@@ -1,0 +1,198 @@
+// 判断是否包含特定后缀
+const hasActualSuffix = (str: string): boolean => {
+    return /\.actual_(x|y|w|h)\b/i.test(str);
+};
+
+// 分割函数参数（考虑嵌套）
+const splitFunctionArgs = (argsStr: string): string[] => {
+    const args: string[] = [];
+    let current = '';
+    let depth = 0;
+    
+    for (const char of argsStr) {
+        if (char === '(') depth++;
+        if (char === ')') depth--;
+        
+        if (char === ',' && depth === 0) {
+            args.push(current.trim());
+            current = '';
+        } else {
+            current += char;
+        }
+    }
+    if (current) args.push(current.trim());
+    return args;
+};
+
+// 主转换函数
+export const transformExpression = (expr: string, multiplier: string = "*2"): string => {
+    // 递归转换函数
+    const _transform = (expression: string): string => {
+        // 0. 检查是否包含后缀，是则直接返回
+        if (hasActualSuffix(expression)) {
+            return expression;
+        }
+        
+        // 1. 处理函数调用 - ifelse 特殊处理
+        let result = expression.replace(/\bifelse\s*\(([^)]*)\)/gi, (_, argsStr) => {
+            const args = splitFunctionArgs(argsStr);
+            
+            // 处理所有参数
+            const processedArgs = args.map((arg, index) => {
+                // 条件部分（奇数索引）保持不变
+                if (index % 2 === 0) {
+                    return arg;
+                }
+                // 结果部分（偶数索引）进行整体转换
+                return `(${arg})${multiplier}`;
+            });
+            
+            // 处理最后一个参数（当参数个数为偶数时）
+            if (args.length % 2 === 0) {
+                const lastIndex = args.length - 1;
+                processedArgs[lastIndex] = `(${args[lastIndex]})${multiplier}`;
+            }
+            
+            return `ifelse(${processedArgs.join(',')})`;
+        });
+        
+        // 2. 处理其他函数调用（非 ifelse）
+        result = result.replace(/\b(?!ifelse\b)(\w+)\s*\(([^)]*)\)/g, (match) => {
+            if (hasActualSuffix(match)) return match;
+            return `(${match})${multiplier}`;
+        });
+        
+        // 3. 处理括号表达式
+        result = result.replace(/\(([^()]+)\)/g, (_, inner) => {
+            if (hasActualSuffix(inner)) return `(${inner})`;
+            return `(${inner})`;
+        });
+        
+        // 4. 处理加减法单元（核心逻辑）
+        const parts: string[] = [];
+        let currentPart = '';
+        let depth = 0;
+        
+        // 分割顶层加减法表达式
+        for (let i = 0; i < result.length; i++) {
+            const char = result[i];
+            
+            // 跟踪括号深度
+            if (char === '(') depth++;
+            if (char === ')') depth--;
+            
+            // 在顶层加减号处分隔
+            if ((char === '+' || char === '-') && depth === 0) {
+                if (currentPart) parts.push(currentPart);
+                parts.push(char);
+                currentPart = '';
+            } else {
+                currentPart += char;
+            }
+        }
+        if (currentPart) parts.push(currentPart);
+        
+        // 处理每个运算单元
+        let finalResult = '';
+        for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            
+            // 运算符直接添加
+            if (part === '+' || part === '-') {
+                finalResult += part;
+                continue;
+            }
+            
+            // 包含后缀变量的部分保持原样
+            if (hasActualSuffix(part)) {
+                finalResult += part;
+            } else {
+                // 否则整体添加乘数
+                finalResult += `(${part})${multiplier}`;
+            }
+        }
+        
+        return finalResult;
+    };
+    
+    return _transform(expr);
+};
+
+// 测试用例
+const testCases = [
+    {
+        input: 'ifelse(ge(840*#ratiox-#x_gra*3,840*#ratiox+10),840*#ratiox+10,840*#ratiox-#x_gra*3)',
+        expected: 'ifelse(ge(840*#ratiox-#x_gra*3,840*#ratiox+10),(840*#ratiox+10)*2,(840*#ratiox-#x_gra*3)*2)',
+        multiplier: '*2'
+    },
+    {
+        input: 'ifelse(ge(840*#ratiox-#x_gra*3,840*#ratiox+10),840*#ratiox+10,gl(#value,#v.actual.x),#b.actual_w,840*#ratiox-#x_gra*3)',
+        expected: 'ifelse(ge(840*#ratiox-#x_gra*3,840*#ratiox+10),(840*#ratiox+10)*2,gl(#value,#v.actual.x),#b.actual_w,(840*#ratiox-#x_gra*3)*2)',
+        multiplier: '*2'
+    },
+    {
+        input: '34*#ratioy',
+        expected: '(34*#ratioy)*2',
+        multiplier: '*2'
+    },
+    {
+        input: '3.14 * #value - #item.actual_w',
+        expected: '(3.14 * #value)*2 - #item.actual_w',
+        multiplier: '*2'
+    },
+    {
+        input: '#w + #time.actual_h * 5 - 3.5',
+        expected: '(#w)*2 + #time.actual_h * 5 - (3.5)*2',
+        multiplier: '*2'
+    },
+    {
+        input: '(#temperature + 10) * #factor.actual_w',
+        expected: '((#temperature + 10)) * #factor.actual_w',
+        multiplier: '*2'
+    },
+    {
+        input: 'ifelse(lt(#temperature,0),#tt1.actual_w,0)',
+        expected: 'ifelse(lt(#temperature,0),#tt1.actual_w,(0)*2)',
+        multiplier: '*2'
+    },
+    {
+        input: 'sum(#value1, #value2) - #item.actual_w',
+        expected: '(sum(#value1, #value2))*2 - #item.actual_w',
+        multiplier: '*2'
+    },
+    {
+        input: '(#temp + 5) * (#pressure - 10) / #factor.actual_w',
+        expected: '((#temp + 5) * (#pressure - 10)) / #factor.actual_w',
+        multiplier: '*2'
+    },
+    {
+        input: 'ifelse(and(lt(#a,5), gt(#b,10)), #value1.actual_h, #value2)',
+        expected: 'ifelse(and(lt(#a,5), gt(#b,10)), #value1.actual_h,(#value2)*2)',
+        multiplier: '*2'
+    },
+    {
+        input: 'a + b * c - d / e',
+        expected: '(a)*2 + (b * c) - (d / e)*2',
+        multiplier: '*2'
+    },
+    {
+        input: 'ge(840*#ratiox-#x_gra*3,840*#ratiox+10)',
+        expected: '(ge(840*#ratiox-#x_gra*3,840*#ratiox+10))*2',
+        multiplier: '*2'
+    },
+    {
+        input: 'min(#value1, #value2.actual_h)',
+        expected: '(min(#value1, #value2.actual_h))*2',
+        multiplier: '*2'
+    }
+];
+
+// 验证测试用例
+testCases.forEach(({ input, expected, multiplier }, index) => {
+    const actual = transformExpression(input, multiplier);
+    console.log(`Test case ${index + 1}: ${actual === expected ? '✅ PASS' : '❌ FAIL'}`);
+    console.log(`Input:    ${input}`);
+    console.log(`Expected: ${expected}`);
+    console.log(`Actual:   ${actual}`);
+    console.log('--------------------------------');
+});
