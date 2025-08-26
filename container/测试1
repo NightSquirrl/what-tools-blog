@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>网格布局计算器</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            margin-top: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+        }
+        
+        .controls {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(50, 50, 70, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        
+        .visualization {
+            flex: 2;
+            min-width: 300px;
+            background: rgba(50, 50, 70, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        h2 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: #4fc3f7;
+        }
+        
+        .input-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: center;
+        }
+        
+        label {
+            width: 150px;
+            color: #e0e0e0;
+        }
+        
+        input, select {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background: rgba(30, 30, 40, 0.9);
+            color: white;
+        }
+        
+        button {
+            background: linear-gradient(to right, #2196F3, #21CBF3);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(33, 150, 243, 0.4);
+        }
+        
+        .grid-container {
+            background: rgba(30, 30, 40, 0.9);
+            border: 2px solid #444;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 15px;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+        
+        .grid {
+            display: grid;
+            gap: var(--gap);
+            width: var(--width);
+            height: var(--height);
+            position: relative;
+        }
+        
+        .grid-item {
+            background: rgba(33, 150, 243, 0.3);
+            border: 1px solid #64b5f6;
+            border-radius: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .grid-item:hover {
+            background: rgba(33, 150, 243, 0.5);
+            transform: scale(1.03);
+            z-index: 2;
+            box-shadow: 0 0 10px rgba(33, 150, 243, 0.7);
+        }
+        
+        .grid-item .info {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            font-size: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .results {
+            background: rgba(30, 30, 40, 0.9);
+            border: 2px solid #444;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .result-item {
+            padding: 8px;
+            border-bottom: 1px solid #444;
+            font-family: monospace;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .item-details {
+            margin-top: 15px;
+            padding: 15px;
+            background: rgba(30, 30, 40, 0.6);
+            border-radius: 5px;
+        }
+        
+        .item-details h3 {
+            margin-bottom: 10px;
+            color: #4fc3f7;
+        }
+        
+        .instructions {
+            background: rgba(30, 30, 40, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .instructions h2 {
+            color: #4fc3f7;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ul {
+            padding-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+        
+        .highlight {
+            color: #FFD54F;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .input-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>网格布局计算器</h1>
+    <p class="subtitle">根据行跨、列跨和间隙设置计算网格项目中每个元素的位置和尺寸</p>
+    
+    <div class="container">
+        <div class="content">
+            <div class="controls">
+                <div class="control-group">
+                    <h2>网格设置</h2>
+                    <div class="input-row">
+                        <label for="gridWidth">网格宽度:</label>
+                        <input type="number" id="gridWidth" value="800" min="100">
+                    </div>
+                    <div class="input-row">
+                        <label for="gridHeight">网格高度:</label>
+                        <input type="number" id="gridHeight" value="600" min="100">
+                    </div>
+                    <div class="input-row">
+                        <label for="rows">行数:</label>
+                        <input type="number" id="rows" value="6" min="1">
+                    </div>
+                    <div class="input-row">
+                        <label for="columns">列数:</label>
+                        <input type="number" id="columns" value="8" min="1">
+                    </div>
+                    <div class="input-row">
+                        <label for="gap">间隙 (px):</label>
+                        <input type="number" id="gap" value="10" min="0">
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h2>布局选项</h2>
+                    <div class="input-row">
+                        <label for="orientation">排列方向:</label>
+                        <select id="orientation">
+                            <option value="row">行优先</option>
+                            <option value="column">列优先</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="control-group">
+                    <h2>项目设置</h2>
+                    <div class="input-row">
+                        <label for="itemCount">项目数量:</label>
+                        <input type="number" id="itemCount" value="5" min="1" max="50">
+                    </div>
+                    <div class="input-row">
+                        <label for="maxRowspan">最大行跨:</label>
+                        <input type="number" id="maxRowspan" value="3" min="1" max="10">
+                    </div>
+                    <div class="input-row">
+                        <label for="maxColspan">最大列跨:</label>
+                        <input type="number" id="maxColspan" value="3" min="1" max="10">
+                    </div>
+                    <button id="generateItems">生成随机项目</button>
+                    <button id="calculateLayout">计算布局</button>
+                </div>
+            </div>
+            
+            <div class="visualization">
+                <h2>布局可视化</h2>
+                <div class="grid-container">
+                    <div class="grid" id="gridVisual">
+                        <!-- 网格将通过JS动态生成 -->
+                    </div>
+                </div>
+                <div class="item-details">
+                    <h3>项目详情</h3>
+                    <div id="itemDetails">
+                        <p>生成项目后将显示详细信息</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="results" id="results">
+            <h2>计算结果</h2>
+            <div id="resultContent">
+                <p>计算结果将显示在这里</p>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>使用说明</h2>
+            <ul>
+                <li>设置网格参数：宽度、高度、行数、列数和间隙</li>
+                <li>选择布局方向：行优先（默认）或列优先</li>
+                <li>设置项目数量及其最大行跨/列跨</li>
+                <li>点击<span class="highlight">"生成随机项目"</span>创建测试项目</li>
+                <li>点击<span class="highlight">"计算布局"</span>计算每个项目的位置和尺寸</li>
+                <li>结果将在可视化区域和计算结果面板中显示</li>
+                <li>悬停在网格项目上可查看详细信息</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        class GridLayoutCalculator {
+            constructor() {
+                this.gridWidth = 800;
+                this.gridHeight = 600;
+                this.rows = 6;
+                this.columns = 8;
+                this.gap = 10;
+                this.orientation = 'row';
+                this.items = [];
+                this.cellWidth = 0;
+                this.cellHeight = 0;
+                this.grid = [];
+            }
+            
+            setGridParams(width, height, rows, columns, gap) {
+                this.gridWidth = width;
+                this.gridHeight = height;
+                this.rows = rows;
+                this.columns = columns;
+                this.gap = gap;
+                
+                // 计算每个单元格的尺寸
+                this.cellWidth = (this.gridWidth - (this.columns - 1) * this.gap) / this.columns;
+                this.cellHeight = (this.gridHeight - (this.rows - 1) * this.gap) / this.rows;
+            }
+            
+            setOrientation(orientation) {
+                this.orientation = orientation;
+            }
+            
+            addItem(rowspan, colspan) {
+                this.items.push({
+                    rowspan: rowspan,
+                    colspan: colspan,
+                    position: { x: 0, y: 0 },
+                    size: { width: 0, height: 0 }
+                });
+            }
+            
+            clearItems() {
+                this.items = [];
+                this.grid = [];
+            }
+            
+            calculateLayout() {
+                if (this.items.length === 0) return false;
+                
+                // 初始化网格状态
+                this.grid = Array(this.rows).fill().map(() => Array(this.columns).fill(false));
+                
+                if (this.orientation === 'row') {
+                    // 行优先布局
+                    let row = 0;
+                    let col = 0;
+                    
+                    for (let item of this.items) {
+                        // 寻找合适的位置
+                        while (row < this.rows) {
+                            while (col < this.columns) {
+                                if (this.isCellAvailable(row, col, item.rowspan, item.colspan)) {
+                                    // 找到合适位置
+                                    this.placeItem(row, col, item);
+                                    break;
+                                }
+                                col++;
+                            }
+                            if (col >= this.columns) {
+                                col = 0;
+                                row++;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                } else {
+                    // 列优先布局
+                    let col = 0;
+                    let row = 0;
+                    
+                    for (let item of this.items) {
+                        // 寻找合适的位置
+                        while (col < this.columns) {
+                            while (row < this.rows) {
+                                if (this.isCellAvailable(row, col, item.rowspan, item.colspan)) {
+                                    // 找到合适位置
+                                    this.placeItem(row, col, item);
+                                    break;
+                                }
+                                row++;
+                            }
+                            if (row >= this.rows) {
+                                row = 0;
+                                col++;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+                
+                return true;
+            }
+            
+            isCellAvailable(row, col, rowspan, colspan) {
+                // 检查是否超出边界
+                if (row + rowspan > this.rows || col + colspan > this.columns) {
+                    return false;
+                }
+                
+                // 检查目标区域是否被占用
+                for (let r = row; r < row + rowspan; r++) {
+                    for (let c = col; c < col + colspan; c++) {
+                        if (this.grid[r][c]) {
+                            return false;
+                        }
+                    }
+                }
+                
+                return true;
+            }
+            
+            placeItem(row, col, item) {
+                // 标记单元格为已用
+                for (let r = row; r < row + item.rowspan; r++) {
+                    for (let c = col; c < col + item.colspan; c++) {
+                        this.grid[r][c] = true;
+                    }
+                }
+                
+                // 计算项目位置和尺寸
+                item.position = {
+                    x: col * (this.cellWidth + this.gap),
+                    y: row * (this.cellHeight + this.gap)
+                };
+                
+                item.size = {
+                    width: item.colspan * this.cellWidth + (item.colspan - 1) * this.gap,
+                    height: item.rowspan * this.cellHeight + (item.rowspan - 1) * this.gap
+                };
+            }
+            
+            getItemDetails() {
+                return this.items.map((item, index) => {
+                    return {
+                        id: index + 1,
+                        rowspan: item.rowspan,
+                        colspan: item.colspan,
+                        x: Math.round(item.position.x),
+                        y: Math.round(item.position.y),
+                        width: Math.round(item.size.width),
+                        height: Math.round(item.size.height)
+                    };
+                });
+            }
+        }
+
+        // DOM元素
+        const gridWidthInput = document.getElementById('gridWidth');
+        const gridHeightInput = document.getElementById('gridHeight');
+        const rowsInput = document.getElementById('rows');
+        const columnsInput = document.getElementById('columns');
+        const gapInput = document.getElementById('gap');
+        const orientationSelect = document.getElementById('orientation');
+        const itemCountInput = document.getElementById('itemCount');
+        const maxRowspanInput = document.getElementById('maxRowspan');
+        const maxColspanInput = document.getElementById('maxColspan');
+        const generateItemsBtn = document.getElementById('generateItems');
+        const calculateLayoutBtn = document.getElementById('calculateLayout');
+        const gridVisual = document.getElementById('gridVisual');
+        const itemDetails = document.getElementById('itemDetails');
+        const resultContent = document.getElementById('resultContent');
+        
+        // 布局计算器实例
+        const layoutCalculator = new GridLayoutCalculator();
+        
+        // 生成随机项目
+        generateItemsBtn.addEventListener('click', () => {
+            const itemCount = parseInt(itemCountInput.value);
+            const maxRowspan = parseInt(maxRowspanInput.value);
+            const maxColspan = parseInt(maxColspanInput.value);
+            
+            layoutCalculator.clearItems();
+            
+            for (let i = 0; i < itemCount; i++) {
+                const rowspan = Math.floor(Math.random() * maxRowspan) + 1;
+                const colspan = Math.floor(Math.random() * maxColspan) + 1;
+                layoutCalculator.addItem(rowspan, colspan);
+            }
+            
+            updateVisualization();
+            itemDetails.innerHTML = `<p>已生成 ${itemCount} 个随机项目</p>`;
+        });
+        
+        // 计算布局
+        calculateLayoutBtn.addEventListener('click', () => {
+            // 更新网格参数
+            layoutCalculator.setGridParams(
+                parseInt(gridWidthInput.value),
+                parseInt(gridHeightInput.value),
+                parseInt(rowsInput.value),
+                parseInt(columnsInput.value),
+                parseInt(gapInput.value)
+            );
+            
+            layoutCalculator.setOrientation(orientationSelect.value);
+            
+            // 计算布局
+            if (layoutCalculator.items.length === 0) {
+                itemDetails.innerHTML = "<p class='error'>请先生成项目</p>";
+                return;
+            }
+            
+            const success = layoutCalculator.calculateLayout();
+            
+            if (success) {
+                updateVisualization();
+                displayResults();
+            } else {
+                itemDetails.innerHTML = "<p class='error'>无法放置所有项目</p>";
+            }
+        });
+        
+        // 更新可视化
+        function updateVisualization() {
+            const items = layoutCalculator.getItemDetails();
+            
+            // 创建网格视觉表示
+            gridVisual.innerHTML = '';
+            gridVisual.style.setProperty('--width', `${layoutCalculator.gridWidth}px`);
+            gridVisual.style.setProperty('--height', `${layoutCalculator.gridHeight}px`);
+            gridVisual.style.setProperty('--gap', `${layoutCalculator.gap}px`);
+            
+            // 创建网格容器
+            const grid = document.createElement('div');
+            grid.className = 'grid';
+            
+            // 创建网格单元格
+            for (let row = 0; row < layoutCalculator.rows; row++) {
+                for (let col = 0; col < layoutCalculator.columns; col++) {
+                    const cell = document.createElement('div');
+                    cell.className = 'grid-cell';
+                    cell.style.gridRow = `${row + 1}`;
+                    cell.style.gridColumn = `${col + 1}`;
+                    cell.style.width = `${layoutCalculator.cellWidth}px`;
+                    cell.style.height = `${layoutCalculator.cellHeight}px`;
+                    grid.appendChild(cell);
+                }
+            }
+            
+            // 创建网格项目
+            for (const item of items) {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'grid-item';
+                itemElement.style.gridRow = `${item.position.y / (layoutCalculator.cellHeight + layoutCalculator.gap) + 1} / span ${item.rowspan}`;
+                itemElement.style.gridColumn = `${item.position.x / (layoutCalculator.cellWidth + layoutCalculator.gap) + 1} / span ${item.colspan}`;
+                itemElement.style.width = `${item.width}px`;
+                itemElement.style.height = `${item.height}px`;
+                
+                // 项目内容
+                itemElement.innerHTML = `
+                    <div>项目 #${item.id}</div>
+                    <div class="info">${item.rowspan}×${item.colspan}</div>
+                `;
+                
+                // 添加悬停效果
+                itemElement.addEventListener('mouseenter', () => {
+                    itemDetails.innerHTML = `
+                        <h3>项目 #${item.id} 详情</h3>
+                        <p>行跨: ${item.rowspan}</p>
+                        <p>列跨: ${item.colspan}</p>
+                        <p>位置: (${item.x}, ${item.y})</p>
+                        <p>尺寸: ${item.width}×${item.height}</p>
+                    `;
+                });
+                
+                grid.appendChild(itemElement);
+            }
+            
+            gridVisual.appendChild(grid);
+        }
+        
+        // 显示计算结果
+        function displayResults() {
+            const items = layoutCalculator.getItemDetails();
+            
+            // 构建结果HTML
+            let html = '';
+            items.forEach(item => {
+                html += `
+                    <div class="result-item">
+                        <strong>项目 #${item.id}:</strong><br>
+                        位置: (${item.x}, ${item.y})<br>
+                        尺寸: ${item.width}×${item.height}<br>
+                        行跨: ${item.rowspan}, 列跨: ${item.colspan}
+                    </div>
+                `;
+            });
+            
+            resultContent.innerHTML = html || '<p>无计算结果</p>';
+        }
+        
+        // 初始化
+        function init() {
+            // 设置默认值
+            layoutCalculator.setGridParams(
+                parseInt(gridWidthInput.value),
+                parseInt(gridHeightInput.value),
+                parseInt(rowsInput.value),
+                parseInt(columnsInput.value),
+                parseInt(gapInput.value)
+            );
+            
+            // 生成一些初始项目
+            for (let i = 0; i < 5; i++) {
+                const rowspan = Math.floor(Math.random() * 3) + 1;
+                const colspan = Math.floor(Math.random() * 3) + 1;
+                layoutCalculator.addItem(rowspan, colspan);
+            }
+            
+            // 计算初始布局
+            layoutCalculator.setOrientation(orientationSelect.value);
+            layoutCalculator.calculateLayout();
+            updateVisualization();
+            displayResults();
+        }
+        
+        // 页面加载时初始化
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
