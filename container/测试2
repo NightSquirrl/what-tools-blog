@@ -1,0 +1,216 @@
+class GridLayout {
+constructor(rows, cols, width, height, gap = 0) {
+this.rows = rows;
+this.cols = cols;
+this.width = width;
+this.height = height;
+this.gap = gap;
+
+```
+// 计算每个单元格的尺寸
+this.cellWidth = (width - gap * (cols - 1)) / cols;
+this.cellHeight = (height - gap * (rows - 1)) / rows;
+
+// 网格占用状态矩阵
+this.grid = Array(rows).fill().map(() => Array(cols).fill(false));
+```
+
+}
+
+/**
+
+- 计算项目位置
+- @param {Array} items - 项目数组，每个项目包含 {rowspan, columnspan}
+- @param {string} priority - 排列优先级 ‘row’ 或 ‘column’
+- @returns {Array} 返回每个项目的位置信息 {x, y, width, height, gridRow, gridCol}
+  */
+  calculateLayout(items, priority = ‘row’) {
+  // 重置网格状态
+  this.grid = Array(this.rows).fill().map(() => Array(this.cols).fill(false));
+
+```
+const result = [];
+
+for (let i = 0; i < items.length; i++) {
+  const item = items[i];
+  const position = this.findNextPosition(item.rowspan, item.columnspan, priority);
+  
+  if (position) {
+    // 标记网格为已占用
+    this.markGridUsed(position.row, position.col, item.rowspan, item.columnspan);
+    
+    // 计算实际像素位置和尺寸
+    const itemInfo = this.calculateItemDimensions(
+      position.row, 
+      position.col, 
+      item.rowspan, 
+      item.columnspan
+    );
+    
+    result.push({
+      ...itemInfo,
+      gridRow: position.row,
+      gridCol: position.col,
+      rowspan: item.rowspan,
+      columnspan: item.columnspan,
+      index: i
+    });
+  } else {
+    // 无法放置的项目
+    result.push({
+      x: 0,
+      y: 0,
+      width: 0,
+      height: 0,
+      gridRow: -1,
+      gridCol: -1,
+      rowspan: item.rowspan,
+      columnspan: item.columnspan,
+      index: i,
+      overflow: true
+    });
+  }
+}
+
+return result;
+```
+
+}
+
+/**
+
+- 查找下一个可用位置（紧密型排列）
+  */
+  findNextPosition(rowspan, columnspan, priority) {
+  if (priority === ‘row’) {
+  // 行优先：逐行扫描
+  for (let r = 0; r <= this.rows - rowspan; r++) {
+  for (let c = 0; c <= this.cols - columnspan; c++) {
+  if (this.canPlaceAt(r, c, rowspan, columnspan)) {
+  return { row: r, col: c };
+  }
+  }
+  }
+  } else {
+  // 列优先：逐列扫描
+  for (let c = 0; c <= this.cols - columnspan; c++) {
+  for (let r = 0; r <= this.rows - rowspan; r++) {
+  if (this.canPlaceAt(r, c, rowspan, columnspan)) {
+  return { row: r, col: c };
+  }
+  }
+  }
+  }
+
+```
+return null; // 无法放置
+```
+
+}
+
+/**
+
+- 检查指定位置是否可以放置项目
+  */
+  canPlaceAt(startRow, startCol, rowspan, columnspan) {
+  // 检查边界
+  if (startRow + rowspan > this.rows || startCol + columnspan > this.cols) {
+  return false;
+  }
+
+```
+// 检查区域是否被占用
+for (let r = startRow; r < startRow + rowspan; r++) {
+  for (let c = startCol; c < startCol + columnspan; c++) {
+    if (this.grid[r][c]) {
+      return false;
+    }
+  }
+}
+
+return true;
+```
+
+}
+
+/**
+
+- 标记网格区域为已使用
+  */
+  markGridUsed(startRow, startCol, rowspan, columnspan) {
+  for (let r = startRow; r < startRow + rowspan; r++) {
+  for (let c = startCol; c < startCol + columnspan; c++) {
+  this.grid[r][c] = true;
+  }
+  }
+  }
+
+/**
+
+- 计算项目的实际像素位置和尺寸
+  */
+  calculateItemDimensions(gridRow, gridCol, rowspan, columnspan) {
+  const x = gridCol * (this.cellWidth + this.gap);
+  const y = gridRow * (this.cellHeight + this.gap);
+  const width = columnspan * this.cellWidth + (columnspan - 1) * this.gap;
+  const height = rowspan * this.cellHeight + (rowspan - 1) * this.gap;
+
+```
+return { x, y, width, height };
+```
+
+}
+
+/**
+
+- 获取网格使用状态（调试用）
+  */
+  getGridState() {
+  return this.grid.map(row => […row]);
+  }
+  }
+
+// 使用示例
+function example() {
+// 创建 4x4 网格，总尺寸 400x400，间隙 10px
+const grid = new GridLayout(4, 4, 400, 400, 10);
+
+// 定义要放置的项目
+const items = [
+{ rowspan: 2, columnspan: 2 }, // 2x2 大项目
+{ rowspan: 1, columnspan: 1 }, // 1x1 小项目
+{ rowspan: 1, columnspan: 2 }, // 1x2 横条项目
+{ rowspan: 2, columnspan: 1 }, // 2x1 竖条项目
+{ rowspan: 1, columnspan: 1 }, // 1x1 小项目
+];
+
+// 计算布局（行优先）
+const layout = grid.calculateLayout(items, ‘row’);
+
+console.log(‘行优先布局结果:’);
+layout.forEach((item, index) => {
+if (item.overflow) {
+console.log(`项目 ${index}: 无法放置 (${item.rowspan}x${item.columnspan})`);
+} else {
+console.log(`项目 ${index}: 位置(${item.x}, ${item.y}) 尺寸(${item.width}x${item.height}) 网格位置(${item.gridRow}, ${item.gridCol})`);
+}
+});
+
+// 计算布局（列优先）
+const grid2 = new GridLayout(4, 4, 400, 400, 10);
+const layout2 = grid2.calculateLayout(items, ‘column’);
+
+console.log(’\n列优先布局结果:’);
+layout2.forEach((item, index) => {
+if (item.overflow) {
+console.log(`项目 ${index}: 无法放置 (${item.rowspan}x${item.columnspan})`);
+} else {
+console.log(`项目 ${index}: 位置(${item.x}, ${item.y}) 尺寸(${item.width}x${item.height}) 网格位置(${item.gridRow}, ${item.gridCol})`);
+}
+});
+
+return { layout, layout2 };
+}
+
+// 运行示例
+// example();
