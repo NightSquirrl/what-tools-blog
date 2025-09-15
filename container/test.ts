@@ -1,1 +1,257 @@
 1
+var test = [
+  {
+    input: 'ifelse(ge(840*#ratiox-#x_gra*3,840*#ratiox+10),840*#ratiox+10,840*#ratiox-#x_gra*3)',
+    expected: 'ifelse(ge(840*#ratiox-#x_gra*3,840*#ratiox+10),(840*#ratiox+10)*2,(840*#ratiox-#x_gra*3)*2)',
+    coefficient: '2',
+  },
+  {
+    input:
+      'ifelse(ge(840*#ratiox-#x_gra*3,840*#ratiox+10),840*#ratiox+10,gl(#value,#v.actual.x),#b.actual_w,840*#ratiox-#x_gra*3)',
+    expected:
+      'ifelse(ge(840*#ratiox-#x_gra*3,840*#ratiox+10),(840*#ratiox+10)*2,gl(#value,#v.actual.x),#b.actual_w,(840*#ratiox-#x_gra*3)*2)',
+    coefficient: '2',
+  },
+  {
+    input: '34*#ratioy',
+    expected: '(34*#ratioy)*2',
+    coefficient: '2',
+  },
+  {
+    input: '3.14 * #value - #item.actual_w',
+    expected: '(3.14 * #value)*2 - #item.actual_w',
+    coefficient: '2',
+  },
+  {
+    input: '#w + #time.actual_h * 5 - 3.5',
+    expected: '(#w)*2 + #time.actual_h * 5 - (3.5)*2',
+    coefficient: '2',
+  },
+  {
+    input: '(#temperature + 10) * #factor.actual_w',
+    expected: '((#temperature + 10)) * #factor.actual_w',
+    coefficient: '2',
+  },
+  {
+    input: 'ifelse(lt(#temperature,0),#tt1.actual_w,0)',
+    expected: 'ifelse(lt(#temperature,0),#tt1.actual_w,(0)*2)',
+    coefficient: '2',
+  },
+  {
+    input: 'sum(#value1, #value2) - #item.actual_w',
+    expected: '(sum(#value1, #value2))*2 - #item.actual_w',
+    coefficient: '2',
+  },
+  {
+    input: '(#temp + 5) * (#pressure - 10) / #factor.actual_w',
+    expected: '((#temp + 5) * (#pressure - 10)) / #factor.actual_w',
+    coefficient: '2',
+  },
+  {
+    input: 'ifelse(and(lt(#a,5), gt(#b,10)), #value1.actual_h, #value2)',
+    expected: 'ifelse(and(lt(#a,5), gt(#b,10)), #value1.actual_h,(#value2)*2)',
+    coefficient: '2',
+  },
+  {
+    input: 'a + b * c - d / e',
+    expected: '(a)*2 + (b * c) - (d / e)*2',
+    coefficient: '2',
+  },
+  {
+    input: 'ge(840*#ratiox-#x_gra*3,840*#ratiox+10)',
+    expected: '(ge(840*#ratiox-#x_gra*3,840*#ratiox+10))*2',
+    coefficient: '2',
+  },
+  {
+    input: 'min(#value1, #value2.actual_h)',
+    expected: '(min(#value1, #value2.actual_h))*2',
+    coefficient: '2',
+  },
+  {
+    input: 'ifelse(le(#h,2400),885+(#h-1920)/8*4.5,670+(#h-1920))+#JAni_1/2',
+    expected: 'ifelse(le(#h,2400),(885+(#h-1920)/8*4.5)*2,(670+(#h-1920)*2))+#JAni_1/2 * 2',
+    coefficient: '2',
+  },
+];
+
+function scaleExpression(input, coefficient) {
+  var coef = String(coefficient !== null && coefficient !== void 0 ? coefficient : '').trim();
+  var coefSuffix = '*'.concat(coef);
+  var isProtected = function (s) {
+    return /#\w+\.actual_(w|h)\b/.test(s);
+  };
+  var hasProtected = function (s) {
+    return /#\w+\.actual_(w|h)\b/.test(s);
+  };
+  var trimOuterSpaces = function (s) {
+    return s.replace(/^\s+|\s+$/g, '');
+  };
+  var wrapScaled = function (s) {
+    return '('.concat(s, ')').concat(coefSuffix);
+  };
+  var isPureIdentifier = function (s) {
+    return /^[A-Za-z_]\w*$/.test(s);
+  };
+  var isNumber = function (s) {
+    return /^\d+(?:\.\d+)?$/.test(s);
+  };
+  var isFunctionCall = function (s) {
+    s = trimOuterSpaces(s);
+    var m = s.match(/^([A-Za-z_]\w*)\s*\(/);
+    if (!m) return false;
+    var depth = 0;
+    for (var i = 0; i < s.length; i++) {
+      if (s[i] === '(') depth++;
+      else if (s[i] === ')') depth--;
+    }
+
+    return depth === 0 && s.endsWith(')');
+  };
+  var splitIfElseArgs = function (inside) {
+    var parts = [];
+    var depth = 0,
+      last = 0;
+    for (var i = 0; i < inside.length; i++) {
+      var ch = inside[i];
+      if (ch === '(') depth++;
+      else if (ch === ')') depth = Math.max(0, depth - 1);
+      else if (ch === ',' && depth === 0) {
+        parts.push(inside.slice(last, i));
+        last = i + 1;
+      }
+    }
+    parts.push(inside.slice(last));
+
+    return parts; // 保留原始空格
+  };
+  var transformIfElse = function (expr) {
+    var m = expr.match(/^ifelse\s*\((.*)\)$/);
+    if (!m) return scaleTerm(expr);
+    var inside = m[1];
+    var args = splitIfElseArgs(inside);
+    var out = [];
+    for (var i = 0; i < args.length; i++) {
+      var partRaw = args[i];
+      var part = trimOuterSpaces(partRaw);
+      if (i === 0 || (i % 2 === 0 && i !== args.length - 1)) {
+        out.push(partRaw);
+      } else {
+        if (isProtected(part) || hasProtected(part)) {
+          out.push(partRaw);
+        } else if (isFunctionCall(part)) {
+          out.push(wrapScaled(part));
+        } else {
+          out.push(wrapScaled(part));
+        }
+      }
+    }
+    var joined = 'ifelse('.concat(out.join(','), ')');
+
+    return joined.replace(/\s+\)/g, ')');
+  };
+  var scaleTerm = function (term) {
+    term = trimOuterSpaces(term);
+    if (!term) return term;
+    if (isProtected(term)) return term;
+    if (/[*/]/.test(term) && hasProtected(term)) return term;
+    if (isFunctionCall(term)) {
+      return wrapScaled(term);
+    }
+    if (/^ifelse\s*\(/.test(term)) {
+      return transformIfElse(term);
+    }
+    if (/^[A-Za-z_]\w*(?:\s*\*\s*[A-Za-z_]\w*)+$/.test(term)) {
+      return term;
+    }
+    if (/[*/]/.test(term)) {
+      return wrapScaled(term);
+    }
+    if (isPureIdentifier(term) || isNumber(term) || term.startsWith('#')) {
+      return wrapScaled(term);
+    }
+    var t = term.trim();
+    if (t.startsWith('(') && t.endsWith(')')) {
+      return wrapScaled(t);
+    }
+
+    return wrapScaled(term);
+  };
+  var containsProtectedInMulChain = function (s) {
+    return /[*/]/.test(s) && hasProtected(s);
+  };
+  var topLevelPlusMinusSplit = function (s) {
+    var parts = [];
+    var depth = 0,
+      last = 0;
+    for (var i = 0; i < s.length; i++) {
+      var ch = s[i];
+      if (ch === '(') depth++;
+      else if (ch === ')') depth = Math.max(0, depth - 1);
+      else if (depth === 0 && (ch === '+' || ch === '-')) {
+        parts.push(s.slice(last, i));
+        parts.push(ch);
+        last = i + 1;
+      }
+    }
+    parts.push(s.slice(last));
+
+    return parts;
+  };
+  var protectMulDivSides = function (s) {
+    s = s.replace(/^(.*\S)\s*\*\s*(#\w+\.actual_(w|h)\b)$/, '($1) * $2');
+    s = s.replace(/^(#\w+\.actual_(w|h)\b)\s*\*\s*(.*\S)$/, '$1 * ($2)');
+    s = s.replace(/^(.*\S)\s*\/\s*(#\w+\.actual_(w|h)\b)$/, '($1) / $2');
+    s = s.replace(/^(#\w+\.actual_(w|h)\b)\s*\/\s*(.*\S)$/, '$1 / ($2)');
+
+    return s.replace(/\s+\)/g, ')');
+  };
+  var transformTopLevel = function (s) {
+    s = trimOuterSpaces(s);
+    if (!s) return s;
+    if (/^ifelse\s*\(/.test(s)) return transformIfElse(s);
+    if (isFunctionCall(s)) {
+      return wrapScaled(s);
+    }
+    var tokens = topLevelPlusMinusSplit(s);
+    if (tokens.length === 1) {
+      if (containsProtectedInMulChain(s)) {
+        return protectMulDivSides(s);
+      }
+
+      return scaleTerm(tokens[0]);
+    }
+    var out = [];
+    for (var i = 0; i < tokens.length; i++) {
+      var tok = tokens[i];
+      if (tok === '+' || tok === '-') {
+        out.push(' '.concat(tok, ' '));
+      } else {
+        var term = trimOuterSpaces(tok);
+        if (hasProtected(term)) {
+          out.push(term);
+        } else if (/^[A-Za-z_]\w*(?:\s*\*\s*[A-Za-z_]\w*)+$/.test(term)) {
+          out.push('('.concat(term, ')'));
+        } else if (/[*/]/.test(term)) {
+          out.push(wrapScaled(term));
+        } else if (isFunctionCall(term)) {
+          out.push(wrapScaled(term));
+        } else {
+          out.push(wrapScaled(term));
+        }
+      }
+    }
+
+    return out.join('');
+  };
+
+  return transformTopLevel(input);
+}
+for (var _i = 0, _a = test; _i < _a.length; _i++) {
+  var _b = _a[_i],
+    input = _b.input,
+    expected = _b.expected,
+    coefficient = _b.coefficient;
+  var got = scaleExpression(input, coefficient);
+  var ok = got === expected;
+  console.log(ok ? 'OK' : 'NG', '\n in :', input, '\n got:', got, '\n exp:', expected, '\n');
+}
