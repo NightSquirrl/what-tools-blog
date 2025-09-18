@@ -1,0 +1,107 @@
+// vertex.glsl
+attribute vec2 aVertexPosition;
+attribute vec2 aTextureCoord;
+
+uniform mat3 projectionMatrix;
+
+varying vec2 vTextureCoord;
+
+void main(void) {
+    gl_Position = vec4((projectionMatrix * vec3(aVertexPosition, 1.0)).xy, 0.0, 1.0);
+    vTextureCoord = aTextureCoord;
+}
+
+
+
+
+// fragment.glsl
+varying vec2 vTextureCoord;
+
+// 输入纹理，这是被滤镜应用的原图
+uniform sampler2D uSampler;
+
+// 这是一个包含模糊路径信息的纹理。
+// 路径内部为白色（RGB: 1, 1, 1），路径外部为黑色（RGB: 0, 0, 0）。
+uniform sampler2D uPathMask;
+
+// 另一个纹理，通常是原图的模糊版本
+uniform sampler2D uBlurredTexture;
+
+void main(void) {
+    vec4 originalColor = texture2D(uSampler, vTextureCoord);
+    vec4 blurredColor = texture2D(uBlurredTexture, vTextureCoord);
+    
+    // 从路径遮罩纹理中采样，获取遮罩的强度
+    float maskValue = texture2D(uPathMask, vTextureCoord).r;
+
+    // 根据遮罩值混合两种颜色
+    // `mix` 函数在两个值之间进行线性插值
+    // 如果 maskValue 为 1.0 (白色)，结果是 blurredColor
+    // 如果 maskValue 为 0.0 (黑色)，结果是 originalColor
+    vec4 finalColor = mix(originalColor, blurredColor, maskValue);
+
+    gl_FragColor = finalColor;
+}
+
+
+
+
+
+
+
+
+
+import { Graphics, RenderTexture } from 'pixi.js';
+
+// 创建一个与屏幕大小相同的渲染纹理
+const maskTexture = RenderTexture.create({ width: app.screen.width, height: app.screen.height });
+
+// 绘制路径，例如一个圆形
+const graphics = new Graphics();
+graphics.beginFill(0xffffff); // 遮罩的颜色是白色
+graphics.drawCircle(app.screen.width / 2, app.screen.height / 2, 100);
+graphics.endFill();
+
+// 将图形渲染到纹理中
+app.renderer.render({ container: graphics, target: maskTexture });
+
+
+
+
+
+import { BlurFilter, RenderTexture, Sprite } from 'pixi.js';
+
+const originalImage = Sprite.from('path/to/your/image.jpg');
+
+// 创建一个渲染纹理，用于存储模糊后的图像
+const blurredTexture = RenderTexture.create({ width: originalImage.width, height: originalImage.height });
+
+// 对原图应用模糊滤镜
+originalImage.filters = [new BlurFilter()];
+
+// 将模糊后的图像渲染到纹理中
+app.renderer.render({ container: originalImage, target: blurredTexture });
+
+// 移除滤镜，以防对原图本身产生影响
+originalImage.filters = null;
+
+
+import { Filter, Texture } from 'pixi.js';
+
+// 创建一个自定义的滤镜类
+class BackgroundBlurFilter extends Filter {
+    constructor(pathMaskTexture, blurredTexture) {
+        // 调用父类构造函数
+        // 第一个参数是顶点着色器，第二个是片段着色器
+        super(vertexShaderSource, fragmentShaderSource, {
+            uPathMask: pathMaskTexture,
+            uBlurredTexture: blurredTexture,
+        });
+    }
+}
+
+// 实例化滤镜
+const myBlurFilter = new BackgroundBlurFilter(maskTexture, blurredTexture);
+
+// 将滤镜应用到要被模糊的 Sprite 或 Container 上
+myTargetSprite.filters = [myBlurFilter];
