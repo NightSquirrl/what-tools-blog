@@ -1,0 +1,428 @@
+/**
+
+- 时间工具类
+- 提供常用的时间操作方法
+  */
+  export class TimeUtil {
+  /**
+  - 获取当前时间
+  - @returns Date 当前时间对象
+    */
+    static now(): Date {
+    return new Date();
+    }
+
+/**
+
+- 获取当前时间戳（毫秒）
+- @returns number 时间戳
+  */
+  static timestamp(): number {
+  return Date.now();
+  }
+
+/**
+
+- 获取当前时间戳（秒）
+- @returns number 时间戳（秒）
+  */
+  static timestampSeconds(): number {
+  return Math.floor(Date.now() / 1000);
+  }
+
+/**
+
+- 格式化时间
+- @param date 时间对象或时间戳
+- @param format 格式字符串，默认 ‘YYYY-MM-DD HH:mm:ss’
+- @returns string 格式化后的时间字符串
+  */
+  static format(date?: Date | number | string, format: string = ‘YYYY-MM-DD HH:mm:ss’): string {
+  const d = date ? new Date(date) : new Date();
+
+```
+const year = d.getFullYear();
+const month = d.getMonth() + 1;
+const day = d.getDate();
+const hour = d.getHours();
+const minute = d.getMinutes();
+const second = d.getSeconds();
+const millisecond = d.getMilliseconds();
+
+const formatMap: { [key: string]: string } = {
+  'YYYY': year.toString(),
+  'YY': year.toString().slice(-2),
+  'MM': month.toString().padStart(2, '0'),
+  'M': month.toString(),
+  'DD': day.toString().padStart(2, '0'),
+  'D': day.toString(),
+  'HH': hour.toString().padStart(2, '0'),
+  'H': hour.toString(),
+  'mm': minute.toString().padStart(2, '0'),
+  'm': minute.toString(),
+  'ss': second.toString().padStart(2, '0'),
+  's': second.toString(),
+  'SSS': millisecond.toString().padStart(3, '0'),
+  'SS': Math.floor(millisecond / 10).toString().padStart(2, '0'),
+  'S': Math.floor(millisecond / 100).toString()
+};
+
+let result = format;
+Object.keys(formatMap).forEach(key => {
+  result = result.replace(new RegExp(key, 'g'), formatMap[key]);
+});
+
+return result;
+```
+
+}
+
+/**
+
+- 获取年份
+- @param date 时间对象，默认当前时间
+- @returns number 年份
+  */
+  static getYear(date?: Date): number {
+  const d = date || new Date();
+  return d.getFullYear();
+  }
+
+/**
+
+- 获取月份（1-12）
+- @param date 时间对象，默认当前时间
+- @returns number 月份
+  */
+  static getMonth(date?: Date): number {
+  const d = date || new Date();
+  return d.getMonth() + 1;
+  }
+
+/**
+
+- 获取日期
+- @param date 时间对象，默认当前时间
+- @returns number 日期
+  */
+  static getDay(date?: Date): number {
+  const d = date || new Date();
+  return d.getDate();
+  }
+
+/**
+
+- 获取小时
+- @param date 时间对象，默认当前时间
+- @returns number 小时
+  */
+  static getHour(date?: Date): number {
+  const d = date || new Date();
+  return d.getHours();
+  }
+
+/**
+
+- 获取分钟
+- @param date 时间对象，默认当前时间
+- @returns number 分钟
+  */
+  static getMinute(date?: Date): number {
+  const d = date || new Date();
+  return d.getMinutes();
+  }
+
+/**
+
+- 获取秒
+- @param date 时间对象，默认当前时间
+- @returns number 秒
+  */
+  static getSecond(date?: Date): number {
+  const d = date || new Date();
+  return d.getSeconds();
+  }
+
+/**
+
+- 获取星期几（0-6，0表示周日）
+- @param date 时间对象，默认当前时间
+- @returns number 星期几
+  */
+  static getWeekday(date?: Date): number {
+  const d = date || new Date();
+  return d.getDay();
+  }
+
+/**
+
+- 获取星期几的中文名称
+- @param date 时间对象，默认当前时间
+- @returns string 星期几的中文名称
+  */
+  static getWeekdayName(date?: Date): string {
+  const weekdays = [‘星期日’, ‘星期一’, ‘星期二’, ‘星期三’, ‘星期四’, ‘星期五’, ‘星期六’];
+  return weekdays[this.getWeekday(date)];
+  }
+
+/**
+
+- 解析时间字符串
+- @param timeString 时间字符串
+- @returns Date | null 解析后的时间对象，解析失败返回null
+  */
+  static parse(timeString: string): Date | null {
+  try {
+  const date = new Date(timeString);
+  return isNaN(date.getTime()) ? null : date;
+  } catch {
+  return null;
+  }
+  }
+
+/**
+
+- 判断是否为闰年
+- @param year 年份，默认当前年份
+- @returns boolean 是否为闰年
+  */
+  static isLeapYear(year?: number): boolean {
+  const y = year || this.getYear();
+  return (y % 4 === 0 && y % 100 !== 0) || y % 400 === 0;
+  }
+
+/**
+
+- 获取某月的天数
+- @param year 年份，默认当前年份
+- @param month 月份（1-12），默认当前月份
+- @returns number 该月的天数
+  */
+  static getDaysInMonth(year?: number, month?: number): number {
+  const y = year || this.getYear();
+  const m = month || this.getMonth();
+  return new Date(y, m, 0).getDate();
+  }
+
+/**
+
+- 时间加法
+- @param date 基准时间，默认当前时间
+- @param value 增加的数值
+- @param unit 时间单位：‘year’|‘month’|‘day’|‘hour’|‘minute’|‘second’|‘millisecond’
+- @returns Date 计算后的时间
+  */
+  static add(date: Date = new Date(), value: number, unit: ‘year’ | ‘month’ | ‘day’ | ‘hour’ | ‘minute’ | ‘second’ | ‘millisecond’): Date {
+  const result = new Date(date);
+
+```
+switch (unit) {
+  case 'year':
+    result.setFullYear(result.getFullYear() + value);
+    break;
+  case 'month':
+    result.setMonth(result.getMonth() + value);
+    break;
+  case 'day':
+    result.setDate(result.getDate() + value);
+    break;
+  case 'hour':
+    result.setHours(result.getHours() + value);
+    break;
+  case 'minute':
+    result.setMinutes(result.getMinutes() + value);
+    break;
+  case 'second':
+    result.setSeconds(result.getSeconds() + value);
+    break;
+  case 'millisecond':
+    result.setMilliseconds(result.getMilliseconds() + value);
+    break;
+}
+
+return result;
+```
+
+}
+
+/**
+
+- 时间减法
+- @param date 基准时间，默认当前时间
+- @param value 减少的数值
+- @param unit 时间单位
+- @returns Date 计算后的时间
+  */
+  static subtract(date: Date = new Date(), value: number, unit: ‘year’ | ‘month’ | ‘day’ | ‘hour’ | ‘minute’ | ‘second’ | ‘millisecond’): Date {
+  return this.add(date, -value, unit);
+  }
+
+/**
+
+- 计算两个时间的差值
+- @param date1 时间1
+- @param date2 时间2
+- @param unit 返回的时间单位，默认为毫秒
+- @returns number 时间差
+  */
+  static diff(date1: Date, date2: Date, unit: ‘year’ | ‘month’ | ‘day’ | ‘hour’ | ‘minute’ | ‘second’ | ‘millisecond’ = ‘millisecond’): number {
+  const diff = date1.getTime() - date2.getTime();
+
+```
+switch (unit) {
+  case 'year':
+    return Math.floor(diff / (365.25 * 24 * 60 * 60 * 1000));
+  case 'month':
+    return Math.floor(diff / (30.44 * 24 * 60 * 60 * 1000));
+  case 'day':
+    return Math.floor(diff / (24 * 60 * 60 * 1000));
+  case 'hour':
+    return Math.floor(diff / (60 * 60 * 1000));
+  case 'minute':
+    return Math.floor(diff / (60 * 1000));
+  case 'second':
+    return Math.floor(diff / 1000);
+  case 'millisecond':
+  default:
+    return diff;
+}
+```
+
+}
+
+/**
+
+- 获取今天的开始时间（00:00:00）
+- @returns Date 今天开始时间
+  */
+  static startOfDay(date?: Date): Date {
+  const d = date || new Date();
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  }
+
+/**
+
+- 获取今天的结束时间（23:59:59.999）
+- @returns Date 今天结束时间
+  */
+  static endOfDay(date?: Date): Date {
+  const d = date || new Date();
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate(), 23, 59, 59, 999);
+  }
+
+/**
+
+- 获取本周的开始时间（周一00:00:00）
+- @returns Date 本周开始时间
+  */
+  static startOfWeek(date?: Date): Date {
+  const d = date || new Date();
+  const day = d.getDay();
+  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
+  return this.startOfDay(new Date(d.setDate(diff)));
+  }
+
+/**
+
+- 获取本月的开始时间
+- @returns Date 本月开始时间
+  */
+  static startOfMonth(date?: Date): Date {
+  const d = date || new Date();
+  return new Date(d.getFullYear(), d.getMonth(), 1);
+  }
+
+/**
+
+- 获取本年的开始时间
+- @returns Date 本年开始时间
+  */
+  static startOfYear(date?: Date): Date {
+  const d = date || new Date();
+  return new Date(d.getFullYear(), 0, 1);
+  }
+
+/**
+
+- 判断是否为同一天
+- @param date1 时间1
+- @param date2 时间2
+- @returns boolean 是否为同一天
+  */
+  static isSameDay(date1: Date, date2: Date): boolean {
+  return this.format(date1, ‘YYYY-MM-DD’) === this.format(date2, ‘YYYY-MM-DD’);
+  }
+
+/**
+
+- 判断是否为今天
+- @param date 时间对象
+- @returns boolean 是否为今天
+  */
+  static isToday(date: Date): boolean {
+  return this.isSameDay(date, new Date());
+  }
+
+/**
+
+- 相对时间描述（如：刚刚、1分钟前、2小时前等）
+- @param date 时间对象
+- @returns string 相对时间描述
+  */
+  static fromNow(date: Date): string {
+  const now = new Date();
+  const diff = now.getTime() - date.getTime();
+
+```
+if (diff < 0) {
+  return '未来时间';
+}
+
+const minute = 60 * 1000;
+const hour = minute * 60;
+const day = hour * 24;
+const month = day * 30;
+const year = day * 365;
+
+if (diff < minute) {
+  return '刚刚';
+} else if (diff < hour) {
+  return `${Math.floor(diff / minute)}分钟前`;
+} else if (diff < day) {
+  return `${Math.floor(diff / hour)}小时前`;
+} else if (diff < month) {
+  return `${Math.floor(diff / day)}天前`;
+} else if (diff < year) {
+  return `${Math.floor(diff / month)}个月前`;
+} else {
+  return `${Math.floor(diff / year)}年前`;
+}
+```
+
+}
+
+/**
+
+- 常用时间格式预设
+  */
+  static readonly FORMAT = {
+  /** YYYY-MM-DD HH:mm:ss */
+  DATETIME: ‘YYYY-MM-DD HH:mm:ss’,
+  /** YYYY-MM-DD */
+  DATE: ‘YYYY-MM-DD’,
+  /** HH:mm:ss */
+  TIME: ‘HH:mm:ss’,
+  /** YYYY/MM/DD */
+  DATE_SLASH: ‘YYYY/MM/DD’,
+  /** HH:mm */
+  TIME_SHORT: ‘HH:mm’,
+  /** YYYY-MM-DD HH:mm */
+  DATETIME_SHORT: ‘YYYY-MM-DD HH:mm’,
+  /** YY-MM-DD */
+  DATE_SHORT: ‘YY-MM-DD’,
+  /** YYYY年MM月DD日 */
+  DATE_CN: ‘YYYY年MM月DD日’,
+  /** HH时mm分ss秒 */
+  TIME_CN: ‘HH时mm分ss秒’
+  } as const;
+  }
