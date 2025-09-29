@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixiJS物理下落动效</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3a 100%);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+```
+    .controls {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 20px;
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        z-index: 1000;
+    }
+    
+    .control-group {
+        margin-bottom: 15px;
+    }
+    
+    .control-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-size: 12px;
+        color: #ccc;
+    }
+    
+    .control-group input[type="range"] {
+        width: 200px;
+        margin-bottom: 5px;
+    }
+    
+    .control-group input[type="number"] {
+        width: 60px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        padding: 3px 5px;
+        border-radius: 3px;
+    }
+    
+    .buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    
+    button {
+        background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 12px;
+        transition: transform 0.2s;
+    }
+    
+    button:hover {
+        transform: translateY(-2px);
+    }
+    
+    #stats {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0, 0, 0, 0.8);
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        font-family: monospace;
+        font-size: 12px;
+        z-index: 1000;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="controls">
+        <h3 style="margin-top: 0; color: #fff;">物理参数控制</h3>
+
+```
+    <div class="control-group">
+        <label>重力加速度 (m/s²)</label>
+        <input type="range" id="gravity" min="1" max="20" value="9.8" step="0.1">
+        <input type="number" id="gravityValue" min="1" max="20" value="9.8" step="0.1">
+    </div>
+    
+    <div class="control-group">
+        <label>空气密度 (kg/m³)</label>
+        <input type="range" id="airDensity" min="0.1" max="5" value="1.225" step="0.01">
+        <input type="number" id="airDensityValue" min="0.1" max="5" value="1.225" step="0.01">
+    </div>
+    
+    <div class="control-group">
+        <label>风力强度</label>
+        <input type="range" id="windForce" min="-10" max="10" value="0" step="0.1">
+        <input type="number" id="windForceValue" min="-10" max="10" value="0" step="0.1">
+    </div>
+    
+    <div class="control-group">
+        <label>物体数量</label>
+        <input type="range" id="particleCount" min="10" max="200" value="50" step="10">
+        <input type="number" id="particleCountValue" min="10" max="200" value="50" step="10">
+    </div>
+    
+    <div class="buttons">
+        <button onclick="addMeteor()">添加流星</button>
+        <button onclick="addSnowflake()">添加雪花</button>
+        <button onclick="clearAll()">清除所有</button>
+        <button onclick="togglePause()">暂停/继续</button>
+    </div>
+</div>
+
+<div id="stats">
+    FPS: <span id="fps">60</span><br>
+    粒子数: <span id="particleCountDisplay">0</span>
+</div>
+
+<script>
+    // 物理常量和变量
+    let physics = {
+        gravity: 9.8,
+        airDensity: 1.225,
+        windForce: 0,
+        dragCoefficient: 0.47 // 球形物体的阻力系数
+    };
+    
+    let app, particles = [];
+    let isPaused = false;
+    let lastTime = performance.now();
+    let fps = 60;
+    
+    // 初始化PixiJS应用
+    function initPixi() {
+        app = new PIXI.Application({
+            width: window.innerWidth,
+            height: window.innerHeight,
+            backgroundColor: 0x0a0a1a,
+            antialias: true
+        });
+        
+        document.body.appendChild(app.view);
+        
+        // 创建星空背景
+        createStarField();
+        
+        // 启动动画循环
+        app.ticker.add(gameLoop);
+        
+        // 添加初始粒子，随机分布在整个屏幕
+        for (let i = 0; i < 30; i++) {
+            createParticle('snow', true); // 初始化时随机Y位置
+        }
+    }
+    
+    // 创建星空背景
+    function createStarField() {
+        const starContainer = new PIXI.Container();
+        app.stage.addChild(starContainer);
+        
+        for (let i = 0; i < 200; i++) {
+            const star = new PIXI.Graphics();
+            const size = Math.random() * 2;
+            const alpha = Math.random() * 0.8 + 0.2;
+            
+            star.beginFill(0xffffff, alpha);
+            star.drawCircle(0, 0, size);
+            star.endFill();
+            
+            star.x = Math.random() * app.screen.width;
+            star.y = Math.random() * app.screen.height;
+            
+            starContainer.addChild(star);
+        }
+    }
+    
+    // 粒子类
+    class Particle {
+        constructor(type = 'snow', randomizeY = true) {
+            this.type = type;
+            this.x = Math.random() * app.screen.width;
+            
+            // 随机化初始Y位置，让粒子自然分布
+            if (randomizeY) {
+                this.y = Math.random() * app.screen.height - app.screen.height * 0.5;
+            } else {
+                this.y = -50 - Math.random() * 100; // 从屏幕上方不同高度开始
+            }
+            
+            // 添加更自然的初始速度变化
+            this.vx = (Math.random() - 0.5) * 4; // 增加水平速度变化
+            this.vy = Math.random() * 2; // 添加初始垂直速度
+            
+            // 物理属性
+            if (type === 'meteor') {
+                this.mass = Math.random() * 5 + 2; // 2-7 kg
+                this.radius = Math.sqrt(this.mass) * 3;
+                this.color = 0xff6b35;
+                this.trail = [];
+                this.maxTrailLength = 20;
+            } else {
+                this.mass = Math.random() * 0.1 + 0.05; // 0.05-0.15 kg
+                this.radius = Math.sqrt(this.mass) * 10;
+                this.color = 0xffffff;
+            }
+            
+            // 计算物理属性
+            this.area = Math.PI * this.radius * this.radius / 10000; // 转换为平方米
+            this.density = this.mass / (4/3 * Math.PI * Math.pow(this.radius/100, 3)); // kg/m³
+            
+            this.createGraphics();
+        }
+        
+        createGraphics() {
+            this.graphics = new PIXI.Graphics();
+            
+            if (this.type === 'meteor') {
+                // 创建流星效果
+                this.graphics.beginFill(this.color, 0.9);
+                this.graphics.drawCircle(0, 0, this.radius);
+                this.graphics.endFill();
+                
+                // 添加发光效果
+                const glowFilter = new PIXI.filters.BlurFilter(2);
+                this.graphics.filters = [glowFilter];
+            } else {
+                // 创建雪花效果
+                this.graphics.beginFill(this.color, 0.8);
+                this.graphics.drawCircle(0, 0, this.radius);
+                this.graphics.endFill();
+            }
+            
+            app.stage.addChild(this.graphics);
+        }
+        
+        update(deltaTime) {
+            if (isPaused) return;
+            
+            const dt = deltaTime / 60; // 转换为秒
+            
+            // 计算重力
+            const gravityForce = this.mass * physics.gravity;
+            
+            // 计算空气阻力
+            const velocity = Math.sqrt(this.vx * this.vx + this.vy * this.vy);
+            const dragForce = 0.5 * physics.airDensity * velocity * velocity * physics.dragCoefficient * this.area;
+            
+            // 计算阻力在x和y方向的分量
+            let dragX = 0, dragY = 0;
+            if (velocity > 0) {
+                dragX = -dragForce * (this.vx / velocity);
+                dragY = -dragForce * (this.vy / velocity);
+            }
+            
+            // 计算风力
+            const windForce = physics.windForce * this.area;
+            
+            // 应用牛顿第二定律 F = ma
+            const ax = (dragX + windForce) / this.mass;
+            const ay = (gravityForce + dragY) / this.mass;
+            
+            // 更新速度
+            this.vx += ax * dt;
+            this.vy += ay * dt;
+            
+            // 更新位置
+            this.x += this.vx * dt * 60; // 转换回像素/帧
+            this.y += this.vy * dt * 60;
+            
+            // 更新轨迹（仅流星）
+            if (this.type === 'meteor') {
+                this.trail.push({ x: this.x, y: this.y });
+                if (this.trail.length > this.maxTrailLength) {
+                    this.trail.shift();
+                }
+                this.drawTrail();
+            }
+            
+            // 更新图形位置
+            this.graphics.x = this.x;
+            this.graphics.y = this.y;
+            
+            // 边界检查和重置
+            if (this.y > app.screen.height + 50 || 
+                this.x < -50 || this.x > app.screen.width + 50) {
+                this.reset();
+            }
+        }
+        
+        drawTrail() {
+            this.graphics.clear();
+            
+            // 绘制轨迹
+            if (this.trail.length > 1) {
+                this.graphics.lineStyle(2, this.color, 0.3);
+                this.graphics.moveTo(this.trail[0].x - this.x, this.trail[0].y - this.y);
+                
+                for (let i = 1; i < this.trail.length; i++) {
+                    const alpha = i / this.trail.length * 0.3;
+                    this.graphics.lineStyle(2, this.color, alpha);
+                    this.graphics.lineTo(this.trail[i].x - this.x, this.trail[i].y - this.y);
+                }
+            }
+            
+            // 绘制主体
+            this.graphics.beginFill(this.color, 0.9);
+            this.graphics.drawCircle(0, 0, this.radius);
+            this.graphics.endFill();
+        }
+        
+        reset() {
+            this.x = Math.random() * app.screen.width;
+            this.y = -50 - Math.random() * 100; // 从不同高度重新进入
+            this.vx = (Math.random() - 0.5) * 4;
+            this.vy = Math.random() * 2;
+            
+            if (this.type === 'meteor') {
+                this.trail = [];
+            }
+        }
+        
+        destroy() {
+            if (this.graphics && this.graphics.parent) {
+                this.graphics.parent.removeChild(this.graphics);
+            }
+        }
+    }
+    
+    // 创建粒子
+    function createParticle(type = 'snow', randomizeY = true) {
+        const particle = new Particle(type, randomizeY);
+        particles.push(particle);
+    }
+    
+    // 持续生成新粒子的系统
+    let particleSpawnTimer = 0;
+    const particleSpawnInterval = 30; // 每30帧生成一个新粒子
+    
+    function manageParticleGeneration(delta) {
+        particleSpawnTimer += delta;
+        
+        // 定期添加新粒子，保持自然的连续性
+        if (particleSpawnTimer >= particleSpawnInterval && particles.length < 100) {
+            createParticle('snow', false); // 新生成的从顶部开始
+            particleSpawnTimer = 0;
+        }
+    }
+    
+    // 游戏循环
+    function gameLoop(delta) {
+        // 计算FPS
+        const currentTime = performance.now();
+        const deltaTime = currentTime - lastTime;
+        fps = Math.round(1000 / deltaTime);
+        lastTime = currentTime;
+        
+        // 管理粒子生成
+        manageParticleGeneration(delta);
+        
+        // 更新所有粒子
+        particles.forEach(particle => particle.update(delta));
+        
+        // 更新统计信息
+        updateStats();
+    }
+    
+    // 更新统计信息
+    function updateStats() {
+        document.getElementById('fps').textContent = fps;
+        document.getElementById('particleCountDisplay').textContent = particles.length;
+    }
+    
+    // 控制面板事件处理
+    function setupControls() {
+        const controls = [
+            { id: 'gravity', prop: 'gravity' },
+            { id: 'airDensity', prop: 'airDensity' },
+            { id: 'windForce', prop: 'windForce' }
+        ];
+        
+        controls.forEach(({ id, prop }) => {
+            const slider = document.getElementById(id);
+            const input = document.getElementById(id + 'Value');
+            
+            slider.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                physics[prop] = value;
+                input.value = value;
+            });
+            
+            input.addEventListener('input', (e) => {
+                const value = parseFloat(e.target.value);
+                physics[prop] = value;
+                slider.value = value;
+            });
+        });
+        
+        // 粒子数量控制
+        const particleSlider = document.getElementById('particleCount');
+        const particleInput = document.getElementById('particleCountValue');
+        
+        function updateParticleCount(count) {
+            const currentCount = particles.length;
+            const diff = count - currentCount;
+            
+            if (diff > 0) {
+                for (let i = 0; i < diff; i++) {
+                    // 新增的粒子随机分布，模拟自然状态
+                    createParticle('snow', true);
+                }
+            } else if (diff < 0) {
+                for (let i = 0; i < -diff; i++) {
+                    const particle = particles.pop();
+                    if (particle) particle.destroy();
+                }
+            }
+        }
+        
+        particleSlider.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            particleInput.value = value;
+            updateParticleCount(value);
+        });
+        
+        particleInput.addEventListener('input', (e) => {
+            const value = parseInt(e.target.value);
+            particleSlider.value = value;
+            updateParticleCount(value);
+        });
+    }
+    
+    // 控制按钮功能
+    function addMeteor() {
+        createParticle('meteor', false); // 流星从顶部开始
+    }
+    
+    function addSnowflake() {
+        createParticle('snow', false); // 新雪花从顶部开始
+    }
+    
+    function clearAll() {
+        particles.forEach(particle => particle.destroy());
+        particles = [];
+    }
+    
+    function togglePause() {
+        isPaused = !isPaused;
+    }
+    
+    // 窗口大小调整
+    function handleResize() {
+        app.renderer.resize(window.innerWidth, window.innerHeight);
+    }
+    
+    // 初始化
+    window.addEventListener('load', () => {
+        initPixi();
+        setupControls();
+        window.addEventListener('resize', handleResize);
+    });
+</script>
+```
+
+</body>
+</html>
