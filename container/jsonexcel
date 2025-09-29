@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>JSON 转 Excel (含预览)</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      color: #333;
+      text-ali gn: center;
+    }
+    .input-section, .preview-section {
+      margin-bottom: 30px;
+    }
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      resize: vertical;
+    }
+    .button-group {
+      text-align: center;
+      margin: 15px 0;
+    }
+    button {
+      padding: 12px 24px;
+      margin: 0 10px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    button.download {
+      background-color: #28a745;
+    }
+    button.download:hover {
+      background-color: #1e7e34;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+    .preview-container {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: auto;
+      max-height: 400px;
+      background-color: white;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #f8f9fa;
+      font-weight: bold;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    tr:hover {
+      background-color: #e3f2fd;
+    }
+    .message {
+      padding: 10px;
+      margin: 10px  0;
+      border-radius: 4px;
+      text-align: center;
+    }
+    .success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+    .error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+    .info {
+      background-color: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+    .hidden {
+      display: none;
+    }
+    .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .preview-title {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    .record-count {
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>JSON 转 Excel (含预览)</h2>
+    
+    <div class="input-section">
+      <label for="jsonInput"><strong>输入 JSON 数据：</strong></label>
+      <textarea id="jsonInput" placeholder='请输入 JSON 格式的数组对象，例如：
+[
+  {"姓名": "张三", "年龄": 25, "城市": "北京"},
+  {"姓名": "李四", "年龄": 30,  "城市": "上海"},
+  {"姓名": "王五", "年龄": 28,  "城市": "广州"}
+]'></textarea>
+    </div>
+
+    <div class="button-group">
+      <button onclick="parseAndPreview()">解析并预览</button>
+      <button class="download" onclick="downloadExcel()" id="downloadBtn" disabled>下载 Excel 文件</button>
+    </div>
+
+    <div id="messageArea" class="message hidden"></div>
+
+    <div class="preview-section hidden" id="previewSection">
+      <div class="preview-header">
+        <div class="preview-title">预览结果</div>
+        <div class="record-count" id="recordCount"></div>
+      </div>
+      <div class="preview-container">
+        <table id="previewTable"></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入 SheetJS -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+  <script>
+    let currentJsonData = null;
+    let workbook = null;
+
+    function showMessage(message, type = 'info') {
+      const messageArea = document.getElementById('messageArea');
+      messageArea.innerHTML = message;
+      messageArea.className = `message ${type}`;
+      messageArea.classList.remove('hidden');
+      
+      // 3秒后自动隐藏成功消息
+      if (type === 'success') {
+        setTimeout(() => {
+          messageArea.classList.add('hidden');
+        }, 3000);
+      }
+    }
+
+    function hideMessage() {
+      document.getElementById('messageArea').classList.add('hidden');
+    }
+
+    function parseAndPreview() {
+      const jsonText = document.getElementById('jsonInput').value.trim();
+      
+      if (!jsonText) {
+        showMessage('请输入 JSON 数据！', 'error');
+        return;
+      }
+
+      try {
+        // 将文本解析为 JSON 对象
+        const jsonData = JSON.parse(jsonText);
+
+        if (!Array.isArray(jsonData)) {
+          showMessage('请确保输入的是 JSON 数组！', 'error');
+          return;
+        }
+
+        if (jsonData.length === 0) {
+          showMessage('JSON 数组为空！', 'error');
+          return;
+        }
+
+        // 保存当前数据
+        currentJsonData = jsonData;
+
+        // 显示预览
+        renderPreview(jsonData);
+        
+        // 生成工作簿用于下载
+        generateWorkbook(jsonData);
+        
+        // 启用下载按钮
+        document.getElementById('downloadBtn').disabled = false;
+        
+        showMessage(`解析成功！共 ${jsonData.length} 条记录`, 'success');
+        
+      } catch (error) {
+        showMessage(`JSON 格式错误：<br>${error.message}`, 'error');
+      }
+    }
+
+    function renderPreview(data) {
+      const previewSection = document.getElementById('previewSection');
+      const previewTable = document.getElementById('previewTable');
+      const recordCount = document.getElementById('recordCount');
+      
+      // 清空之前的预览
+      previewTable.innerHTML = '';
+      
+      if (!data || data.length === 0) {
+        previewSection.classList.add('hidden');
+        return;
+      }
+
+      // 获取所有唯一的键名（列名）
+      const allKeys = new Set();
+      data.forEach(item => {
+        Object.keys(item).forEach(key => allKeys.add(key));
+      });
+      const columns = Array.from(allKeys);
+
+      // 创建表头
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      columns.forEach(column => {
+        const th = document.createElement('th');
+        th.textContent = column;
+        headerRow.appendChild(th);
+      });
+      thead.appendChild(headerRow);
+      previewTable.appendChild(thead);
+
+      // 创建表体
+      const tbody = document.createElement('tbody');
+      data.forEach(row => {
+        const tr = document.createElement('tr');
+        columns.forEach(column => {
+          const td = document.createElement('td');
+          td.textContent = row[column] !== undefined ? row[column] : '';
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      previewTable.appendChild(tbody);
+
+      // 更新记录数显示
+      recordCount.textContent = `共 ${data.length} 条记录`;
+
+      // 显示预览区域
+      previewSection.classList.remove('hidden');
+    }
+
+    function generateWorkbook(data) {
+      // 创建工作簿和工作表
+      const ws = XLSX.utils.json_to_sheet(data);
+      workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, ws, "数据表");
+    }
+
+    function downloadExcel() {
+      if (!workbook) {
+        showMessage('请先解析数据！', 'error');
+        return;
+      }
+
+      try {
+        // 导出文件
+        XLSX.writeFile(workbook, "data.xlsx");
+        showMessage('Excel 文件下载成功！', 'success');
+      } catch (error) {
+        showMessage(`下载失败：${error.message}`, 'error');
+      }
+    }
+
+    // 页面加载完成后的初始化
+    document.addEventListener('DOMContentLoaded', function() {
+      // 可以在这里添加一些初始化逻辑
+    });
+  </script>
+
+</body>
+</html>
